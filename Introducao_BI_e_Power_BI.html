@@ -18,10 +18,15 @@
   </button>
 
   <div class="sidebar" id="sidebar">
-    <h2>Power BI 📊</h2>
+    <button class="sidebar-toggle-btn" id="sidebar-toggle-btn">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+
+    <h2><span class="sidebar-title-text">Power BI </span>📊</h2>
+
     <a href="index_powerbi.html"><i class="fas fa-home"></i> <span>Início Power BI</span></a>
     <a href="Introducao_BI_e_Power_BI.html" class="active"><i class="fas fa-rocket"></i> <span>Aula 1: Intro BI</span></a>
-    </div>
+  </div>
 
   <main class="content" id="content">
     <header>
@@ -31,6 +36,10 @@
 
     <section class="main-section">
 
+      <blockquote class="thought-of-the-day">
+        <p>"Carregando citação..."</p>
+        <cite>—</cite>
+      </blockquote>
       <section class="sub-section">
         <h2>1️⃣ O Que é Business Intelligence (BI)? <i class="fas fa-brain"></i></h2>
         <blockquote>
@@ -42,8 +51,8 @@
           <p>Toda análise de dados segue um fluxo lógico para garantir a qualidade dos insights:</p>
           <ol>
             <li><strong>ETL (Extrair, Transformar, Carregar):</strong> A etapa mais crucial. Pegamos os dados brutos, limpamos e carregamos para o ambiente de análise.</li>
-            <li><strong>Modelagem de Dados:</strong> Criamos relacionamentos entre as tabelas (vendas, clientes, produtos) para que elas "conversem".</li>
-            <li><strong>Cálculos com Fórmulas DAX:</strong> Criamos as métricas e indicadores importantes.</li>
+            <li><strong>Modelagem de Dados:</strong> Criamos relacionamentos (pontes) entre as tabelas (vendas, clientes, produtos) para que elas "conversem".</li>
+            <li><strong>Cálculos com Fórmulas DAX:</strong> Criamos as métricas e indicadores importantes (KPIs).</li>
             <li><strong>Criação de Relatórios/Dashboards:</strong> A etapa visual, onde transformamos números em gráficos intuitivos.</li>
             <li><strong>Compartilhamento:</strong> Com o relatório pronto, o compartilhamos online para a tomada de decisão.</li>
           </ol>
@@ -54,6 +63,12 @@
         <h2>2️⃣ Preparando o Ambiente <i class="fas fa-desktop"></i></h2>
         <p>Antes de construir, precisamos conhecer e preparar nossas ferramentas.</p>
         <div class="card">
+          <h4>Por que Power BI? (A Vantagem na Carreira)</h4>
+          <p>Hoje, saber Power BI não é apenas um diferencial, é uma necessidade. Empresas de todos os tamanhos estão se afogando em dados (planilhas, sistemas, redes sociais, etc.) e precisam de respostas.</p>
+          <p>O profissional que domina o Power BI deixa de ser "operacional" (alguém que apenas preenche relatórios) e se torna "estratégico" (alguém que analisa os dados e gera *insights*), sendo fundamental para a tomada de decisão inteligente.</p>
+          <p>Aprender isso é um investimento direto na sua carreira.</p>
+        </div>
+        <div class="card">
           <h4>Instalando o Power BI Desktop</h4>
           <p>O Power BI Desktop é o software gratuito onde toda a criação acontece. A forma mais recomendada de instalação é através da <strong>Microsoft Store</strong>.</p>
           <ol>
@@ -61,25 +76,33 @@
               <li>Na loja, pesquise por "Power BI Desktop".</li>
               <li>Clique em "Adquirir" ou "Instalar".</li>
           </ol>
-           <a href="https://aka.ms/pbi-desktop-store" target="_blank" class="download-link" style="color: white; text-decoration: underline;"><i class="fas fa-download"></i> Baixar Power BI Desktop (Link Direto)</a>
+           <a href="https://aka.ms/pbi-desktop-store" target="_blank" class="download-link"><i class="fas fa-download"></i> Baixar Power BI Desktop (Link Direto)</a>
            <h4>Dica de Mestre: A Vantagem da Microsoft Store</h4>
           <p>Optar pela instalação via Microsoft Store é uma boa prática profissional. As atualizações mensais do Power BI são constantes, e ter a versão mais recente garante acesso a todas as funcionalidades, evitando problemas de compatibilidade.</p>
+        </div>
+        <div class="card">
+          <h4>Entendendo o Ecossistema: Desktop vs. Service</h4>
+          <p>Esta é a dúvida mais comum de todo iniciante! É crucial entender a diferença entre as duas principais ferramentas do Power BI:</p>
+          <ul>
+            <li><i class="fas fa-desktop" style="color: var(--cor-amarelo-pbi); margin-right: 5px;"></i> <strong>Power BI Desktop (Grátis):</strong> É a sua <strong>"oficina"</strong>. É o programa que acabamos de instalar no Windows onde você vai fazer 90% do trabalho: conectar nos dados, fazer o ETL (limpeza), criar a modelagem e montar os visuais do seu relatório.</li>
+            <li><i class="fas fa-cloud" style="color: var(--cor-amarelo-pbi); margin-right: 5px;"></i> <strong>Power BI Service (Online):</strong> É a <strong>"galeria de arte"</strong>. É o site na nuvem (app.powerbi.com) para onde você "publica" seu relatório depois de pronto. É lá que você vai compartilhar com sua equipe, agendar atualizações automáticas e ver os relatórios no celular.</li>
+          </ul>
+          <p><strong>Resumo da Aula:</strong> Hoje, vamos focar 100% no <strong>Desktop</strong> (a oficina).</p>
         </div>
          <div class="card">
           <h4>Power BI no Mac?</h4>
           <p>O Power BI Desktop, por enquanto, só possui versão para Windows. Mas se você utiliza um Mac, não se preocupe! É possível instalar o Windows em seu Mac de forma simples. Assista a este tutorial para saber como fazer e, em seguida, você poderá baixar e utilizar o Power BI normalmente:</p>
-          <p><a href="https://www.youtube.com/watch?v=hxbcIEFv34k" target="_blank" style="color: white; text-decoration: underline;"><i class="fab fa-youtube"></i> Tutorial: Como instalar Windows no Mac</a></p>
+          <p><a href="https://www.youtube.com/watch?v=hxbcIEFv34k" target="_blank"><i class="fab fa-youtube"></i> Tutorial: Como instalar Windows no Mac</a></p>
         </div>
         <div class="card">
           <h4>Curiosidade: O Superpoder do Power BI vs. Excel</h4>
           <p>O Excel tem um limite físico de 1.048.576 linhas. Já o Power BI não possui um limite de linhas. Ele usa um motor de compressão de dados chamado <em>VertiPaq</em>, que armazena os dados em colunas e pode comprimir bases de dados em até 1/10 do seu tamanho original. É por isso que ele consegue analisar milhões, e até centenas de milhões de linhas, de forma fluida. Para quem já sofreu com a lentidão de planilhas grandes, esta é a prova do valor do Power BI.</p>
         </div>
       </section>
-      
+
       <section class="sub-section">
         <h2>3️⃣ Conhecendo o Território: A Interface do Power BI <i class="fas fa-map-signs"></i></h2>
         <p>Ao abrir o Power BI, nos deparamos com um ambiente rico em ferramentas. Entender a função de cada área é o primeiro passo para dominar o software.</p>
-        
         <div class="card">
             <h4>A Faixa de Opções (Menus Superiores)</h4>
             <p>No topo, você encontra as abas de menu, similares a outros programas da Microsoft. As mais importantes para começar são:</p>
@@ -121,32 +144,52 @@
             </ul>
         </div>
         <div class="card">
-          <h4>Passo 1: Extrair (Extract)</h4>
-          <p>Para nossa análise, usaremos uma base de dados da empresa fictícia Hashtag Eletro. Faça o download do arquivo abaixo:</p>
-          <p><a href="./documentos/Cadastro Clientes.xlsx" download style="color: white; text-decoration: underline;"><i class="fas fa-file-excel"></i> Baixar Arquivo "Cadastro Clientes.xlsx"</a></p>
-          <ol>
-            <li>Na aba "Página Inicial" do Power BI, clique em <strong>"Obter dados"</strong> > <strong>"Pasta de Trabalho do Excel"</strong>.</li>
-            <li>Navegue até o arquivo <strong>"Cadastro Clientes.xlsx"</strong> que você baixou e clique em "Abrir".</li>
-            <li>Na janela "Navegador", marque a caixa ao lado da aba da planilha (ex: "Plan1").</li>
-            <li><strong>O passo mais importante:</strong> Em vez de "Carregar", clique em <strong>"Transformar Dados"</strong>.</li>
-          </ol>
+            <h4>Passo 1: Extrair (Extract)</h4>
+            <p>Para nossa primeira análise, vamos importar o cadastro de clientes. Este é um arquivo Excel <strong>típico do dia a dia</strong>: ele contém informações cadastrais como ID, Nome, Gênero e E-mail dos nossos clientes.</p>
+            <p>Ele também está intencionalmente "sujo" (com linhas em branco e cabeçalhos fora do lugar), o que é perfeito para nossa primeira prática de limpeza (ETL).</p>
+            <p>Faça o download do arquivo abaixo para começar:</p>
+            <p><a href="./documentos/Cadastro Clientes.xlsx" download><i class="fas fa-file-excel"></i> Baixar Arquivo "Cadastro Clientes.xlsx"</a></p>
+
+            <ol style="margin-top: 20px;">
+                <li>Na aba "Página Inicial" do Power BI, clique em <strong>"Obter dados"</strong> > <strong>"Pasta de Trabalho do Excel"</strong>.</li>
+                <li>Navegue até o arquivo <strong>"Cadastro Clientes.xlsx"</strong> que você baixou e clique em "Abrir".</li>
+                <li>Na janela "Navegador", marque a caixa ao lado da aba da planilha (ex: "Plan1").</li>
+                <li><strong>O passo mais importante:</strong> Em vez de "Carregar", clique em <strong>"Transformar Dados"</strong>.</li>
+            </ol>
         </div>
+
+        <div class="card" style="border-left: 5px solid var(--cor-amarelo-hover);">
+            <h4><i class="fas fa-exclamation-triangle"></i> Atenção: Uma Nova Janela!</h4>
+            <p>Ao clicar em "Transformar Dados", o Power BI abriu uma <strong>nova janela</strong> chamada <strong>Editor do Power Query</strong>.</p>
+            <p>Não se assuste! A sua tela principal do Power BI (com as 3 guias) ainda está lá, só que *atrás* desta nova janela. Pense no Power Query como a "oficina" ou "sala de cirurgia" dos seus dados. É aqui que fazemos toda a limpeza e preparação (o "T" do ETL).</p>
+            <p>Quando terminarmos a limpeza aqui, vamos clicar em "Fechar e Aplicar" para voltar à tela principal com os dados já tratados.</p>
+        </div>
+
         <div class="card">
             <h4>Passo 2: Transformar (Transform) no Power Query</h4>
-            <p>O Power Query é o editor onde preparamos os dados. Cada ação fica gravada em "Etapas Aplicadas".</p>
+            <p>Bem-vindo ao Power Query! Vamos realizar nossas primeiras etapas de limpeza. Observe como cada ação que você faz é gravada no painel "Etapas Aplicadas" à direita.</p>
             <ul>
-                <li><strong>Renomear a Consulta:</strong> No painel direito, em "Propriedades", renomeie a consulta para "dClientes".</li>
+                <li><strong>Renomear a Consulta:</strong> No painel direito "Configurações da Consulta", em "Propriedades", renomeie a consulta de "Plan1" para <strong>"dClientes"</strong>.
+                    <ul>
+                        <li><strong>Dica de Mestre:</strong> O 'd' é uma boa prática profissional que significa <strong>Dimensão</strong>. Tabelas 'Dimensão' são tabelas que *descrevem* algo (clientes, produtos, calendário). Isso será fundamental na nossa próxima aula sobre Modelagem de Dados!</li>
+                    </ul>
+                </li>
                 <li><strong>Remover Linhas em Branco:</strong> Na guia "Página Inicial" do Power Query, clique em "Remover Linhas" > "Remover Linhas em Branco".</li>
-                <li><strong>Promover Cabeçalhos:</strong> Clique em "Usar a Primeira Linha como Cabeçalho".</li>
-                <li><strong>Ajustar Tipos de Dados:</strong> Verifique e corrija os tipos de dados de cada coluna.</li>
+                <li><strong>Promover Cabeçalhos:</strong> A primeira linha dos nossos dados ("ID Cliente", "Nome", etc.) é o cabeçalho, mas o Power BI a vê como dados. Clique em "Usar a Primeira Linha como Cabeçalho".</li>
+                <li><strong>Ajustar Tipos de Dados:</strong> Verifique se o Power BI identificou os tipos de dados corretamente (ex: ID Cliente como número, Nome como texto).
+                    <ul>
+                        <li><strong>Dica de Mestre (A Mágica do ETL):</strong> Percebeu o painel <strong>Etapas Aplicadas</strong>? Cada clique seu foi gravado. Da próxima vez que seu arquivo "Cadastro Clientes.xlsx" for atualizado, basta clicar em "Atualizar" no Power BI e ele irá *repetir todos esses passos de limpeza automaticamente* para você. Esse é o poder do ETL!</li>
+                    </ul>
+                </li>
             </ul>
         </div>
+
          <div class="card">
             <h4>Passo 3: Carregar (Load)</h4>
             <p>Após as transformações, clique no botão <strong>"Fechar e Aplicar"</strong> no canto superior esquerdo para carregar os dados tratados.</p>
         </div>
       </section>
-      
+
       <section class="sub-section">
         <h2>5️⃣ A Conquista: Seu Primeiro Relatório Interativo <i class="fas fa-trophy"></i></h2>
         <p>Com os dados limpos e carregados no modelo, a parte visual é a recompensa rápida e intuitiva.</p>
@@ -178,47 +221,155 @@
       <section class="exercise">
         <h2>Exercício Prático de Encerramento <i class="fas fa-question-circle"></i></h2>
         <div class="card">
-          <p>Para solidificar seu aprendizado, sua missão final para esta aula é:</p>
-           <p><a href="./documentos/Cadastro Produtos.xlsx" download style="color: white; text-decoration: underline;"><i class="fas fa-file-excel"></i> Baixar Arquivo "Cadastro Produtos.xlsx"</a></p>
-          <ol>
+          <p>Agora é sua vez de praticar o processo de ETL completo. Sua missão é importar a base de dados de produtos da nossa empresa.</p>
+          <p>Este arquivo contém as informações dos produtos (como SKU, Nome do Produto, Marca e Preço) e, assim como o de clientes, também precisa de limpeza.</p>
+          <p>Faça o download e siga os passos:</p>
+           <p><a href="./documentos/Cadastro Produtos.xlsx" download><i class="fas fa-file-excel"></i> Baixar Arquivo "Cadastro Produtos.xlsx"</a></p>
+
+          <ol style="margin-top: 20px;">
             <li>Importar a base de dados <strong>"Cadastro Produtos.xlsx"</strong> para o mesmo projeto Power BI que você acabou de salvar.</li>
             <li>Lembre-se de clicar em "Transformar Dados".</li>
             <li>Dentro do Power Query, realize os tratamentos básicos: renomeie a consulta para "dProdutos", remova linhas em branco, promova cabeçalhos e verifique os tipos de dados.</li>
             <li>Clique em "Fechar e Aplicar".</li>
             <li><strong>Desafio Bônus:</strong> Crie um novo cartão para mostrar a "Contagem (Distinta)" de "SKU", respondendo à pergunta "Quantos produtos diferentes nós temos?".</li>
           </ol>
-          <p>Ao final deste exercício, você terá um relatório com duas tabelas tratadas e prontas para serem relacionadas, o que será o tema de nossa próxima aula.</p>
+
+          <button class="toggle-answer-btn">
+            <i class="fas fa-eye"></i> Mostrar Gabarito
+          </button>
+
+          <div class="answer">
+            <p><strong>Gabarito do Desafio Bônus:</strong></p>
+            <p>Se você seguiu os passos, sua tabela "dProdutos" está pronta no modelo.</p>
+            <ol>
+              <li>Clique em uma área vazia do relatório.</li>
+              <li>No painel de Visualizações, clique no <strong>"Cartão"</strong>.</li>
+              <li>Arraste o campo <strong>"SKU"</strong> da tabela "dProdutos" para a caixa "Campos" do visual.</li>
+              <li>Clique na seta ao lado de "SKU" e mude a agregação para <strong>"Contagem (Distinta)"</strong>.</li>
+            </ol>
+            <p>O seu cartão deve agora mostrar o número total de produtos únicos. Parabéns!</p>
+          </div>
         </div>
       </section>
 
     </section>
 
+    <section class="main-section" style="padding-top: 0; margin-top: -20px;">
+        <section class="sub-section" style="border-left-color: var(--cor-borda-verde);">
+            <h2>🏆 Parabéns! O que vem a seguir?</h2>
+            <p>Se você chegou até aqui, você completou a primeira grande etapa de um projeto de BI: você extraiu e tratou (ETL) duas tabelas importantes: <strong>dClientes</strong> e <strong>dProdutos</strong>.</p>
+            <p>Mas temos um desafio: elas ainda não "conversam". Como você responderia à pergunta: "Quais produtos os clientes do sexo feminino mais compram?"</p>
+            <p>Neste momento, você não consegue, pois os dados estão em tabelas separadas. Elas são como duas ilhas.</p>
+            <p>Para que elas possam cruzar informações, precisamos construir uma "ponte". Essa ponte se chama <strong>Relacionamento</strong>. Esse é o coração da <strong>Modelagem de Dados</strong>, e é exatamente isso que faremos em nossa próxima aula!</p>
+            <p style="font-weight: bold; font-size: 1.1em;">Até lá!</p>
+        </section>
+    </section>
+
   </main>
+
+  <a href="#" id="back-to-top" class="back-to-top" title="Voltar ao topo">
+    <i class="fas fa-chevron-up"></i>
+  </a>
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      const hamburgerMenu = document.getElementById('hamburger-menu');
+
+      // --- CÓDIGO DA CITAÇÃO RANDÔMICA ---
+      const quotes = [
+        { quote: "O homem que move montanhas começa por carregar pequenas pedras.", author: "Confúcio" },
+        { quote: "A paz vem de dentro. Não a procure à sua volta.", author: "Buda" },
+        { quote: "A felicidade da sua vida depende da qualidade dos seus pensamentos.", author: "Marco Aurélio" },
+        { quote: "Seja a mudança que você deseja ver no mundo.", author: "Mahatma Gandhi" },
+        { quote: "Tudo o que somos é resultado do que pensamos. A mente é tudo. O que pensamos, nós nos tornamos.", author: "Buda" },
+        { quote: "Sábio é aquele que conhece os limites da própria ignorância.", author: "Sócrates" },
+        { quote: "O que sabemos é uma gota; o que ignoramos é um oceano.", author: "Isaac Newton" },
+        { quote: "Aquele que não tem um objetivo, não costuma encontrar alegria em nenhuma empreitada.", author: "Dalai Lama" },
+        { quote: "Nossa maior glória não está em nunca falhar, mas em nos levantar toda vez que falhamos.", author: "Confúcio" }
+      ];
+
+      const quoteElement = document.querySelector('.thought-of-the-day p');
+      const authorElement = document.querySelector('.thought-of-the-day cite');
+
+      if (quoteElement && authorElement) {
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        const randomQuote = quotes[randomIndex];
+
+        quoteElement.textContent = `"${randomQuote.quote}"`;
+        authorElement.textContent = `— ${randomQuote.author}`;
+      }
+
+      // --- CÓDIGO DO MENU HAMBÚRGUER (Mobile) ---
       const sidebar = document.getElementById('sidebar');
       const content = document.getElementById('content');
+      const hamburgerMenu = document.getElementById('hamburger-menu');
       const overlay = document.getElementById('overlay');
       const sidebarLinks = sidebar.querySelectorAll('a');
 
-      function toggleSidebar() {
+      function toggleSidebarMobile() {
         sidebar.classList.toggle('active');
         content.classList.toggle('sidebar-active');
         overlay.classList.toggle('active');
       }
 
-      hamburgerMenu.addEventListener('click', toggleSidebar);
-      overlay.addEventListener('click', toggleSidebar);
+      hamburgerMenu.addEventListener('click', toggleSidebarMobile);
+      overlay.addEventListener('click', toggleSidebarMobile);
 
+      // --- LÓGICA DE CLIQUE NOS LINKS ---
       sidebarLinks.forEach(link => {
-        link.addEventListener('click', function() {
+        link.addEventListener('click', function(event) {
+
+          if (link.classList.contains('active')) {
+            event.preventDefault();
+
+            if (sidebar.classList.contains('active')) {
+              toggleSidebarMobile();
+            }
+            return;
+          }
+
           if (sidebar.classList.contains('active')) {
-            toggleSidebar();
+            toggleSidebarMobile();
           }
         });
       });
+
+      // --- CÓDIGO DO TOGGLE DO SIDEBAR (Desktop) ---
+      const desktopToggleBtn = document.getElementById('sidebar-toggle-btn');
+      if (desktopToggleBtn) {
+        desktopToggleBtn.addEventListener('click', () => {
+          if (window.innerWidth > 768) {
+            sidebar.classList.toggle('sidebar-mini');
+            content.classList.toggle('sidebar-mini');
+          }
+        });
+      }
+
+      // --- CÓDIGO DO BOTÃO "VOLTAR AO TOPO" ---
+      const backToTopButton = document.getElementById('back-to-top');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+          backToTopButton.classList.add('show');
+        } else {
+          backToTopButton.classList.remove('show');
+        }
+      });
+
+      // --- CÓDIGO DO BOTÃO "MOSTRAR RESPOSTA" ---
+      const toggleBtn = document.querySelector('.toggle-answer-btn');
+      const answerDiv = document.querySelector('.answer');
+      if (toggleBtn && answerDiv) {
+        toggleBtn.addEventListener('click', () => {
+          const isVisible = answerDiv.style.display === 'block';
+          if (isVisible) {
+            answerDiv.style.display = 'none';
+            toggleBtn.innerHTML = '<i class="fas fa-eye"></i> Mostrar Gabarito';
+          } else {
+            answerDiv.style.display = 'block';
+            toggleBtn.innerHTML = '<i class="fas fa-eye-slash"></i> Esconder Gabarito';
+          }
+        });
+      }
+
     });
   </script>
 </body>

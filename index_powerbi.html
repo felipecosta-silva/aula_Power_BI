@@ -18,10 +18,15 @@
   </button>
 
   <div class="sidebar" id="sidebar">
-    <h2>Power BI 📊</h2>
+    <button class="sidebar-toggle-btn" id="sidebar-toggle-btn">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+
+    <h2><span class="sidebar-title-text">Power BI </span>📊</h2>
+
     <a href="index_powerbi.html" class="active"><i class="fas fa-home"></i> <span>Início Power BI</span></a>
     <a href="Introducao_BI_e_Power_BI.html"><i class="fas fa-rocket"></i> <span>Aula 1: Intro BI</span></a>
-    </div>
+  </div>
 
   <main class="content" id="content">
     <header>
@@ -44,8 +49,6 @@
                 <ul>
                     <li>Importação de dados de diversas fontes (Excel, Pastas, etc.).</li>
                     <li>Limpeza, transformação e preparação de bases de dados.</li>
-                    <li>Criação de colunas personalizadas e condicionais.</li>
-                    <li>Combinação de tabelas com Mesclar e Acrescentar Consultas.</li>
                 </ul>
             </div>
             <div class="card">
@@ -53,7 +56,6 @@
                 <ul>
                     <li>Entender a diferença entre Tabelas Fato e Dimensão.</li>
                     <li>Criar e gerenciar relacionamentos para conectar suas tabelas.</li>
-                    <li>Compreender conceitos de cardinalidade e direção do filtro.</li>
                 </ul>
             </div>
             <div class="card">
@@ -61,8 +63,6 @@
                 <ul>
                     <li>Criação de Colunas Calculadas e Medidas.</li>
                     <li>Uso das principais funções DAX (SUM, AVERAGE, CALCULATE, IF, etc.).</li>
-                    <li>Análises de Inteligência de Tempo para comparar períodos (YTD, MTD, YoY).</li>
-                    <li>Fórmulas DAX Avançadas para análises complexas.</li>
                 </ul>
             </div>
              <div class="card">
@@ -70,8 +70,6 @@
                 <ul>
                     <li>Boas práticas para a escolha do gráfico certo para cada análise.</li>
                     <li>Criação de Dashboards interativos e visualmente impactantes.</li>
-                    <li>Técnicas de Storytelling para apresentar seus dados de forma clara e convincente.</li>
-                    <li>Criação de layouts e temas personalizados.</li>
                 </ul>
             </div>
             <div class="card">
@@ -79,8 +77,6 @@
                 <ul>
                     <li>Publicar seus relatórios na nuvem.</li>
                     <li>Compartilhar dashboards com sua equipe de forma segura.</li>
-                    <li>Configurar atualizações automáticas para seus dados.</li>
-                    <li>Criar e gerenciar Workspaces e Aplicativos.</li>
                 </ul>
             </div>
         </section>
@@ -91,30 +87,109 @@
 
   </main>
 
+  <a href="#" id="back-to-top" class="back-to-top" title="Voltar ao topo">
+    <i class="fas fa-chevron-up"></i>
+  </a>
+
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      const hamburgerMenu = document.getElementById('hamburger-menu');
+
+      // --- CÓDIGO DA CITAÇÃO RANDÔMICA ---
+      const quotes = [
+        { quote: "O homem que move montanhas começa por carregar pequenas pedras.", author: "Confúcio" },
+        { quote: "A paz vem de dentro. Não a procure à sua volta.", author: "Buda" },
+        { quote: "A felicidade da sua vida depende da qualidade dos seus pensamentos.", author: "Marco Aurélio" },
+        { quote: "Seja a mudança que você deseja ver no mundo.", author: "Mahatma Gandhi" },
+        { quote: "Tudo o que somos é resultado do que pensamos. A mente é tudo. O que pensamos, nós nos tornamos.", author: "Buda" },
+        { quote: "Sábio é aquele que conhece os limites da própria ignorância.", author: "Sócrates" },
+        { quote: "O que sabemos é uma gota; o que ignoramos é um oceano.", author: "Isaac Newton" },
+        { quote: "Aquele que não tem um objetivo, não costuma encontrar alegria em nenhuma empreitada.", author: "Dalai Lama" },
+        { quote: "Nossa maior glória não está em nunca falhar, mas em nos levantar toda vez que falhamos.", author: "Confúcio" }
+      ];
+
+      const quoteElement = document.querySelector('.thought-of-the-day p');
+      const authorElement = document.querySelector('.thought-of-the-day cite');
+
+      if (quoteElement && authorElement) {
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        const randomQuote = quotes[randomIndex];
+
+        quoteElement.textContent = `"${randomQuote.quote}"`;
+        authorElement.textContent = `— ${randomQuote.author}`;
+      }
+
+      // --- CÓDIGO DO MENU HAMBÚRGUER (Mobile) ---
       const sidebar = document.getElementById('sidebar');
       const content = document.getElementById('content');
+      const hamburgerMenu = document.getElementById('hamburger-menu');
       const overlay = document.getElementById('overlay');
       const sidebarLinks = sidebar.querySelectorAll('a');
 
-      function toggleSidebar() {
+      function toggleSidebarMobile() {
         sidebar.classList.toggle('active');
         content.classList.toggle('sidebar-active');
         overlay.classList.toggle('active');
       }
 
-      hamburgerMenu.addEventListener('click', toggleSidebar);
-      overlay.addEventListener('click', toggleSidebar);
+      hamburgerMenu.addEventListener('click', toggleSidebarMobile);
+      overlay.addEventListener('click', toggleSidebarMobile);
 
+      // --- LÓGICA DE CLIQUE NOS LINKS ---
       sidebarLinks.forEach(link => {
-        link.addEventListener('click', function() {
+        link.addEventListener('click', function(event) {
+
+          if (link.classList.contains('active')) {
+            event.preventDefault();
+
+            if (sidebar.classList.contains('active')) {
+              toggleSidebarMobile();
+            }
+            return;
+          }
+
           if (sidebar.classList.contains('active')) {
-            toggleSidebar();
+            toggleSidebarMobile();
           }
         });
       });
+
+      // --- CÓDIGO DO TOGGLE DO SIDEBAR (Desktop) ---
+      const desktopToggleBtn = document.getElementById('sidebar-toggle-btn');
+      if (desktopToggleBtn) {
+        desktopToggleBtn.addEventListener('click', () => {
+          if (window.innerWidth > 768) {
+            sidebar.classList.toggle('sidebar-mini');
+            content.classList.toggle('sidebar-mini');
+          }
+        });
+      }
+
+      // --- CÓDIGO DO BOTÃO "VOLTAR AO TOPO" ---
+      const backToTopButton = document.getElementById('back-to-top');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+          backToTopButton.classList.add('show');
+        } else {
+          backToTopButton.classList.remove('show');
+        }
+      });
+
+      // --- CÓDIGO DO BOTÃO "MOSTRAR RESPOSTA" ---
+      const toggleBtn = document.querySelector('.toggle-answer-btn');
+      const answerDiv = document.querySelector('.answer');
+      if (toggleBtn && answerDiv) {
+        toggleBtn.addEventListener('click', () => {
+          const isVisible = answerDiv.style.display === 'block';
+          if (isVisible) {
+            answerDiv.style.display = 'none';
+            toggleBtn.innerHTML = '<i class="fas fa-eye"></i> Mostrar Gabarito';
+          } else {
+            answerDiv.style.display = 'block';
+            toggleBtn.innerHTML = '<i class="fas fa-eye-slash"></i> Esconder Gabarito';
+          }
+        });
+      }
+
     });
   </script>
 </body>
