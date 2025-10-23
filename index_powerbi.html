@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Power BI - Portal de Estudos</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+</head>
+
+<body>
+  <div class="overlay" id="overlay"></div>
+
+  <button class="hamburger-menu" id="hamburger-menu">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <div class="sidebar" id="sidebar">
+    <h2>Power BI 📊</h2>
+    <a href="index_powerbi.html" class="active"><i class="fas fa-home"></i> <span>Início Power BI</span></a>
+    <a href="Aula_01_O_Poder_do_BI_e_Seu_Primeiro_Dashboard.html"><i class="fas fa-rocket"></i> <span>Aula 1: Intro BI</span></a>
+    </div>
+
+  <div class="content" id="content">
+    <header>
+      <h1>Bem-vindo ao Portal de Estudos de Power BI</h1>
+      <p>Aqui você encontrará um guia completo, do básico ao avançado, para dominar a arte de transformar dados em decisões inteligentes com a ferramenta de Business Intelligence líder de mercado.</p>
+    </header>
+
+    <div class="main-section">
+        <div class="sub-section">
+            <h2>O que você vai aprender nesta jornada:</h2>
+            <div class="card">
+                <h4>Fundamentos e Primeiros Passos</h4>
+                <ul>
+                    <li>O que é Business Intelligence (BI) e o Processo de Análise de Dados.</li>
+                    <li>Instalação e exploração do ambiente do Power BI Desktop.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h4>Tratamento de Dados com Power Query</h4>
+                <ul>
+                    <li>Importação de dados de diversas fontes (Excel, Pastas, etc.).</li>
+                    <li>Limpeza, transformação e preparação de bases de dados.</li>
+                    <li>Criação de colunas personalizadas e condicionais.</li>
+                    <li>Combinação de tabelas com Mesclar e Acrescentar Consultas.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h4>Modelagem e Relacionamentos</h4>
+                <ul>
+                    <li>Entender a diferença entre Tabelas Fato e Dimensão.</li>
+                    <li>Criar e gerenciar relacionamentos para conectar suas tabelas.</li>
+                    <li>Compreender conceitos de cardinalidade e direção do filtro.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h4>Cálculos e Análises com Fórmulas DAX</h4>
+                <ul>
+                    <li>Criação de Colunas Calculadas e Medidas.</li>
+                    <li>Uso das principais funções DAX (SUM, AVERAGE, CALCULATE, IF, etc.).</li>
+                    <li>Análises de Inteligência de Tempo para comparar períodos (YTD, MTD, YoY).</li>
+                    <li>Fórmulas DAX Avançadas para análises complexas.</li>
+                </ul>
+            </div>
+             <div class="card">
+                <h4>Visualização de Dados e Storytelling</h4>
+                <ul>
+                    <li>Boas práticas para a escolha do gráfico certo para cada análise.</li>
+                    <li>Criação de Dashboards interativos e visualmente impactantes.</li>
+                    <li>Técnicas de Storytelling para apresentar seus dados de forma clara e convincente.</li>
+                    <li>Criação de layouts e temas personalizados.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h4>Publicação e Compartilhamento com Power BI Online</h4>
+                <ul>
+                    <li>Publicar seus relatórios na nuvem.</li>
+                    <li>Compartilhar dashboards com sua equipe de forma segura.</li>
+                    <li>Configurar atualizações automáticas para seus dados.</li>
+                    <li>Criar e gerenciar Workspaces e Aplicativos.</li>
+                </ul>
+            </div>
+        </div>
+         <div class="sub-section">
+            <p style="text-align: center; font-size: 1.2em;">Navegue pelo menu ao lado para iniciar sua jornada e transformar sua carreira com o poder dos dados.</p>
+        </div>
+    </div>
+
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const hamburgerMenu = document.getElementById('hamburger-menu');
+      const sidebar = document.getElementById('sidebar');
+      const content = document.getElementById('content');
+      const overlay = document.getElementById('overlay');
+      const sidebarLinks = sidebar.querySelectorAll('a');
+
+      function toggleSidebar() {
+        sidebar.classList.toggle('active');
+        content.classList.toggle('sidebar-active');
+        overlay.classList.toggle('active');
+      }
+
+      hamburgerMenu.addEventListener('click', toggleSidebar);
+      overlay.addEventListener('click', toggleSidebar);
+
+      sidebarLinks.forEach(link => {
+        link.addEventListener('click', function() {
+          if (sidebar.classList.contains('active')) {
+            toggleSidebar();
+          }
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>

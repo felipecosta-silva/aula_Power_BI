@@ -1,0 +1,299 @@
+/* Reset básico */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Garante que o tema padrão do Prism.js tenha um fundo escuro */
+pre[class*="language-"] {
+  background: #2D2D2D; /* Fundo escuro */
+  color: #CCCCCC; /* Cor do texto padrão do código */
+}
+
+/* Estilo para comentários no Prism.js */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: #88B04B !important; /* Verde mais vivo para comentários */
+  font-style: italic; /* Opcional: para diferenciar ainda mais */
+}
+
+/* Outros tokens do Prism.js que você pode querer ajustar para maior contraste */
+.token.punctuation {
+  color: #CCCCCC; /* Pontuação mais visível */
+}
+
+.token.selector,
+.token.tag,
+.token.attr-name,
+.token.attr-value,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+  color: #A5C261; /* Exemplo de cor para strings/outros */
+}
+
+.token.function,
+.token.class-name,
+.token.number,
+.token.boolean,
+.token.constant,
+.token.symbol,
+.token.deleted {
+  color: #FFD700; /* Exemplo de cor para números/funções */
+}
+
+.token.property,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  color: #6BE4E4; /* Exemplo de cor para propriedades/URL */
+}
+
+.token.atrule,
+.token.keyword {
+  color: #CC99CD; /* Exemplo de cor para palavras-chave (SELECT, FROM, WHERE) */
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+  color: #FF6347; /* Exemplo de cor para regex/importante */
+}
+
+/* Nova fonte e cores ajustadas */
+body {
+  font-family: 'Roboto', sans-serif; /* Fonte moderna */
+  background-color: #0d1117; /* Um pouco mais escuro para contraste */
+  color: #c9d1d9; /* Cor de texto mais suave */
+  display: flex;
+  min-height: 100vh;
+  line-height: 1.6; /* Melhorar legibilidade */
+}
+
+/* === NOVA PALETA POWER BI === */
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  background-color: #010409; /* Fundo mais escuro */
+  color: #F2C811; /* Amarelo Power BI para destaque */
+  position: fixed;
+  height: 100vh;
+  overflow-y: auto;
+  padding-top: 20px;
+  border-right: 2px solid #F2C811; /* Borda destacada com amarelo */
+  transition: transform 0.3s ease-in-out;
+  z-index: 1000;
+}
+
+.sidebar h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 1.8em;
+  color: #F2C811; /* Cor do título da sidebar */
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  color: #c9d1d9;
+  padding: 12px 20px;
+  text-decoration: none;
+  border-left: 4px solid transparent;
+  transition: 0.3s ease;
+}
+
+.sidebar a i {
+  margin-right: 10px;
+  color: #F2C811; /* Cor dos ícones */
+}
+
+.sidebar a:hover {
+  background-color: #161b22;
+  border-left: 4px solid #F2C811; /* Borda amarela ao passar o mouse */
+  color: #ffffff;
+}
+
+.sidebar a.active {
+  background-color: #161b22;
+  border-left: 4px solid #F2C811; /* Borda amarela para o item ativo */
+  color: #ffffff;
+  font-weight: bold;
+}
+
+/* Conteúdo */
+.content {
+  margin-left: 250px;
+  padding: 20px;
+  flex-grow: 1;
+  transition: margin-left 0.3s ease-in-out;
+}
+
+.content header {
+  background-color: #161b22;
+  padding: 30px 25px;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #F2C811; /* Borda de destaque amarela */
+  text-align: center;
+  border-radius: 6px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.content header h1 {
+  color: #ffffff;
+  font-size: 2.5em;
+  margin-bottom: 10px;
+}
+
+.content header p {
+  color: #c9d1d9;
+  font-size: 1.1em;
+}
+
+.main-section {
+  padding: 20px 0;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.sub-section {
+  margin-bottom: 40px;
+  padding: 25px;
+  border-left: 5px solid #F2C811; /* Borda mais grossa e amarela */
+  background-color: #1a1f1e;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.sub-section h2 {
+  margin-bottom: 20px;
+  color: #F2C811;
+  font-size: 2em;
+}
+
+.card {
+  background-color: #222831;
+  padding: 20px;
+  margin-top: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  border: 1px solid #30363d;
+}
+
+.card h4 {
+  margin-bottom: 15px;
+  color: #F2C811;
+  font-size: 1.3em;
+}
+
+/* Estilos para os Exercícios */
+.exercise {
+  background-color: #2e3b4e;
+  border-left: 5px solid #4CAF50; /* Verde mantido para chamar a atenção para o exercício */
+  padding: 20px;
+  margin-bottom: 25px;
+  margin-top: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.exercise button {
+  background-color: #F2C811; /* Cor amarela para o botão */
+  color: #0d1117; /* Texto escuro para contraste com o amarelo */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 15px;
+}
+
+.exercise button:hover {
+  background-color: #e0b400; /* Amarelo escurece no hover */
+  transform: translateY(-2px);
+}
+
+.exercise button:active {
+  background-color: #c9a200; /* Cor mais escura no clique */
+  transform: translateY(0);
+}
+
+.answer {
+  background-color: #1f2428;
+  padding: 18px;
+  margin-top: 20px;
+  border-radius: 6px;
+  border: 1px solid #30363d;
+  display: none;
+  overflow-x: auto;
+}
+
+pre[class*="language-"] {
+  background-color: #0d1117 !important;
+  border: 1px solid #30363d !important;
+  border-radius: 6px !important;
+  padding: 1em !important;
+  overflow: auto;
+}
+
+code[class*="language-"] {
+  color: #c9d1d9 !important;
+  background: none !important;
+}
+
+/* Estilos para o menu hambúrguer */
+.hamburger-menu {
+  display: none;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1001;
+  background-color: #F2C811; /* Cor amarela */
+  color: #010409; /* Texto/ícone escuro */
+  border: none;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  font-size: 1.5em;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+}
+
+.hamburger-menu:hover {
+  background-color: #e0b400;
+}
+
+/* Responsividade */
+@media screen and (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    width: 200px;
+  }
+  .sidebar.active {
+    transform: translateX(0);
+  }
+  .content {
+    margin-left: 0;
+    padding-left: 80px;
+  }
+  .content.sidebar-active {
+    margin-left: 200px;
+  }
+  .hamburger-menu {
+    display: block;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .content header h1 {
+    font-size: 1.8em;
+  }
+}
