@@ -5,24 +5,56 @@
   padding: 0;
 }
 
-/* Garante que o tema padrão do Prism.js tenha um fundo escuro */
-pre[class*="language-"] {
-  background: #2D2D2D; /* Fundo escuro */
-  color: #CCCCCC; /* Cor do texto padrão do código */
+/* ==========================================
+  VARIÁVEIS DE COR (OTIMIZAÇÃO)
+  ==========================================
+*/
+:root {
+  --cor-amarelo-pbi: #F2C811;
+  --cor-amarelo-hover: #e0b400;
+  --cor-amarelo-active: #c9a200;
+  
+  --cor-fundo-principal: #0d1117;
+  --cor-fundo-sidebar: #010409;
+  --cor-fundo-header: #161b22;
+  --cor-fundo-card: #222831;
+  --cor-fundo-card-hover: #1a1f1e;
+  --cor-fundo-exercicio: #2e3b4e;
+  --cor-fundo-resposta: #1f2428;
+  
+  --cor-texto-principal: #c9d1d9;
+  --cor-texto-branco: #ffffff;
+  --cor-texto-escuro: #0d1117;
+
+  --cor-borda-padrao: #30363d;
+  --cor-borda-verde: #4CAF50;
+
+  --cor-codigo-fundo: #2D2D2D;
+  --cor-codigo-texto: #CCCCCC;
+  --cor-codigo-comentario: #88B04B;
+  --cor-codigo-string: #A5C261;
+  --cor-codigo-funcao: #FFD700;
+  --cor-codigo-propriedade: #6BE4E4;
+  --cor-codigo-palavra-chave: #CC99CD;
+  --cor-codigo-importante: #FF6347;
 }
 
-/* Estilo para comentários no Prism.js */
+/* === ESTILOS PRISM.JS (CÓDIGO) === */
+pre[class*="language-"] {
+  background: var(--cor-codigo-fundo); 
+  color: var(--cor-codigo-texto); 
+}
+
 .token.comment,
 .token.prolog,
 .token.doctype,
 .token.cdata {
-  color: #88B04B !important; /* Verde mais vivo para comentários */
-  font-style: italic; /* Opcional: para diferenciar ainda mais */
+  color: var(--cor-codigo-comentario) !important; 
+  font-style: italic;
 }
 
-/* Outros tokens do Prism.js que você pode querer ajustar para maior contraste */
 .token.punctuation {
-  color: #CCCCCC; /* Pontuação mais visível */
+  color: var(--cor-codigo-texto);
 }
 
 .token.selector,
@@ -33,7 +65,7 @@ pre[class*="language-"] {
 .token.char,
 .token.builtin,
 .token.inserted {
-  color: #A5C261; /* Exemplo de cor para strings/outros */
+  color: var(--cor-codigo-string);
 }
 
 .token.function,
@@ -43,7 +75,7 @@ pre[class*="language-"] {
 .token.constant,
 .token.symbol,
 .token.deleted {
-  color: #FFD700; /* Exemplo de cor para números/funções */
+  color: var(--cor-codigo-funcao);
 }
 
 .token.property,
@@ -51,42 +83,41 @@ pre[class*="language-"] {
 .token.url,
 .language-css .token.string,
 .style .token.string {
-  color: #6BE4E4; /* Exemplo de cor para propriedades/URL */
+  color: var(--cor-codigo-propriedade);
 }
 
 .token.atrule,
 .token.keyword {
-  color: #CC99CD; /* Exemplo de cor para palavras-chave (SELECT, FROM, WHERE) */
+  color: var(--cor-codigo-palavra-chave);
 }
 
 .token.regex,
 .token.important,
 .token.variable {
-  color: #FF6347; /* Exemplo de cor para regex/importante */
+  color: var(--cor-codigo-importante);
 }
 
-/* Nova fonte e cores ajustadas */
+
+/* === ESTILOS GERAIS === */
 body {
-  font-family: 'Roboto', sans-serif; /* Fonte moderna */
-  background-color: #0d1117; /* Um pouco mais escuro para contraste */
-  color: #c9d1d9; /* Cor de texto mais suave */
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--cor-fundo-principal);
+  color: var(--cor-texto-principal);
   display: flex;
   min-height: 100vh;
-  line-height: 1.6; /* Melhorar legibilidade */
+  line-height: 1.6;
 }
 
-/* === NOVA PALETA POWER BI === */
-
-/* Sidebar */
+/* === SIDEBAR === */
 .sidebar {
   width: 250px;
-  background-color: #010409; /* Fundo mais escuro */
-  color: #F2C811; /* Amarelo Power BI para destaque */
+  background-color: var(--cor-fundo-sidebar);
+  color: var(--cor-amarelo-pbi);
   position: fixed;
   height: 100vh;
   overflow-y: auto;
   padding-top: 20px;
-  border-right: 2px solid #F2C811; /* Borda destacada com amarelo */
+  border-right: 2px solid var(--cor-amarelo-pbi);
   transition: transform 0.3s ease-in-out;
   z-index: 1000;
 }
@@ -95,13 +126,13 @@ body {
   text-align: center;
   margin-bottom: 30px;
   font-size: 1.8em;
-  color: #F2C811; /* Cor do título da sidebar */
+  color: var(--cor-amarelo-pbi);
 }
 
 .sidebar a {
   display: flex;
   align-items: center;
-  color: #c9d1d9;
+  color: var(--cor-texto-principal);
   padding: 12px 20px;
   text-decoration: none;
   border-left: 4px solid transparent;
@@ -110,23 +141,23 @@ body {
 
 .sidebar a i {
   margin-right: 10px;
-  color: #F2C811; /* Cor dos ícones */
+  color: var(--cor-amarelo-pbi);
 }
 
 .sidebar a:hover {
-  background-color: #161b22;
-  border-left: 4px solid #F2C811; /* Borda amarela ao passar o mouse */
-  color: #ffffff;
+  background-color: var(--cor-fundo-header);
+  border-left: 4px solid var(--cor-amarelo-pbi);
+  color: var(--cor-texto-branco);
 }
 
 .sidebar a.active {
-  background-color: #161b22;
-  border-left: 4px solid #F2C811; /* Borda amarela para o item ativo */
-  color: #ffffff;
+  background-color: var(--cor-fundo-header);
+  border-left: 4px solid var(--cor-amarelo-pbi);
+  color: var(--cor-texto-branco);
   font-weight: bold;
 }
 
-/* Conteúdo */
+/* === CONTEÚDO === */
 .content {
   margin-left: 250px;
   padding: 20px;
@@ -135,23 +166,23 @@ body {
 }
 
 .content header {
-  background-color: #161b22;
+  background-color: var(--cor-fundo-header);
   padding: 30px 25px;
   margin-bottom: 30px;
-  border-bottom: 2px solid #F2C811; /* Borda de destaque amarela */
+  border-bottom: 2px solid var(--cor-amarelo-pbi);
   text-align: center;
   border-radius: 6px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .content header h1 {
-  color: #ffffff;
+  color: var(--cor-texto-branco);
   font-size: 2.5em;
   margin-bottom: 10px;
 }
 
 .content header p {
-  color: #c9d1d9;
+  color: var(--cor-texto-principal);
   font-size: 1.1em;
 }
 
@@ -164,37 +195,37 @@ body {
 .sub-section {
   margin-bottom: 40px;
   padding: 25px;
-  border-left: 5px solid #F2C811; /* Borda mais grossa e amarela */
-  background-color: #1a1f1e;
+  border-left: 5px solid var(--cor-amarelo-pbi);
+  background-color: var(--cor-fundo-card-hover);
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .sub-section h2 {
   margin-bottom: 20px;
-  color: #F2C811;
+  color: var(--cor-amarelo-pbi);
   font-size: 2em;
 }
 
 .card {
-  background-color: #222831;
+  background-color: var(--cor-fundo-card);
   padding: 20px;
   margin-top: 25px;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  border: 1px solid #30363d;
+  border: 1px solid var(--cor-borda-padrao);
 }
 
 .card h4 {
   margin-bottom: 15px;
-  color: #F2C811;
+  color: var(--cor-amarelo-pbi);
   font-size: 1.3em;
 }
 
-/* Estilos para os Exercícios */
+/* === ESTILOS PARA EXERCÍCIOS === */
 .exercise {
-  background-color: #2e3b4e;
-  border-left: 5px solid #4CAF50; /* Verde mantido para chamar a atenção para o exercício */
+  background-color: var(--cor-fundo-exercicio);
+  border-left: 5px solid var(--cor-borda-verde);
   padding: 20px;
   margin-bottom: 25px;
   margin-top: 30px;
@@ -203,8 +234,8 @@ body {
 }
 
 .exercise button {
-  background-color: #F2C811; /* Cor amarela para o botão */
-  color: #0d1117; /* Texto escuro para contraste com o amarelo */
+  background-color: var(--cor-amarelo-pbi);
+  color: var(--cor-texto-escuro);
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
@@ -216,47 +247,47 @@ body {
 }
 
 .exercise button:hover {
-  background-color: #e0b400; /* Amarelo escurece no hover */
+  background-color: var(--cor-amarelo-hover);
   transform: translateY(-2px);
 }
 
 .exercise button:active {
-  background-color: #c9a200; /* Cor mais escura no clique */
+  background-color: var(--cor-amarelo-active);
   transform: translateY(0);
 }
 
 .answer {
-  background-color: #1f2428;
+  background-color: var(--cor-fundo-resposta);
   padding: 18px;
   margin-top: 20px;
   border-radius: 6px;
-  border: 1px solid #30363d;
+  border: 1px solid var(--cor-borda-padrao);
   display: none;
   overflow-x: auto;
 }
 
 pre[class*="language-"] {
-  background-color: #0d1117 !important;
-  border: 1px solid #30363d !important;
+  background-color: var(--cor-fundo-principal) !important;
+  border: 1px solid var(--cor-borda-padrao) !important;
   border-radius: 6px !important;
   padding: 1em !important;
   overflow: auto;
 }
 
 code[class*="language-"] {
-  color: #c9d1d9 !important;
+  color: var(--cor-texto-principal) !important;
   background: none !important;
 }
 
-/* Estilos para o menu hambúrguer */
+/* === MENU HAMBÚRGUER (RESPONSIVO) === */
 .hamburger-menu {
   display: none;
   position: fixed;
   top: 20px;
   left: 20px;
   z-index: 1001;
-  background-color: #F2C811; /* Cor amarela */
-  color: #010409; /* Texto/ícone escuro */
+  background-color: var(--cor-amarelo-pbi);
+  color: var(--cor-fundo-sidebar);
   border: none;
   border-radius: 50%;
   width: 45px;
@@ -268,10 +299,10 @@ code[class*="language-"] {
 }
 
 .hamburger-menu:hover {
-  background-color: #e0b400;
+  background-color: var(--cor-amarelo-hover);
 }
 
-/* Responsividade */
+/* === RESPONSIVIDADE === */
 @media screen and (max-width: 768px) {
   .sidebar {
     transform: translateX(-100%);
