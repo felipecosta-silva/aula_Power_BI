@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Power BI - Portal de Estudos</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+</head>
+
+<body>
+  <div class="overlay" id="overlay"></div>
+
+  <button class="hamburger-menu" id="hamburger-menu">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <div class="sidebar" id="sidebar">
+    <button class="sidebar-toggle-btn" id="sidebar-toggle-btn">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+
+    <h2><span class="sidebar-title-text">Power BI </span>📊</h2>
+
+    <a href="index.html" class="active"><i class="fas fa-home"></i> <span>Início Power BI</span></a>
+    <a href="Introducao_BI_e_Power_BI.html"><i class="fas fa-rocket"></i> <span>Aula 1: Intro BI</span></a>
+  </div>
+
+  <main class="content" id="content">
+    <header>
+      <h1>Bem-vindo ao Portal de Estudos de Power BI</h1>
+      <p>Aqui você encontrará um guia completo, do básico ao avançado, para dominar a arte de transformar dados em decisões inteligentes com a ferramenta de Business Intelligence líder de mercado.</p>
+    </header>
+
+    <section class="main-section">
+        <section class="sub-section">
+            <h2>O que você vai aprender nesta jornada:</h2>
+            <div class="card">
+                <h4>Fundamentos e Primeiros Passos</h4>
+                <ul>
+                    <li>O que é Business Intelligence (BI) e o Processo de Análise de Dados.</li>
+                    <li>Instalação e exploração do ambiente do Power BI Desktop.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h4>Tratamento de Dados com Power Query</h4>
+                <ul>
+                    <li>Importação de dados de diversas fontes (Excel, Pastas, etc.).</li>
+                    <li>Limpeza, transformação e preparação de bases de dados.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h4>Modelagem e Relacionamentos</h4>
+                <ul>
+                    <li>Entender a diferença entre Tabelas Fato e Dimensão.</li>
+                    <li>Criar e gerenciar relacionamentos para conectar suas tabelas.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h4>Cálculos e Análises com Fórmulas DAX</h4>
+                <ul>
+                    <li>Criação de Colunas Calculadas e Medidas.</li>
+                    <li>Uso das principais funções DAX (SUM, AVERAGE, CALCULATE, IF, etc.).</li>
+                </ul>
+            </div>
+             <div class="card">
+                <h4>Visualização de Dados e Storytelling</h4>
+                <ul>
+                    <li>Boas práticas para a escolha do gráfico certo para cada análise.</li>
+                    <li>Criação de Dashboards interativos e visualmente impactantes.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h4>Publicação e Compartilhamento com Power BI Online</h4>
+                <ul>
+                    <li>Publicar seus relatórios na nuvem.</li>
+                    <li>Compartilhar dashboards com sua equipe de forma segura.</li>
+                </ul>
+            </div>
+        </section>
+         <section class="sub-section">
+            <p style="text-align: center; font-size: 1.2em;">Navegue pelo menu ao lado para iniciar sua jornada e transformar sua carreira com o poder dos dados.</p>
+        </section>
+    </section>
+
+  </main>
+
+  <a href="#" id="back-to-top" class="back-to-top" title="Voltar ao topo">
+    <i class="fas fa-chevron-up"></i>
+  </a>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+      // --- CÓDIGO DA CITAÇÃO RANDÔMICA ---
+      const quotes = [
+        { quote: "O homem que move montanhas começa por carregar pequenas pedras.", author: "Confúcio" },
+        { quote: "A paz vem de dentro. Não a procure à sua volta.", author: "Buda" },
+        { quote: "A felicidade da sua vida depende da qualidade dos seus pensamentos.", author: "Marco Aurélio" },
+        { quote: "Seja a mudança que você deseja ver no mundo.", author: "Mahatma Gandhi" },
+        { quote: "Tudo o que somos é resultado do que pensamos. A mente é tudo. O que pensamos, nós nos tornamos.", author: "Buda" },
+        { quote: "Sábio é aquele que conhece os limites da própria ignorância.", author: "Sócrates" },
+        { quote: "O que sabemos é uma gota; o que ignoramos é um oceano.", author: "Isaac Newton" },
+        { quote: "Aquele que não tem um objetivo, não costuma encontrar alegria em nenhuma empreitada.", author: "Dalai Lama" },
+        { quote: "Nossa maior glória não está em nunca falhar, mas em nos levantar toda vez que falhamos.", author: "Confúcio" }
+      ];
+
+      const quoteElement = document.querySelector('.thought-of-the-day p');
+      const authorElement = document.querySelector('.thought-of-the-day cite');
+
+      if (quoteElement && authorElement) {
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        const randomQuote = quotes[randomIndex];
+
+        quoteElement.textContent = `"${randomQuote.quote}"`;
+        authorElement.textContent = `— ${randomQuote.author}`;
+      }
+
+      // --- CÓDIGO DO MENU HAMBÚRGUER (Mobile) ---
+      const sidebar = document.getElementById('sidebar');
+      const content = document.getElementById('content');
+      const hamburgerMenu = document.getElementById('hamburger-menu');
+      const overlay = document.getElementById('overlay');
+      const sidebarLinks = sidebar.querySelectorAll('a');
+
+      function toggleSidebarMobile() {
+        sidebar.classList.toggle('active');
+        content.classList.toggle('sidebar-active');
+        overlay.classList.toggle('active');
+      }
+
+      hamburgerMenu.addEventListener('click', toggleSidebarMobile);
+      overlay.addEventListener('click', toggleSidebarMobile);
+
+      // --- LÓGICA DE CLIQUE NOS LINKS ---
+      sidebarLinks.forEach(link => {
+        link.addEventListener('click', function(event) {
+
+          if (link.classList.contains('active')) {
+            event.preventDefault();
+
+            if (sidebar.classList.contains('active')) {
+              toggleSidebarMobile();
+            }
+            return;
+          }
+
+          if (sidebar.classList.contains('active')) {
+            toggleSidebarMobile();
+          }
+        });
+      });
+
+      // --- CÓDIGO DO TOGGLE DO SIDEBAR (Desktop) ---
+      const desktopToggleBtn = document.getElementById('sidebar-toggle-btn');
+      if (desktopToggleBtn) {
+        desktopToggleBtn.addEventListener('click', () => {
+          if (window.innerWidth > 768) {
+            sidebar.classList.toggle('sidebar-mini');
+            content.classList.toggle('sidebar-mini');
+          }
+        });
+      }
+
+      // --- CÓDIGO DO BOTÃO "VOLTAR AO TOPO" ---
+      const backToTopButton = document.getElementById('back-to-top');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+          backToTopButton.classList.add('show');
+        } else {
+          backToTopButton.classList.remove('show');
+        }
+      });
+
+      // --- CÓDIGO DO BOTÃO "MOSTRAR RESPOSTA" ---
+      const toggleBtn = document.querySelector('.toggle-answer-btn');
+      const answerDiv = document.querySelector('.answer');
+      if (toggleBtn && answerDiv) {
+        toggleBtn.addEventListener('click', () => {
+          const isVisible = answerDiv.style.display === 'block';
+          if (isVisible) {
+            answerDiv.style.display = 'none';
+            toggleBtn.innerHTML = '<i class="fas fa-eye"></i> Mostrar Gabarito';
+          } else {
+            answerDiv.style.display = 'block';
+            toggleBtn.innerHTML = '<i class="fas fa-eye-slash"></i> Esconder Gabarito';
+          }
+        });
+      }
+
+    });
+  </script>
+</body>
+
+</html>
