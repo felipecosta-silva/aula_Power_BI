@@ -26,6 +26,7 @@
 
     <a href="index.html"><i class="fas fa-home"></i> <span>Início Power BI</span></a>
     <a href="Introducao_BI_e_Power_BI.html" class="active"><i class="fas fa-rocket"></i> <span>Aula 1: Intro BI</span></a>
+    <a href="Aula_02_Modelagem.html"><i class="fas fa-project-diagram"></i> <span>Aula 2: Modelagem</span></a>
   </div>
 
   <main class="content" id="content">
@@ -76,7 +77,7 @@
               <li>Na loja, pesquise por "Power BI Desktop".</li>
               <li>Clique em "Adquirir" ou "Instalar".</li>
           </ol>
-           <a href="https://aka.ms/pbi-desktop-store" target="_blank" class="download-link"><i class="fas fa-download"></i> Baixar Power BI Desktop (Link Direto)</a>
+           <a href="https://www.microsoft.com/pt-BR/download/details.aspx?id=58494&msockid=3dc23623a93265df34052516a801641b" target="_blank" class="download-link"><i class="fas fa-download"></i> Baixar Power BI Desktop (Link Direto)</a>
            <h4>Dica de Mestre: A Vantagem da Microsoft Store</h4>
           <p>Optar pela instalação via Microsoft Store é uma boa prática profissional. As atualizações mensais do Power BI são constantes, e ter a versão mais recente garante acesso a todas as funcionalidades, evitando problemas de compatibilidade.</p>
         </div>
@@ -133,20 +134,10 @@
 
       <section class="sub-section">
         <h2>4️⃣ Sua Primeira Missão: O Processo ETL na Prática <i class="fas fa-cogs"></i></h2>
-        <p>Agora que conhecemos o mapa, vamos iniciar nossa primeira jornada, aplicando a etapa de ETL.</p>
-        <div class="card">
-            <h4>O que é ETL?</h4>
-            <blockquote>ETL é a sigla para <strong>Extract, Transform, and Load</strong>, que em português significa <strong>Extrair, Transformar e Carregar</strong>. É o processo fundamental de pegar dados brutos de suas fontes originais e prepará-los para a análise.</blockquote>
-            <ul>
-                <li><strong>Extrair (Extract):</strong> É o ato de se conectar a uma fonte de dados (Excel, SQL, etc.) e importar essas informações para o <strong>Power Query</strong>.</li>
-                <li><strong>Transformar (Transform):</strong> É a "sala de cirurgia" dos dados. Aqui nós limpamos, ajustamos e modelamos as informações: removemos colunas, corrigimos tipos de dados, filtramos linhas, etc.</li>
-                <li><strong>Carregar (Load):</strong> Após os dados estarem limpos, nós os carregamos do Power Query para o modelo de dados do Power BI, onde estarão prontos para serem usados nos relatórios.</li>
-            </ul>
-        </div>
+        <p>Vamos iniciar nossa primeira jornada, aplicando a etapa de ETL em um arquivo de cadastro de clientes.</p>
         <div class="card">
             <h4>Passo 1: Extrair (Extract)</h4>
-            <p>Para nossa primeira análise, vamos importar o cadastro de clientes. Este é um arquivo Excel <strong>típico do dia a dia</strong>: ele contém informações cadastrais como ID, Nome, Gênero e E-mail dos nossos clientes.</p>
-            <p>Ele também está intencionalmente "sujo" (com linhas em branco e cabeçalhos fora do lugar), o que é perfeito para nossa primeira prática de limpeza (ETL).</p>
+            <p>Para nossa primeira análise, vamos importar o cadastro de clientes. Este é um arquivo Excel <strong>típico do dia a dia</strong>: ele contém informações cadastrais, mas está intencionalmente "sujo" (com linhas em branco, colunas extras e tipos de dados errados).</p>
             <p>Faça o download do arquivo abaixo para começar:</p>
             <p><a href="./documentos/Cadastro Clientes.xlsx" download><i class="fas fa-file-excel"></i> Baixar Arquivo "Cadastro Clientes.xlsx"</a></p>
 
@@ -156,65 +147,104 @@
                 <li>Na janela "Navegador", marque a caixa ao lado da aba da planilha (ex: "Plan1").</li>
                 <li><strong>O passo mais importante:</strong> Em vez de "Carregar", clique em <strong>"Transformar Dados"</strong>.</li>
             </ol>
-        </div>
-
-        <div class="card" style="border-left: 5px solid var(--cor-amarelo-hover);">
-            <h4><i class="fas fa-exclamation-triangle"></i> Atenção: Uma Nova Janela!</h4>
-            <p>Ao clicar em "Transformar Dados", o Power BI abriu uma <strong>nova janela</strong> chamada <strong>Editor do Power Query</strong>.</p>
-            <p>Não se assuste! A sua tela principal do Power BI (com as 3 guias) ainda está lá, só que *atrás* desta nova janela. Pense no Power Query como a "oficina" ou "sala de cirurgia" dos seus dados. É aqui que fazemos toda a limpeza e preparação (o "T" do ETL).</p>
-            <p>Quando terminarmos a limpeza aqui, vamos clicar em "Fechar e Aplicar" para voltar à tela principal com os dados já tratados.</p>
+            <img src="img/Carregar planilha cadastro clientes - transformar dados.png" alt="Carregar planilha de cadastro de clientes e clicar em Transformar Dados" class="screenshot">
         </div>
 
         <div class="card">
             <h4>Passo 2: Transformar (Transform) no Power Query</h4>
-            <p>Bem-vindo ao Power Query! Vamos realizar nossas primeiras etapas de limpeza. Observe como cada ação que você faz é gravada no painel "Etapas Aplicadas" à direita.</p>
+            <p>Bem-vindo ao Power Query, a "sala de cirurgia" dos dados. Vamos realizar nossa limpeza passo a passo:</p>
             <ul>
                 <li><strong>Renomear a Consulta:</strong> No painel direito "Configurações da Consulta", em "Propriedades", renomeie a consulta de "Plan1" para <strong>"dClientes"</strong>.
                     <ul>
                         <li><strong>Dica de Mestre:</strong> O 'd' é uma boa prática profissional que significa <strong>Dimensão</strong>. Tabelas 'Dimensão' são tabelas que *descrevem* algo (clientes, produtos, calendário). Isso será fundamental na nossa próxima aula sobre Modelagem de Dados!</li>
                     </ul>
                 </li>
-                <li><strong>Remover Linhas em Branco:</strong> Na guia "Página Inicial" do Power Query, clique em "Remover Linhas" > "Remover Linhas em Branco".</li>
-                <li><strong>Promover Cabeçalhos:</strong> A primeira linha dos nossos dados ("ID Cliente", "Nome", etc.) é o cabeçalho, mas o Power BI a vê como dados. Clique em "Usar a Primeira Linha como Cabeçalho".</li>
-                <li><strong>Ajustar Tipos de Dados:</strong> Verifique se o Power BI identificou os tipos de dados corretamente (ex: ID Cliente como número, Nome como texto).
+                <li><strong>Remover Linhas em Branco (Topo):</strong> A planilha possui linhas nulas no topo. Vamos removê-las. Na guia "Página Inicial", clique em "Remover Linhas" > "Remover Linhas em Branco".</li>
+                <img src="img/removendo linhas em branco.png" alt="Removendo linhas em branco do topo" class="screenshot">
+
+                <li><strong>Remover Colunas em Branco:</strong> Também temos colunas desnecessárias. Selecione as colunas que estão em branco (clique nelas), depois clique com o botão direito e escolha "Remover Colunas".</li>
+                <img src="img/removendo colunas.png" alt="Removendo colunas desnecessárias" class="screenshot">
+
+                <li><strong>Promover Cabeçalhos:</strong> Agora que as linhas nulas se foram, nossa primeira linha contém os títulos ("ID Cliente", "Nome", etc.). Na guia "Página Inicial", clique em "Usar a Primeira Linha como Cabeçalho".</li>
+                <img src="img/Usar a primeira linha como cabeçalho.png" alt="Usando a primeira linha como cabeçalho" class="screenshot">
+
+                <li><strong>Ajustar Tipo: Coluna 'Código' (Texto):</strong> A coluna de código (ou documento) possui zeros à esquerda. Se o Power BI a identificou como número, ele removerá esses zeros. Precisamos forçar o tipo para "Texto".
                     <ul>
-                        <li><strong>Dica de Mestre (A Mágica do ETL):</strong> Percebeu o painel <strong>Etapas Aplicadas</strong>? Cada clique seu foi gravado. Da próxima vez que seu arquivo "Cadastro Clientes.xlsx" for atualizado, basta clicar em "Atualizar" no Power BI e ele irá *repetir todos esses passos de limpeza automaticamente* para você. Esse é o poder do ETL!</li>
+                        <li>Clique no ícone de tipo no cabeçalho da coluna 'Código' e escolha <strong>"Texto"</strong>.</li>
                     </ul>
                 </li>
+                
+                <li><strong>Ajustar Tipo: 'Data de Nascimento' (Usando Localidade):</strong> Datas podem ser problemáticas. Se o seu sistema está em inglês e a data em português (dd/mm/aaaa), pode haver erro.
+                    <ul>
+                        <li>Clique com o botão direito no cabeçalho da coluna "Data de Nascimento".</li>
+                        <li>Vá em "Alterar Tipo" > <strong>"Usando Localidade..."</strong>.</li>
+                        <li>Escolha o "Tipo de Dados" como "Data" e a "Localidade" como <strong>"Português (Brasil)"</strong>. Isso garante que o Power BI leia o formato dia/mês/ano corretamente.</li>
+                    </ul>
+                </li>
+                <img src="img/Alterando localidade - Data.png" alt="Alterando a localidade da coluna de data de nascimento" class="screenshot">
+                 <li><strong>A Mágica do ETL:</strong> Percebeu o painel <strong>Etapas Aplicadas</strong> à direita? Cada clique seu foi gravado. Da próxima vez que seu arquivo "Cadastro Clientes.xlsx" for atualizado, basta clicar em "Atualizar" no Power BI e ele irá *repetir todos esses passos de limpeza automaticamente* para você!</li>
             </ul>
-        </div>
-
-         <div class="card">
-            <h4>Passo 3: Carregar (Load)</h4>
-            <p>Após as transformações, clique no botão <strong>"Fechar e Aplicar"</strong> no canto superior esquerdo para carregar os dados tratados.</p>
         </div>
       </section>
 
       <section class="sub-section">
-        <h2>5️⃣ A Conquista: Seu Primeiro Relatório Interativo <i class="fas fa-trophy"></i></h2>
-        <p>Com os dados limpos e carregados no modelo, a parte visual é a recompensa rápida e intuitiva.</p>
+        <h2>5️⃣ Dando Vida aos Dados: Transformação e Visualização <i class="fas-fa-trophy"></i></h2>
+        <p>Com os dados limpos, vamos enriquecê-los e criar nosso primeiro visual. Faremos uma breve revisão e avançaremos.</p>
+        
         <div class="card">
-            <h4>Primeiro Visual: Um Cartão com o Total de Clientes</h4>
+            <h4>Passo 1: Mesclar Colunas (Nome Completo)</h4>
+            <p>Na etapa anterior, limpamos os dados. Agora, vamos juntar as colunas "Nome" e "Sobrenome" para criar um "Nome Completo".</p>
             <ol>
-                <li>Na Guia Relatório, vá ao Painel de Visualizações (à direita) e clique no ícone do <strong>"Cartão"</strong>.</li>
-                <li>Com o visual selecionado, arraste o campo <strong>"ID Cliente"</strong> da sua tabela "dClientes" para a caixa "Campos" do visual.</li>
-                <li>Por padrão, ele pode tentar somar os IDs. Clique na seta para baixo ao lado do campo e mude a agregação para <strong>"Contagem (Distinta)"</strong>.</li>
+                <li>Ainda no Power Query, selecione a coluna "Nome", segure "Ctrl" e selecione a coluna "Sobrenome".</li>
+                <li>
+                    <strong>Dica: A Diferença Crucial (Transformar vs. Adicionar)</strong>
+                    <p>Você encontrará a opção "Mesclar Colunas" em duas abas diferentes, e a escolha impacta seu trabalho:</p>
+                    <ul style="margin-top: 10px;">
+                        <li><strong>Aba Transformar:</strong> Mescla as colunas selecionadas, <strong>substituindo</strong> as originais. (Neste caso, perderíamos as colunas "Nome" e "Sobrenome").</li>
+                        <li><strong>Aba Adicionar Coluna:</strong> Mescla as colunas selecionadas para criar uma <strong>nova</strong> coluna. (Neste caso, mantemos "Nome", "Sobrenome" e ganhamos a nova coluna "Nome Completo").</li>
+                    </ul>
+                    <p>Para este caso, vamos usar a aba <strong>"Adicionar Coluna"</strong>, pois é uma boa prática manter as colunas originais.</p>
+                    <img src="img/Mesclar Colunas.png" alt="Diferença entre Mesclar Colunas na aba Transformar e Adicionar Coluna" class="screenshot">
+                </li>
+                <li>Na aba "Adicionar Coluna", clique em <strong>"Mesclar Colunas"</strong>.</li>
+                <li>Escolha um "Separador" (selecione "Espaço") e dê um novo nome à coluna, como <strong>"Nome Completo"</strong>.</li>
+                <li>Clique em "OK".</li>
             </ol>
-            <p><strong>Parabéns!</strong> Você respondeu à sua primeira pergunta de negócio: "Quantos clientes nós temos?".</p>
+            <p>Agora, clique em <strong>"Fechar e Aplicar"</strong> no canto superior esquerdo para carregar nossos dados tratados para o Power BI.</p>
+        </div>
+        
+        <div class="card">
+            <h4>Passo 2: Verificando na Guia Dados</h4>
+            <p>Após carregar, clique na <strong>Guia Dados</strong> (o ícone de tabela no menu esquerdo). Aqui você pode ver sua tabela "dClientes" limpa e tratada.</p>
+            <p>Você pode, por exemplo, clicar no cabeçalho da coluna "ID Cliente" para ordenar sua tabela e verificar os dados.</p>
         </div>
          <div class="card">
-            <h4>Segundo Visual: Um Gráfico de Pizza por Gênero</h4>
-             <ol>
-                <li>Clique em uma área em branco do relatório.</li>
-                <li>No Painel de Visualizações, clique no ícone do <strong>"Gráfico de Pizza"</strong>.</li>
-                <li>Com o visual selecionado, arraste o campo <strong>"Gênero"</strong> para a caixa "Legenda".</li>
-                <li>Arraste o campo <strong>"ID Cliente"</strong> para a caixa "Valores" e certifique-se de que a agregação está como "Contagem (Distinta)".</li>
+            <h4>Passo 3: A Mágica do "Atualizar"</h4>
+            <p>E se um novo cliente for cadastrado? O Power BI é feito para isso!</p>
+            <ol>
+                <li>Abra seu arquivo <strong>"Cadastro Clientes.xlsx"</strong>.</li>
+                <li>Adicione uma nova linha com um cliente fictício no final da planilha.</li>
+                <li><strong>Salve</strong> o arquivo Excel.</li>
+                <li>Volte para o Power BI. Note que o cliente novo *ainda não apareceu*.</li>
+                <li>Na "Página Inicial" do Power BI, clique no botão <strong>"Atualizar"</strong>.</li>
             </ol>
-            <p>Agora você tem um relatório que não apenas mostra o total, mas também a proporção entre os gêneros.</p>
+            <p>O Power BI irá refazer *automaticamente* todos os passos de limpeza (remover linhas, promover cabeçalho, mesclar colunas, etc.) e carregar os dados novos. Esse é o poder do ETL!</p>
         </div>
         <div class="card">
-            <h4>Salvando seu Projeto</h4>
-            <p>Vá em "Arquivo" > "Salvar como" e salve seu primeiro relatório. O arquivo terá a extensão <strong>.pbix</strong>.</p>
+            <h4>Passo 4: Seu Primeiro Visual (O Cartão)</h4>
+            <p>Vamos para a <strong>Guia Relatório</strong> (ícone de gráfico de barras à esquerda).</p>
+            <ol>
+                <li>No Painel de Visualizações (à direita), clique no ícone do <strong>"Cartão"</strong>.</li>
+                <li>Com o visual selecionado, arraste a coluna <strong>"Nome Completo"</strong> (que criamos) da sua tabela "dClientes" para a caixa "Campos" do visual.</li>
+                <li>Por padrão, o Power BI exibe o *primeiro* nome em ordem alfabética.</li>
+            </ol>
+            <img src="img/Cartão - automaticamente primeiro nome.png" alt="Cartão mostrando o primeiro nome por padrão" class="screenshot">
+            <p>Para responder "Quantos clientes nós temos?", precisamos contar os nomes:</p>
+            <ul>
+                <li>No painel de Visualizações, clique na seta para baixo ao lado de "Nome Completo" (na caixa "Campos").</li>
+                <li>Mude a agregação de "Primeiro" para <strong>"Contagem"</strong> (ou "Contagem (Distinta)").</li>
+            </ul>
+            <p><strong>Parabéns!</strong> Você criou seu primeiro indicador (KPI) que se atualiza automaticamente com a sua base de dados.</p>
         </div>
       </section>
 
@@ -252,9 +282,7 @@
         </div>
       </section>
 
-    </section>
-
-    <section class="main-section" style="padding-top: 0; margin-top: -20px;">
+      <section class="main-section" style="padding-top: 0; margin-top: -20px;">
         <section class="sub-section" style="border-left-color: var(--cor-borda-verde);">
             <h2>🏆 Parabéns! O que vem a seguir?</h2>
             <p>Se você chegou até aqui, você completou a primeira grande etapa de um projeto de BI: você extraiu e tratou (ETL) duas tabelas importantes: <strong>dClientes</strong> e <strong>dProdutos</strong>.</p>
@@ -271,31 +299,27 @@
     <i class="fas fa-chevron-up"></i>
   </a>
 
+  <script src="js/quotes.js"></script>
+
   <script>
     document.addEventListener('DOMContentLoaded', function() {
 
       // --- CÓDIGO DA CITAÇÃO RANDÔMICA ---
-      const quotes = [
-        { quote: "O homem que move montanhas começa por carregar pequenas pedras.", author: "Confúcio" },
-        { quote: "A paz vem de dentro. Não a procure à sua volta.", author: "Buda" },
-        { quote: "A felicidade da sua vida depende da qualidade dos seus pensamentos.", author: "Marco Aurélio" },
-        { quote: "Seja a mudança que você deseja ver no mundo.", author: "Mahatma Gandhi" },
-        { quote: "Tudo o que somos é resultado do que pensamos. A mente é tudo. O que pensamos, nós nos tornamos.", author: "Buda" },
-        { quote: "Sábio é aquele que conhece os limites da própria ignorância.", author: "Sócrates" },
-        { quote: "O que sabemos é uma gota; o que ignoramos é um oceano.", author: "Isaac Newton" },
-        { quote: "Aquele que não tem um objetivo, não costuma encontrar alegria em nenhuma empreitada.", author: "Dalai Lama" },
-        { quote: "Nossa maior glória não está em nunca falhar, mas em nos levantar toda vez que falhamos.", author: "Confúcio" }
-      ];
-
+      // A lista de frases 'quotes' agora é carregada do arquivo js/quotes.js
+      
       const quoteElement = document.querySelector('.thought-of-the-day p');
       const authorElement = document.querySelector('.thought-of-the-day cite');
 
-      if (quoteElement && authorElement) {
+      // Verifica se a variável 'quotes' existe e tem conteúdo antes de usá-la
+      if (quoteElement && authorElement && typeof quotes !== 'undefined' && quotes.length > 0) {
         const randomIndex = Math.floor(Math.random() * quotes.length);
         const randomQuote = quotes[randomIndex];
 
         quoteElement.textContent = `"${randomQuote.quote}"`;
         authorElement.textContent = `— ${randomQuote.author}`;
+      } else if (quoteElement) {
+         quoteElement.textContent = "Bem-vindo ao Portal de Estudos de Power BI.";
+         authorElement.textContent = "";
       }
 
       // --- CÓDIGO DO MENU HAMBÚRGUER (Mobile) ---
