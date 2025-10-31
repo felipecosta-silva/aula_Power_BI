@@ -180,7 +180,7 @@
             <p>Vamos aplicar duas transformações essenciais em todas as colunas de texto que serão usadas em filtros (como **Marca** e **Detalhe do Produto**):</p>
             <ol>
                 <li>Selecione as colunas **"Detalhe do Produto"** e **"Marca"** (use a tecla Ctrl para selecionar múltiplas).</li>
-                <li>Na guia **Transformar**, clique em **Formato** e selecione **"Minúsculas"** (ou **"Primeira Letra de Cada Palavra em Maiúscula"**, dependendo da regra da empresa). Usaremos **Minúsculas**.</li>
+                <li>Na guia **Transformar**, clique em **Formato** e selecione **"Minúsculas"** (ou **"Primeira Letra de Cada Palavra em Maiúscula"**). Usaremos **Minúsculas**.</li>
                 <li>Ainda nas colunas selecionadas, clique em **Formato** novamente e selecione **"Aparar"**.</li>
             </ol>
             <blockquote class="note">
@@ -204,10 +204,43 @@
         </div>
       </section>
 
+      <section class="sub-section">
+        <h2>8️⃣ Tratando Erros de Fonte de Dados <i class="fas fa-exclamation-triangle"></i></h2>
+        <p>No dia a dia, é comum que a fonte original dos seus dados seja movida, renomeada ou que o nome de uma aba ou coluna mude. Isso fará com que o Power BI falhe ao tentar "Atualizar".</p>
+
+        <div class="card">
+            <h4>Dica de Ouro: O Botão "Ir para o Erro"</h4>
+            <p>Na maioria dos erros de atualização no Power Query, você verá uma mensagem na coluna de dados com o botão **"Ir para o Erro"**. Ao clicar nele, o Power Query navegará automaticamente até a etapa exata onde o erro ocorreu.</p>
+            <img src="img/Ir para Erro.png" alt="Mensagem de erro em uma coluna no Power Query com o botão 'Ir para o Erro'." class="screenshot">
+        </div>
+
+        <div class="card">
+            <h4>Causa 1: Nome da Aba Alterado no Excel</h4>
+            <p>Simule a alteração do nome da aba (`"Plan1"` para `"DadosNovos"`). O erro ocorre porque o código M da etapa "Navegação" ainda procura pelo nome antigo da aba.</p>
+            <p>A correção é feita na etapa **"Navegação"** (clique na engrenagem) ou editando a Linguagem M na **Barra de Fórmulas**.</p>
+        </div>
+
+        <div class="card">
+            <h4>Causa 2: Coluna Excluída ou Renomeada no Excel</h4>
+            <p>Se você excluir ou renomear uma coluna no Excel (Ex: apagar a coluna "Observação"), o Power Query falhará em qualquer etapa que tentava usar essa coluna.</p>
+            <ol>
+                <li>Use o botão **"Ir para o Erro"** para localizar a etapa (ex: uma etapa de "Tipo Alterado" ou "Colunas Removidas").</li>
+                <li>**Corrigindo Coluna Renomeada:** Se a coluna foi apenas renomeada, clique na etapa do erro e edite o nome antigo (Ex: `"Observação"`) para o novo nome na **Barra de Fórmulas** (Linguagem M).</li>
+                <li>**Corrigindo Coluna Excluída:** Se a coluna foi excluída e não é mais necessária, você deve **remover a referência a ela** na Linguagem M.
+                    <ul>
+                        <li>Localize o nome da coluna que não existe mais (ex: `"Observação"`) dentro da lista de colunas que está causando o erro.</li>
+                        <li>**Apague a referência à coluna:** Por exemplo, se a etapa tenta remover uma coluna que não existe mais, você deve apagar a referência a essa coluna na lista da barra de fórmulas, como mostrado na imagem.</li>
+                    </ul>
+                    <img src="img/coluna não encontrada.png" alt="Barra de fórmulas no Power Query destacando a sintaxe da Linguagem M, mostrando a necessidade de apagar a referência a uma coluna não encontrada." class="screenshot">
+                </li>
+            </ol>
+        </div>
+      </section>
+
       <section class="main-section" style="padding-top: 0; margin-top: -20px;">
         <section class="sub-section" style="border-left-color: var(--cor-borda-amarelo-pbi);">
             <h2>🏆 Próximos Passos (O Desafio da Conexão)</h2>
-            <p>As Tabelas Dimensão (`dClientes` e `dProdutos`) estão prontas! Mas a pergunta "Quais produtos as clientes do sexo feminino compram?" ainda não pode ser respondida, pois nos falta a tabela de transações.</p>
+            <p>As Tabelas Dimensão (`dClientes` e `dProdutos`) estão prontas e agora você sabe como resolver problemas de conexão! Mas a pergunta "Quais produtos as clientes do sexo feminino compram?" ainda não pode ser respondida, pois nos falta a tabela de transações.</p>
             <p style="font-weight: bold; font-size: 1.1em;">Na próxima aula, vamos:</p>
             <ul>
                 <li>Importar a Tabela Fato (`fVendas`).</li>
