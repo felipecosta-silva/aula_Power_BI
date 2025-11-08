@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aula 3: O Primeiro Relacionamento e Medidas DAX</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+</head>
+
+<body>
+  <div class="overlay" id="overlay"></div>
+
+  <button class="hamburger-menu" id="hamburger-menu">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <div class="sidebar" id="sidebar">
+    <button class="sidebar-toggle-btn" id="sidebar-toggle-btn">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+
+    <h2><span class="sidebar-title-text">Power BI </span>📊</h2>
+
+    <a href="index.html"><i class="fas fa-home"></i> <span>Início Power BI</span></a>
+    <a href="Introducao_BI_e_Power_BI.html"><i class="fas fa-rocket"></i> <span>Aula 1: Intro BI</span></a>
+    <a href="Aula_02_Modelagem.html"><i class="fas fa-project-diagram"></i> <span>Aula 2: Modelagem</span></a>
+    <a href="Aula_03_Criacao_Relacionamento.html" class="active"><i class="fas fa-sitemap"></i> <span>Aula 3: Relacionamentos</span></a>
+  </div>
+
+  <main class="content" id="content">
+    <header>
+      <h1>Aula 3: Construindo o Modelo - O Primeiro Relacionamento e Medidas DAX</h1>
+      <p>Nesta aula, finalizamos o tratamento de erros e importamos a Tabela Fato. Você aprenderá a criar relacionamentos e fará seus primeiros cálculos de alta performance com a linguagem DAX.</p>
+    </header>
+
+    <section class="main-section">
+
+      <blockquote class="thought-of-the-day">
+        <p>"Carregando citação..."</p>
+        <cite>—</cite>
+      </blockquote>
+      
+      <section class="sub-section" style="border-left-color: var(--cor-borda-vermelho);">
+        <h2>1️⃣ Revisão: Último Caso de Erro de Conexão <i class="fas fa-bug"></i></h2>
+        <p>Na aula passada, aprendemos a corrigir erros de renomeação de abas e colunas. Agora, vamos tratar o erro mais comum: a **mudança de local** do seu arquivo Excel ou CSV.</p>
+        
+        <div class="card">
+            <h4>O Problema: Arquivo Não Encontrado (Realocação ou Exclusão)</h4>
+            <p>Se a fonte de dados for movida ou excluída, o Power BI continuará funcionando no modo de Relatório (devido ao **cache interno**), mas falhará ao tentar atualizar.</p>
+            <p>O problema só aparece quando você tenta atualizar, vendo o erro explícito informando que o arquivo não foi encontrado no caminho original.</p>
+            <img src="img/Arquivo Não Encontrado.png" alt="Mensagem de erro de conexão no Power BI Desktop, indicando que a fonte de dados não foi encontrada no caminho especificado." class="screenshot">
+        </div>
+
+        <div class="card">
+            <h4>Solução 1: A Opção Visual (Engrenagem da Fonte)</h4>
+            <p>A correção mais direta para a realocação é feita clicando na engrenagem da etapa **"Fonte"** no painel **Etapas Aplicadas** dentro do Power Query.</p>
+            <ol>
+                <li>No Power Query, a tabela com erro mostrará uma **barra listrada de vermelho** sob o cabeçalho das colunas. Esta barra **acusa que há algo de errado** com a fonte.</li>
+                <li>No painel **Etapas Aplicadas**, clique duas vezes na engrenagem (Configurações) da etapa **"Fonte"**.
+                <li>O Power BI abrirá o modal (janela de navegação de arquivos), permitindo que você selecione o arquivo em sua **nova localização**.</li>
+            </ol>
+            <img src="img/Barra listrada de vermelho cabeçalho.png" alt="Barra listrada de vermelho no Power Query sob o cabeçalho das colunas, indicando um erro de fonte de dados antes de atualizar." class="screenshot">
+            <img src="img/Alteração do caminho da pasta.png" alt="Modal de busca de arquivos que aparece ao clicar duas vezes na engrenagem da etapa 'Fonte'." class="screenshot">
+        </div>
+
+        <div class="card">
+            <h4>Solução 2: Gerenciamento Centralizado (**Configurações da Fonte de Dados**)</h4>
+            <p>Este é o local central para resolver problemas de caminho de arquivo para **todas** as tabelas de uma só vez, especialmente útil se vários arquivos foram movidos ou renomeados.</p>
+            <p>Acesse esta opção na Guia **Página Inicial** (no modo de Relatório), clicando na seta ao lado de **"Transformar Dados"** e escolhendo **"Configurações da Fonte de Dados"**.</p>
+            <img src="img/Pagina inicial - Transformar dados - Configurações da fonte de dados.png" alt="Guia Página Inicial com o menu Transformar Dados expandido e a opção 'Configurações da Fonte de Dados' destacada." class="screenshot">
+        </div>
+      </section>
+
+      <section class="sub-section">
+        <h2>2️⃣ Importando e Tratando a Tabela Dimensão: `dLojas` <i class="fas fa-store"></i></h2>
+        <p>Vamos finalizar o tratamento da tabela de lojas e corrigir o erro de tipo de dado que simulamos na última aula.</p>
+
+        <div class="card">
+            <h4>Revisão: Dimensão vs. Fato</h4>
+            <p>A tabela **`dLojas`** é uma **Dimensão** porque ela *descreve* o local e o gerente, que são atributos usados para segmentar as vendas. Tabela **Fato** contém **medições**.</p>
+        </div>
+
+        <div class="card">
+  <h4>Simulação e Correção do Erro de Tipo Misto (<code>dLojas</code>)</h4>
+  <p>No arquivo Excel (<code>Cadastro Lojas.xlsx</code>), adicione a linha de dados abaixo. O campo <strong>Documento do Gerente</strong> deve ser digitado com a letra <strong>'A'</strong> para causar o erro de conversão de tipo (Número para Misto).</p>
+
+  <pre><code>| ID Loja | Nome da Loja        | Quantidade Colaboradores | Tipo   | ID Localidade | Gerente Loja      | Documento do Gerente |
+|----------|---------------------|--------------------------|--------|----------------|-------------------|----------------------|
+| 311      | Loja Lyon - França  | 30                       | Fisica | 4              | Rivail, Hyppolyte | 123456A              |
+</code></pre>
+
+  <p>Após adicionar e salvar a linha no Excel, clique em <strong>Atualizar</strong> no Power BI. O erro ocorrerá, e a solução é mudar o tipo da coluna <strong>"Documento do Gerente"</strong> para <strong>Texto</strong>.</p>
+  <p>Após a correção, use a consulta temporária <strong>"Erros em..."</strong> para deletar a linha com erro ou exclua a consulta temporária de erros (<code>Erros em...</code>) por completo.</p>
+</div>
+
+
+        <div class="card">
+            <h4>Manipulação 1: Removendo o Prefixo "Loja"</h4>
+            <p>Vamos limpar a coluna **"Nome da Loja"** (`Loja [Nome]`). Selecione a coluna e, na guia **Transformar**, use **Extrair** > **Texto após o Delimitador**. Defina o delimitador como um **espaço** (` `) e escolha o **Delimitador mais à esquerda** para remover o prefixo "Loja".</p>
+        </div>
+
+        <div class="card">
+            <h4>Manipulação 2: Extração Otimizada do Gerente (Coluna de Exemplos)</h4>
+            <p>Usaremos a **Coluna de Exemplos** para extrair e formatar o nome do gerente (Ex: de "Silva, João" para "João Silva").</p>
+            <ol>
+                <li>Vá para a guia **Adicionar Coluna** e clique em **Coluna de Exemplos** > **De Seleção**.</li>
+                <li>Preencha a nova coluna com o nome formatado (Ex: "João Silva"). O Power Query identificará o padrão (inversão e mesclagem) e preencherá o restante automaticamente.</li>
+            </ol>
+        </div>
+
+        <div class="card">
+            <h4>Truque: Reordenando Colunas no Power BI (Desabilitar Carga)</h4>
+            <p>Para forçar a ordem desejada das colunas no Power BI (já que arrastar no Power Query nem sempre funciona), use o truque de **Habilitar/Desabilitar Carga** na consulta (`dLojas`).</p>
+            <img src="img/Habilitar Carga - movendo coluna.png" alt="Menu de contexto da consulta no Power Query com a opção Habilitar Carga marcada, indicando que ela deve ser desmarcada e marcada novamente para forçar a reordenação." class="screenshot">
+        </div>
+        <p>Clique em **"Fechar e Aplicar"** para salvar as correções e o truque de reordenação.</p>
+      </section>
+
+      <section class="sub-section">
+        <h2>3️⃣ Manipulação Avançada de Texto: Limpando `dLojas` <i class="fas fa-magic"></i></h2>
+        <p>Vamos melhorar a aparência da coluna "Nome da Loja" e extrair o nome e sobrenome do gerente, explorando as opções de **Extração de Texto**.</p>
+        
+        <div class="card">
+            <h4>Extrair Texto: Entendendo as Opções</h4>
+            <p>A função **Extrair** (na guia **Transformar** ou **Adicionar Coluna**) é vital para manipular strings. Veja as principais opções:</p>
+            <img src="img/Extrair texto.png" alt="Menu Extrair na guia Transformar do Power Query, mostrando as opções de manipulação de texto." class="screenshot">
+            <ul>
+                <li>**Comprimento:** Pega um número exato de caracteres (Ex: os 5 primeiros caracteres de um código).</li>
+                <li>**Intervalo:** Pega um trecho de texto começando em uma posição e terminando em outra (Ex: do 6º ao 10º caractere).</li>
+                <li>**Texto Antes/Depois/Entre Delimitadores:** É a opção mais flexível, permitindo usar caracteres como delimitadores de corte.
+                </li>
+            </ul>
+        </div>
+        
+        <div class="card">
+            <h4>Passo A: Removendo o Prefixo "Loja"</h4>
+            <p>A coluna **"Nome da Loja"** sempre começa com "Loja ". Para remover esse prefixo, use a opção que melhor se adapta a um padrão no início do texto:</p>
+            <ol>
+                <li>Selecione a coluna **"Nome da Loja"**.</li>
+                <li>Vá para a guia **Transformar** e selecione **Extrair** > **Texto após o Delimitador**.</li>
+                <li>Defina o delimitador como **` `** (espaço) e escolha **O Delimitador mais à esquerda** (ou use a opção **Pular Caracteres** e defina 5).</li>
+            </ol>
+            <p>Usar o delimitador ` ` (espaço) é o ideal, pois é menos propenso a erros do que contar caracteres fixos e garante que o Power Query remova o prefixo mais o espaço seguinte.</p>
+        </div>
+
+        <div class="card">
+            <h4>Passo B: Extração e Otimização do Gerente</h4>
+            <p>A coluna **"Gerente"** está no formato "Sobrenome, Nome" (Ex: "Kardec, Allan").</p>
+            <ol>
+                <li>**Extração Manual (Exemplo Moroso, mas Didático):**
+                    <ul>
+                        <li>Para o **Nome**, use **Texto após o Delimitador** com o delimitador **`, `** (vírgula e espaço).</li>
+                        <li>Para o **Sobrenome**, use **Texto antes do Delimitador** com o delimitador **`, `** (vírgula e espaço).</li>
+                        <li>Por fim, use **Mesclar Colunas** para juntar "Nome" e "Sobrenome" na ordem correta (Ex: "Allan Kardec").</li>
+                    </ul>
+                </li>
+                <li>**Extração Otimizada (Coluna de Exemplos):**
+                    <p>Use a inteligência artificial do Power Query para fazer todas as etapas acima em uma só tacada.</p>
+                    <ul>
+                        <li>Vá para a guia **Adicionar Coluna** e clique em **Coluna de Exemplos**.</li>
+                        <li>Preencha a nova coluna com o resultado formatado (Ex: "Allan Kardec"). O Power Query identificará o padrão de inversão e mesclagem automaticamente.</li>
+                    </ul>
+                    <img src="img/Adicionar coluna de exemplos.png" alt="Preenchendo a coluna de exemplos para que o Power Query identifique o padrão de inversão e mesclagem de Nome e Sobrenome." class="screenshot">
+                </li>
+            </ol>
+        </div>
+      </section>
+
+      <section class="sub-section">
+        <h2>4️⃣ Mesclando Tabelas Dimensão: Enriquecendo `dLojas` <i class="fas fa-layer-group"></i></h2>
+        <p>A tabela `dLojas` tem o `ID Localidade`, mas precisamos dos campos de **País** e **Continente** para análises geográficas. Eles estão na planilha `Cadastro Localidades`.</p>
+        
+        <div class="card">
+            <h4>Passo 1: Importar a Tabela de Localidades</h4>
+            <p>Importe a planilha **"Cadastro Localidades.xlsx"** e clique em **"Transformar Dados"**.</p>
+            <p><a href="./documentos/Cadastro Localidades.xlsx" download><i class="fas fa-file-excel"></i> Baixar Arquivo "Cadastro Localidades.xlsx"</a></p>
+            <p>Renomeie a consulta para **"dLocalidades"** (Tabela Dimensão). Faça a limpeza de rotina. **Não clique em "Fechar e Aplicar"**.</p>
+        </div>
+
+        <div class="card">
+            <h4>Conceito: Mesclar Consultas (JOIN)</h4>
+            <p>Mesclar Consultas (Merge Queries) é o processo no Power Query de **combinar dados de duas tabelas** com base em uma coluna de correspondência (ID). Este processo é similar a um **JOIN** em SQL.</p>
+            <ul>
+                <li>**Mesclar Consultas:** Adiciona as colunas da segunda tabela à **consulta atualmente selecionada**, expandindo-a.</li>
+                <li>**Mesclar Consultas como Nova:** Cria uma **terceira consulta** (tabela) com o resultado da mesclagem, deixando as duas originais intactas.</li>
+            </ul>
+            <p>Neste caso, queremos **Mesclar Consultas** para enriquecer a `dLojas`.</p>
+        </div>
+
+        <div class="card">
+            <h4>Passo 2: Realizando a Mesclagem</h4>
+            <p>Selecione a tabela **"dLojas"**.</p>
+            <ol>
+                <li>Na guia **Página Inicial**, no grupo **Combinar**, clique em **Mesclar Consultas** (na setinha, escolha a primeira opção).
+                    <img src="img/Mesclar Consultas.png" alt="Opção Mesclar Consultas no menu Combinar na guia Página Inicial do Power Query." class="screenshot">
+                </li>
+                <li>Na janela Mesclar:
+                    <ul>
+                        <li>**Tabela superior (Base):** `dLojas`</li>
+                        <li>**Colunas de ligação:** Selecione a coluna **"ID Localidade"** em `dLojas`.</li>
+                        <li>**Tabela inferior (Adicional):** Selecione `dLocalidades`.</li>
+                        <li>**Colunas de ligação:** Selecione a coluna **"ID Localidade"** em `dLocalidades`.</li>
+                    </ul>
+                </li>
+            </ol>
+            <blockquote class="note">
+                <i class="fas fa-star"></i> **Chave de Ligação:** As colunas de ligação (ID Localidade) não precisam ter o mesmo nome, mas o **conteúdo** (os IDs) deve ser o mesmo para que a correspondência funcione.
+            </blockquote>
+        </div>
+
+        <div class="card">
+            <h4>Passo 3: Expandindo as Novas Colunas</h4>
+            <p>Após o OK na mesclagem, uma nova coluna chamada `dLocalidades` aparecerá, preenchida com o valor **"Table"**.</p>
+            <p>Clique no botão de **Expandir** (setas opostas) no canto superior direito do novo cabeçalho da coluna.</p>
+            <img src="img/Mesclar Colunas - selecionar colunas - table.png" alt="Janela de Expansão de Colunas após a mesclagem, mostrando a lista de colunas da tabela 'dLocalidades'." class="screenshot">
+            <ol>
+                <li>**Selecione as Colunas:** Desmarque a opção **"Selecionar Todas as Colunas"** e marque apenas **"País"** e **"Continente"**.</li>
+                <li>**Prefixo:** É uma boa prática desmarcar a opção **"Usar o nome da coluna original como prefixo"**, pois não precisamos de um nome redundante como `dLocalidades.País`.</li>
+                <li>Clique em OK.</li>
+            </ol>
+            <p>Pronto! A tabela `dLojas` agora possui as informações de País e Continente, e a `dLocalidades` pode ser desabilitada do carregamento no modelo (botão direito > desmarque Habilitar Carga).</p>
+        </div>
+      </section>
+      
+      <section class="sub-section">
+        <h2>5️⃣ Modelagem de Dados: Criando os Relacionamentos <i class="fas fa-link"></i></h2>
+        <p>Finalmente, vamos conectar as "ilhas" (Dimensões) à Tabela Fato (o centro da estrela) para que todos os dados possam interagir.</p>
+
+        <div class="card">
+            <h4>Navegando até a Guia Modelo</h4>
+            <p>No Power BI Desktop, clique na **Guia Modelo** (o ícone com três caixas e linhas de ligação, no menu vertical à esquerda).</p>
+            <p>Você verá as quatro tabelas que importamos e limpamos: `dClientes`, `dProdutos`, `dLojas` e `fVendas`.</p>
+        </div>
+
+        <div class="card">
+            <h4>Criando Relacionamentos Manuais (Drag-and-Drop)</h4>
+            <p>Para construir a Modelagem de Dados (Esquema Estrela), arraste a chave primária da Tabela Dimensão para a chave estrangeira correspondente na Tabela Fato:</p>
+            <ol>
+                <li>Ligue `dClientes` (**ID Cliente**) à `fVendas` (**ID Cliente**).</li>
+                <li>Ligue `dProdutos` (**SKU Produto**) à `fVendas` (**SKU Produto**).</li>
+                <li>Ligue `dLojas` (**ID Loja**) à `fVendas` (**ID Loja**).</li>
+            </ol>
+            <blockquote class="note">
+                <i class="fas fa-star"></i> **Tipos de Relação:** O Power BI define-as como **Um para Muitos (1:*)**.
+            </blockquote>
+        </div>
+      </section>
+
+      <section class="sub-section">
+        <h2>6️⃣ Introdução ao DAX: Criando o Primeiro KPI <i class="fas fa-superscript"></i></h2>
+        <p>Com os dados conectados, podemos finalmente criar nossas métricas de negócios (KPIs) usando DAX (Data Analysis Expressions).</p>
+
+        <div class="card">
+            <h4>Criando a Primeira Medida: Faturamento Total</h4>
+            <p>Para calcular o faturamento total, precisamos multiplicar o **Valor Unitário** pela **Quantidade** em cada linha da tabela `fVendas` e, em seguida, somar o resultado.</p>
+            <ol>
+                <li>Na Guia **Relatório** ou **Dados**, clique na tabela `fVendas`.</li>
+                <li>Na guia **Página Inicial** (ou Modelagem), clique em **Nova Medida**.</li>
+                <li>Insira a seguinte fórmula DAX:</li>
+            </ol>
+            <pre><code>Faturamento Total = SUMX( fVendas, fVendas[Valor Unitário] * fVendas[Quantidade] )</code></pre>
+            <blockquote class="note">
+                <i class="fas fa-lightbulb"></i> **Função SUMX:** O `SUMX` é um iterador. Ele passa por **cada linha** da tabela (`fVendas`), multiplica os dois campos (`Valor Unitário` * `Quantidade`), e só então **soma** o resultado final de todas as linhas.
+            </blockquote>
+        </div>
+      </section>
+
+      <section class="main-section" style="padding-top: 0; margin-top: -20px;">
+        <section class="sub-section" style="border-left-color: var(--cor-borda-amarelo-pbi);">
+            <h2>🏆 Conclusão da Aula 3</h2>
+            <p>Parabéns! Você dominou o tratamento de dados (ETL), a correção dos erros mais críticos, e agora tem as Tabelas Dimensão prontas e conectadas.</p>
+            <p style="font-weight: bold; font-size: 1.1em;">Na próxima aula, vamos:</p>
+            <ul>
+                <li>Importar e tratar as demais Tabelas Fato (`fDevoluções`).</li>
+                <li>Aprofundar em DAX, aprendendo a usar a função **CALCULATE** para criar Medidas Inteligentes.</li>
+                <li>Criar o primeiro **Dashboard Simples** para visualizar nossos KPIs.</li>
+            </ul>
+        </section>
+      </section>
+
+    </section>
+
+  </main>
+
+  <a href="#" id="back-to-top" class="back-to-top" title="Voltar ao topo">
+    <i class="fas fa-chevron-up"></i>
+  </a>
+
+  <script src="js/quotes.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+      // --- CÓDIGO DA CITAÇÃO RANDÔMICA ---
+      const quoteElement = document.querySelector('.thought-of-the-day p');
+      const authorElement = document.querySelector('.thought-of-the-day cite');
+
+      if (quoteElement && authorElement && typeof quotes !== 'undefined' && quotes.length > 0) {
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        const randomQuote = quotes[randomIndex];
+
+        quoteElement.textContent = `"${randomQuote.quote}"`;
+        authorElement.textContent = `— ${randomQuote.author}`;
+      } else if (quoteElement) {
+         quoteElement.textContent = "Bem-vindo à sua jornada de dados.";
+         authorElement.textContent = "";
+      }
+      
+      // --- CÓDIGO DO MENU HAMBÚRGUER (Mobile) ---
+      const sidebar = document.getElementById('sidebar');
+      const content = document.getElementById('content');
+      const hamburgerMenu = document.getElementById('hamburger-menu');
+      const overlay = document.getElementById('overlay');
+      const sidebarLinks = sidebar.querySelectorAll('a');
+
+      function toggleSidebarMobile() {
+        sidebar.classList.toggle('active');
+        content.classList.toggle('sidebar-active');
+        overlay.classList.toggle('active');
+      }
+
+      hamburgerMenu.addEventListener('click', toggleSidebarMobile);
+      overlay.addEventListener('click', toggleSidebarMobile);
+
+      // --- LÓGICA DE CLIQUE NOS LINKS ---
+      sidebarLinks.forEach(link => {
+        link.addEventListener('click', function(event) {
+
+          if (link.classList.contains('active')) {
+            event.preventDefault();
+
+            if (sidebar.classList.contains('active')) {
+              toggleSidebarMobile();
+            }
+            return;
+          }
+
+          if (sidebar.classList.contains('active')) {
+            toggleSidebarMobile();
+          }
+        });
+      });
+
+      // --- CÓDIGO DO TOGGLE DO SIDEBAR (Desktop) ---
+      const desktopToggleBtn = document.getElementById('sidebar-toggle-btn');
+      if (desktopToggleBtn) {
+        desktopToggleBtn.addEventListener('click', () => {
+          if (window.innerWidth > 768) {
+            sidebar.classList.toggle('sidebar-mini');
+            content.classList.toggle('sidebar-mini');
+          }
+        });
+      }
+
+      // --- CÓDIGO DO BOTÃO "VOLTAR AO TOPO" ---
+      const backToTopButton = document.getElementById('back-to-top');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+          backToTopButton.classList.add('show');
+        } else {
+          backToTopButton.classList.remove('show');
+        }
+      });
+
+      // --- CÓDIGO DO BOTÃO "MOSTRAR RESPOSTA" ---
+      const toggleBtn = document.querySelector('.toggle-answer-btn');
+      const answerDiv = document.querySelector('.answer');
+      if (toggleBtn && answerDiv) {
+        toggleBtn.addEventListener('click', () => {
+          const isVisible = answerDiv.style.display === 'block';
+          if (isVisible) {
+            answerDiv.style.display = 'none';
+            toggleBtn.innerHTML = '<i class="fas fa-eye"></i> Mostrar Gabarito';
+          } else {
+            answerDiv.style.display = 'block';
+            toggleBtn.innerHTML = '<i class="fas fa-eye-slash"></i> Esconder Gabarito';
+          }
+        });
+      }
+
+    });
+  </script>
+</body>
+
+</html>

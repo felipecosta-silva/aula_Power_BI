@@ -321,6 +321,87 @@ blockquote { background-color: var(--cor-fundo-card); border-left: 5px solid var
   margin-right: auto;
 }
 
+/* =========================================================
+   🔧 Ajuste e Modernização Leve dos Cards
+   ========================================================= */
+.card {
+  background-color: var(--cor-fundo-card);
+  color: var(--cor-texto-padrao);
+  padding: 20px;
+  margin-top: 25px;
+  border-radius: 10px;
+  border: 1px solid var(--cor-borda-padrao);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  overflow: hidden; /* evita que imagens ou tabelas ultrapassem o card */
+  transition: all 0.25s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: var(--cor-amarelo-pbi);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+}
+
+.card h4 {
+  color: var(--cor-amarelo-pbi);
+  margin-bottom: 8px;
+  font-size: 1.25em;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+}
+
+.card p, 
+.card ol, 
+.card ul {
+  margin: 6px 0;
+  line-height: 1.6;
+}
+
+/* 🧱 Conteúdo tipo código, tabelas ou blocos de texto */
+.card pre {
+  background-color: #2a2a2a;
+  color: #e6e6e6;
+  padding: 12px;
+  border-radius: 8px;
+  overflow-x: auto;
+  white-space: pre-wrap; /* quebra linhas longas */
+  word-break: break-word;
+  font-size: 0.95em;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 🖼️ Imagens dentro dos cards */
+.card img,
+.card .screenshot {
+  width: 100%;
+  height: auto;
+  max-height: 420px;
+  object-fit: contain;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  margin: 0 auto;
+}
+
+/* 📱 Responsividade */
+@media (max-width: 700px) {
+  .card {
+    padding: 15px;
+    border-radius: 8px;
+  }
+  .card h4 {
+    font-size: 1.1em;
+  }
+  .card pre {
+    font-size: 0.9em;
+  }
+  .card img {
+    max-height: 300px;
+  }
+}
+
 /* ===== FIM DO ESTILO ===== */
 
 

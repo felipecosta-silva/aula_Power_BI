@@ -1,0 +1,295 @@
+/* =========================================================
+   🌗 STYLES.CSS — Tema Power BI Moderno com Modo Escuro/Claro
+   =========================================================
+   Autor: [Seu Nome]
+   Descrição: Estilos globais para o site de aulas Power BI.
+   Inclui:
+   - Estrutura modular e comentada
+   - Modo escuro (padrão) e modo claro
+   - Botão fixo para alternância de tema
+   - Cards, sidebar, conteúdo e responsividade
+========================================================= */
+
+
+/* =========================================================
+   🔧 RESET BÁSICO
+   ========================================================= */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.6;
+  display: flex;
+  min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* =========================================================
+   🎨 VARIÁVEIS DE COR (MODO ESCURO PADRÃO)
+   ========================================================= */
+:root {
+  --cor-amarelo-pbi: #F2C811;
+  --cor-amarelo-hover: #e0b400;
+  --cor-amarelo-active: #c9a200;
+
+  /* Fundo e elementos principais (modo escuro) */
+  --cor-fundo-principal: #0d1117;
+  --cor-fundo-sidebar: #010409;
+  --cor-fundo-header: #161b22;
+  --cor-fundo-card: #222831;
+  --cor-fundo-card-hover: #1a1f1e;
+
+  /* Cores de texto e borda */
+  --cor-texto-principal: #c9d1d9;
+  --cor-texto-branco: #ffffff;
+  --cor-texto-escuro: #0d1117;
+  --cor-borda-padrao: #303d;
+  --cor-borda-verde: #4CAF50;
+
+  /* Blocos específicos */
+  --cor-fundo-exercicio: #2e3b4e;
+  --cor-fundo-resposta: #1f2428;
+  --cor-fundo-sabedoria: #343a40;
+  --cor-texto-sabedoria: var(--cor-texto-principal);
+}
+
+/* =========================================================
+   ☀️ VARIÁVEIS DE COR (MODO CLARO)
+   ========================================================= */
+body.light-mode {
+  --cor-fundo-principal: #f5f6f8;
+  --cor-fundo-sidebar: #ffffff;
+  --cor-fundo-header: #f2f2f2;
+  --cor-fundo-card: #ffffff;
+  --cor-fundo-card-hover: #fafafa;
+  --cor-fundo-exercicio: #eef2f6;
+  --cor-fundo-resposta: #f0f0f0;
+  --cor-fundo-sabedoria: #f8f9fa;
+
+  --cor-texto-principal: #1e1e1e;
+  --cor-texto-branco: #0d0d0d;
+  --cor-texto-sabedoria: #333;
+  --cor-borda-padrao: #ddd;
+}
+
+/* =========================================================
+   🌙 BOTÃO FIXO DE TEMA (CANTO SUPERIOR DIREITO)
+   ========================================================= */
+.theme-toggle-btn {
+  position: fixed;
+  top: 15px;
+  right: 20px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background-color: var(--cor-fundo-card);
+  color: var(--cor-amarelo-pbi);
+  border: 1px solid var(--cor-amarelo-pbi);
+  font-size: 1.3em;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  z-index: 1100;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle-btn:hover {
+  transform: scale(1.1);
+  background-color: var(--cor-fundo-header);
+  border-color: var(--cor-amarelo-hover);
+}
+
+/* =========================================================
+   🧭 SIDEBAR
+   ========================================================= */
+.sidebar {
+  width: 250px;
+  background-color: var(--cor-fundo-sidebar);
+  color: var(--cor-amarelo-pbi);
+  position: fixed;
+  height: 100vh;
+  overflow-y: auto;
+  padding-top: 20px;
+  border-right: 2px solid var(--cor-amarelo-pbi);
+  transition: width 0.3s ease-in-out;
+  z-index: 1000;
+}
+
+.sidebar h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 1.8em;
+  color: var(--cor-amarelo-pbi);
+}
+
+.sidebar a {
+  display: flex;
+  align-items: center;
+  color: var(--cor-texto-principal);
+  padding: 12px 20px;
+  text-decoration: none;
+  border-left: 4px solid transparent;
+  transition: 0.3s ease;
+}
+
+.sidebar a i {
+  margin-right: 10px;
+  color: var(--cor-amarelo-pbi);
+}
+
+.sidebar a:hover {
+  background-color: var(--cor-fundo-header);
+  border-left: 4px solid var(--cor-amarelo-pbi);
+  color: var(--cor-texto-branco);
+}
+
+/* =========================================================
+   📑 CONTEÚDO PRINCIPAL
+   ========================================================= */
+.content {
+  margin-left: 250px;
+  padding: 20px;
+  flex-grow: 1;
+  transition: margin-left 0.3s ease-in-out;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Header */
+.content header {
+  background-color: var(--cor-fundo-header);
+  padding: 30px 25px;
+  margin-bottom: 30px;
+  border-bottom: 2px solid var(--cor-amarelo-pbi);
+  text-align: center;
+  border-radius: 6px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.content header h1 {
+  color: var(--cor-texto-branco);
+  font-size: 2.5em;
+}
+
+.content header p {
+  color: var(--cor-texto-principal);
+  font-size: 1.1em;
+}
+
+/* =========================================================
+   💳 CARDS
+   ========================================================= */
+.card {
+  background-color: var(--cor-fundo-card);
+  color: var(--cor-texto-principal);
+  padding: 20px;
+  margin-top: 25px;
+  border-radius: 10px;
+  border: 1px solid var(--cor-borda-padrao);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  overflow: hidden;
+  transition: all 0.25s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: var(--cor-amarelo-pbi);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+}
+
+.card h4 {
+  color: var(--cor-amarelo-pbi);
+  margin-bottom: 8px;
+  font-size: 1.25em;
+}
+
+.card pre {
+  background-color: #2a2a2a;
+  color: #e6e6e6;
+  padding: 12px;
+  border-radius: 8px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* =========================================================
+   🖼️ IMAGENS E CAPTURAS
+   ========================================================= */
+.card img, .screenshot {
+  max-width: 100%;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+
+/* =========================================================
+   💡 CITAÇÕES E PENSAMENTO DO DIA
+   ========================================================= */
+blockquote, .thought-of-the-day {
+  background-color: var(--cor-fundo-sabedoria);
+  color: var(--cor-texto-sabedoria);
+  padding: 20px;
+  margin: 20px 0;
+  border-left: 5px solid var(--cor-amarelo-pbi);
+  border-radius: 8px;
+  font-style: italic;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* =========================================================
+   🧩 EXERCÍCIOS E RESPOSTAS
+   ========================================================= */
+.exercise {
+  background-color: var(--cor-fundo-exercicio);
+  border-left: 5px solid var(--cor-borda-verde);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+/* Botões */
+button, .toggle-answer-btn {
+  background-color: var(--cor-amarelo-pbi);
+  color: var(--cor-texto-escuro);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover, .toggle-answer-btn:hover {
+  background-color: var(--cor-amarelo-hover);
+  transform: translateY(-2px);
+}
+
+/* =========================================================
+   📱 RESPONSIVIDADE
+   ========================================================= */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    width: 200px;
+    transition: transform 0.3s ease-in-out;
+  }
+  .sidebar.active { transform: translateX(0); }
+  .content { margin-left: 0; }
+  .card { padding: 15px; }
+  .card h4 { font-size: 1.1em; }
+}
