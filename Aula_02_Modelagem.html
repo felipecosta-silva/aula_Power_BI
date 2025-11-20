@@ -17,23 +17,26 @@
     <i class="fas fa-bars"></i>
   </button>
 
-  <div class="sidebar" id="sidebar">
-    <button class="sidebar-toggle-btn" id="sidebar-toggle-btn">
-      <i class="fas fa-chevron-left"></i>
-    </button>
+ <div class="sidebar" id="sidebar">
+  <button class="sidebar-toggle-btn" id="sidebar-toggle-btn">
+    <i class="fas fa-chevron-left"></i>
+  </button>
 
-    <h2><span class="sidebar-title-text">Power BI </span>📊</h2>
+  <h2><span class="sidebar-title-text">Power BI </span>📊</h2>
 
-    <a href="index.html"><i class="fas fa-home"></i> <span>Início Power BI</span></a>
-    <a href="Introducao_BI_e_Power_BI.html"><i class="fas fa-rocket"></i> <span>Aula 1: Intro BI</span></a>
-    <a href="Aula_02_Modelagem.html" class="active"><i class="fas fa-project-diagram"></i> <span>Aula 2: Modelagem</span></a>
-    <a href="Aula_03_Criacao_Relacionamento.html" class="active"><i class="fas fa-sitemap"></i> <span>Aula 3: Relacionamentos</span></a>
-  </div>
+  <!-- Link de Início Power BI -->
+  <a href="index.html"><i class="fas fa-home"></i> <span>Início Power BI</span></a>
+  <a href="Introducao_BI_e_Power_BI.html"><i class="fas fa-rocket"></i> <span>Aula 1: Intro BI</span></a>
+  <a href="Aula_02_Modelagem.html" class="active"><i class="fas fa-project-diagram"></i> <span>Aula 2: Modelagem</span></a>
+  <a href="Aula_03_Criacao_Relacionamento.html"><i class="fas fa-sitemap"></i> <span>Aula 3: Relacionamentos</span></a>
+  <a href="Aula_04_Acrescentar_Consultas.html"><i class="fas fa-layer-group"></i> <span>Aula 4: Acrescentar Consultas</span></a>
+</div>
 
   <main class="content" id="content">
     <header>
       <h1>Aula 2: O Coração do BI - Modelagem de Dados</h1>
-      <p>Na aula anterior, preparamos nossos dados. Agora, vamos construir as "pontes" entre eles. Bem-vindo à Modelagem de Dados, a etapa que transforma tabelas soltas em um cérebro funcional.</p>
+      <p>Na aula anterior, preparamos nossos dados. Agora, vamos construir as "pontes" entre eles. Bem-vindo à Modelagem
+        de Dados, a etapa que transforma tabelas soltas em um cérebro funcional.</p>
     </header>
 
     <section class="main-section">
@@ -42,212 +45,277 @@
         <p>"Carregando citação..."</p>
         <cite>—</cite>
       </blockquote>
-      
+
       <section class="sub-section" style="border-left-color: var(--cor-borda-verde);">
         <h2>Revisão Rápida: O que fizemos na Aula 1? <i class="fas fa-clipboard-check"></i></h2>
-        <p>Antes de avançarmos, vamos recapitular nossa jornada. Na Aula 1, demos os passos fundamentais de qualquer projeto de BI:</p>
+        <p>Antes de avançarmos, vamos recapitular nossa jornada. Na Aula 1, demos os passos fundamentais de qualquer
+          projeto de BI:</p>
         <div class="card">
-            <h4>1. Extração, Transformação e Carga (ETL)</h4>
-            <p>Nós nos conectamos ao "Cadastro Clientes.xlsx" e "Cadastro Produtos.xlsx", renomeamos as consultas e realizamos a limpeza inicial (linhas/colunas vazias, tipos de dados).</p>
+          <h4>1. Extração, Transformação e Carga (ETL)</h4>
+          <p>Nós nos conectamos ao "Cadastro Clientes.xlsx" e "Cadastro Produtos.xlsx", renomeamos as consultas e
+            realizamos a limpeza inicial (linhas/colunas vazias, tipos de dados).</p>
         </div>
         <div class="card">
-            <h4>2. O Problema Atual: "Ilhas de Dados"</h4>
-            <p>Concluímos com o desafio: Nossas tabelas (`dClientes` e `dProdutos` - que você importou no exercício final) são como duas "ilhas" separadas. Elas não conversam.</p>
-            <p>O objetivo desta Aula 2 é **preparar a base de dados dos produtos** e, em seguida, **construir as pontes (relacionamentos)** para conectar essas ilhas.</p>
+          <h4>2. O Problema Atual: "Ilhas de Dados"</h4>
+          <p>Concluímos com o desafio: Nossas tabelas (`dClientes` e `dProdutos` - que você importou no exercício final)
+            são como duas "ilhas" separadas. Elas não conversam.</p>
+          <p>O objetivo desta Aula 2 é **preparar a base de dados dos produtos** e, em seguida, **construir as pontes
+            (relacionamentos)** para conectar essas ilhas.</p>
         </div>
       </section>
-      
+
       <section class="sub-section">
         <h2>1️⃣ Preparando a Análise: Limpeza em `dClientes` <i class="fas fa-broom"></i></h2>
-        <p>Um bom analista de BI nunca confia 100% nos dados brutos. Para garantir que a coluna "Gênero" estivesse perfeita para a análise, aplicamos a padronização.</p>
-        
+        <p>Um bom analista de BI nunca confia 100% nos dados brutos. Para garantir que a coluna "Gênero" estivesse
+          perfeita para a análise, aplicamos a padronização.</p>
+
         <div class="card">
-            <h4>Limpeza Avançada: Substituir Valores (Revisão)</h4>
-            <p>Ao inspecionar a coluna **"Gênero"** na tabela `dClientes`, padronizamos variações como "Fem." e "Masc." para **"Feminino"** e **"Masculino"** usando a função **Substituir Valores**.</p>
-            <img src="img/Substituir valores.png" alt="Janela de Substituir Valores no Power Query, mostrando a substituição de 'Masc.' por 'Masculino'." class="screenshot">
-            <p>Após a substituição, clicamos em <strong>"Fechar e Aplicar"</strong> para carregar as alterações.</p>
+          <h4>Limpeza Avançada: Substituir Valores (Revisão)</h4>
+          <p>Ao inspecionar a coluna **"Gênero"** na tabela `dClientes`, padronizamos variações como "Fem." e "Masc."
+            para **"Feminino"** e **"Masculino"** usando a função **Substituir Valores**.</p>
+          <img src="img/Substituir valores.png"
+            alt="Janela de Substituir Valores no Power Query, mostrando a substituição de 'Masc.' por 'Masculino'."
+            class="screenshot">
+          <p>Após a substituição, clicamos em <strong>"Fechar e Aplicar"</strong> para carregar as alterações.</p>
         </div>
       </section>
 
       <section class="sub-section">
         <h2>2️⃣ Visualizando o Gênero e a Prova do ETL <i class="fas fa-chart-pie"></i></h2>
         <p>Com a coluna "Gênero" limpa, criamos nosso primeiro visual e simulamos a atualização de dados.</p>
-        
+
         <div class="card">
-            <h4>Criando o Gráfico de Pizza</h4>
-            <p>No **Guia Relatório** do Power BI, criamos o Gráfico de Pizza, arrastando **"Gênero"** para **Legenda** e a **Contagem** de **"Nome Completo"** para **Valores**.</p>
-            <img src="img/pizza genero - count nome completo.png" alt="Gráfico de Pizza mostrando a distribuição de clientes por Gênero, usando Contagem de Nome Completo como valor." class="screenshot">
+          <h4>Criando o Gráfico de Pizza</h4>
+          <p>No **Guia Relatório** do Power BI, criamos o Gráfico de Pizza, arrastando **"Gênero"** para **Legenda** e a
+            **Contagem** de **"Nome Completo"** para **Valores**.</p>
+          <img src="img/pizza genero - count nome completo.png"
+            alt="Gráfico de Pizza mostrando a distribuição de clientes por Gênero, usando Contagem de Nome Completo como valor."
+            class="screenshot">
         </div>
 
         <div class="card">
-            <h2><i class="fas fa-redo-alt"></i> A Prova do ETL: Atualização Dinâmica de Dados</h2>
-            <p>A simulação de novos cadastros é crucial para entender o valor do ETL na vida real. Lembre-se:</p>
-            <ol>
-                <li>**Inserir Novos Clientes:** Copiamos e colamos novos registros na planilha **"Cadastro Clientes.xlsx"** e salvamos o Excel.</li>
-                <li>**Atualizar no Power BI:** Na guia **Página Inicial** do Power BI, clicamos em <strong>"Atualizar"</strong>.</li>
-            </ol>
-            <p>O Power BI repetiu automaticamente **todos os passos de limpeza** salvos no Power Query (incluindo a padronização de Gênero) e atualizou o Cartão e o Gráfico de Pizza.</p>
-            <p style="font-weight: bold; color: var(--cor-borda-verde);">Este é o valor do ETL: seu projeto está vivo e a prova de falhas, pois ele repete a limpeza automaticamente a cada atualização!</p>
+          <h2><i class="fas fa-redo-alt"></i> A Prova do ETL: Atualização Dinâmica de Dados</h2>
+          <p>A simulação de novos cadastros é crucial para entender o valor do ETL na vida real. Lembre-se:</p>
+          <ol>
+            <li>**Inserir Novos Clientes:** Copiamos e colamos novos registros na planilha **"Cadastro Clientes.xlsx"**
+              e salvamos o Excel.</li>
+            <li>**Atualizar no Power BI:** Na guia **Página Inicial** do Power BI, clicamos em
+              <strong>"Atualizar"</strong>.</li>
+          </ol>
+          <p>O Power BI repetiu automaticamente **todos os passos de limpeza** salvos no Power Query (incluindo a
+            padronização de Gênero) e atualizou o Cartão e o Gráfico de Pizza.</p>
+          <p style="font-weight: bold; color: var(--cor-borda-verde);">Este é o valor do ETL: seu projeto está vivo e a
+            prova de falhas, pois ele repete a limpeza automaticamente a cada atualização!</p>
         </div>
       </section>
 
       <section class="sub-section">
         <h2>3️⃣ Limpando a Tabela Dimensão: `dProdutos` <i class="fas fa-box-open"></i></h2>
         <p>Agora vamos garantir que a nossa tabela de produtos esteja perfeita para a Modelagem.</p>
-        
+
         <div class="card">
-            <h4>Importação, Nomenclatura e Tratamento Inicial</h4>
-            <p>Caso você não tenha feito o exercício da Aula 1, volte ao Power BI Desktop e clique em **"Obter dados"** para importar o arquivo "Cadastro Produtos.xlsx". Clique em **"Transformar Dados"** para abrir o Power Query.</p>
-            <img src="img/importar Cadastro de produto.png" alt="Janela do Navegador no Power BI mostrando a seleção da planilha 'Cadastro de Produto' antes de clicar em Transformar Dados." class="screenshot">
-            <ol>
-                <li>Renomeie a consulta para **"dProdutos"**.</li>
-                <li><strong>Múltiplas Abas:</strong> Se o arquivo tivesse várias abas e você as tivesse selecionado, cada uma apareceria como uma tabela separada. Mais à frente, veremos como **combinar** vários arquivos ou abas de uma só vez.</li>
-                <li><strong>Limpeza Necessária:</strong> Aplique os tratamentos iniciais de rotina: **Remover Linhas** > **Remover Linhas em Branco** e **Promover Cabeçalhos**.</li>
-            </ol>
+          <h4>Importação, Nomenclatura e Tratamento Inicial</h4>
+          <p>Caso você não tenha feito o exercício da Aula 1, volte ao Power BI Desktop e clique em **"Obter dados"**
+            para importar o arquivo "Cadastro Produtos.xlsx". Clique em **"Transformar Dados"** para abrir o Power
+            Query.</p>
+          <img src="img/importar Cadastro de produto.png"
+            alt="Janela do Navegador no Power BI mostrando a seleção da planilha 'Cadastro de Produto' antes de clicar em Transformar Dados."
+            class="screenshot">
+          <ol>
+            <li>Renomeie a consulta para **"dProdutos"**.</li>
+            <li><strong>Múltiplas Abas:</strong> Se o arquivo tivesse várias abas e você as tivesse selecionado, cada
+              uma apareceria como uma tabela separada. Mais à frente, veremos como **combinar** vários arquivos ou abas
+              de uma só vez.</li>
+            <li><strong>Limpeza Necessária:</strong> Aplique os tratamentos iniciais de rotina: **Remover Linhas** >
+              **Remover Linhas em Branco** e **Promover Cabeçalhos**.</li>
+          </ol>
         </div>
 
         <div class="card">
-            <h4>Qualidade da Coluna: A Inspeção Rápida <i class="fas fa-eye"></i></h4>
-            <p>Para um bom analista, a qualidade do dado é a prioridade. O Power Query possui um recurso visual para verificar rapidamente a integridade da sua tabela:</p>
-            <ul>
-                <li>Na guia **Exibição**, marque a opção **"Qualidade da Coluna"**.</li>
-                <li>Observe os indicadores de **Válido**, **Erro** e **Vazio** que aparecem acima de cada cabeçalho.
-                    <img src="img/Qualidade da Coluna.png" alt="Recurso Qualidade da Coluna no Power Query mostrando a porcentagem de valores válidos, com erro e vazios." class="screenshot">
-                </li>
-                <li>Sempre faça essa inspeção para verificar se os tipos de dados (o ícone ABC, 123) estão corretos.</li>
-            </ul>
+          <h4>Qualidade da Coluna: A Inspeção Rápida <i class="fas fa-eye"></i></h4>
+          <p>Para um bom analista, a qualidade do dado é a prioridade. O Power Query possui um recurso visual para
+            verificar rapidamente a integridade da sua tabela:</p>
+          <ul>
+            <li>Na guia **Exibição**, marque a opção **"Qualidade da Coluna"**.</li>
+            <li>Observe os indicadores de **Válido**, **Erro** e **Vazio** que aparecem acima de cada cabeçalho.
+              <img src="img/Qualidade da Coluna.png"
+                alt="Recurso Qualidade da Coluna no Power Query mostrando a porcentagem de valores válidos, com erro e vazios."
+                class="screenshot">
+            </li>
+            <li>Sempre faça essa inspeção para verificar se os tipos de dados (o ícone ABC, 123) estão corretos.</li>
+          </ul>
         </div>
       </section>
 
       <section class="sub-section">
         <h2>4️⃣ Corrigindo o Erro de Decimal (Divisão Padrão) <i class="fas fa-calculator"></i></h2>
-        <p>Vamos resolver o problema da coluna **"Preço Unitário"** que está lendo um valor 100 vezes maior que o real devido à leitura do ponto decimal no padrão brasileiro.</p>
+        <p>Vamos resolver o problema da coluna **"Preço Unitário"** que está lendo um valor 100 vezes maior que o real
+          devido à leitura do ponto decimal no padrão brasileiro.</p>
 
         <div class="card">
-            <h4>A Solução de ETL (Dividir por 100)</h4>
-            <p>Em vez de corrigir manualmente no Excel, usamos o Power Query para aplicar uma transformação que será repetida sempre:</p>
-            <ol>
-                <li>Selecione a coluna **"Preço Unitário"**.</li>
-                <li>Vá para a guia **Transformar**.</li>
-                <li>No grupo "Coluna de Número", clique em **Padrão** > **Dividir**.
-                    <img src="img/ajustar preço unitário.png" alt="Opção Dividir no menu Transformar > Padrão do Power Query." class="screenshot">
-                </li>
-                <li>Na janela, digite **100** e clique em OK.</li>
-            </ol>
-            <p>Após essa etapa, altere o tipo de dados da coluna para **"Número Decimal Fixo"**. Isso garante que o valor seja `25.95` (no formato brasileiro) e não mais `2595`.</p>
+          <h4>A Solução de ETL (Dividir por 100)</h4>
+          <p>Em vez de corrigir manualmente no Excel, usamos o Power Query para aplicar uma transformação que será
+            repetida sempre:</p>
+          <ol>
+            <li>Selecione a coluna **"Preço Unitário"**.</li>
+            <li>Vá para a guia **Transformar**.</li>
+            <li>No grupo "Coluna de Número", clique em **Padrão** > **Dividir**.
+              <img src="img/ajustar preço unitário.png" alt="Opção Dividir no menu Transformar > Padrão do Power Query."
+                class="screenshot">
+            </li>
+            <li>Na janela, digite **100** e clique em OK.</li>
+          </ol>
+          <p>Após essa etapa, altere o tipo de dados da coluna para **"Número Decimal Fixo"**. Isso garante que o valor
+            seja `25.95` (no formato brasileiro) e não mais `2595`.</p>
 
-            <blockquote class="lesson-learned">
-                <p><strong>A Lição do ETL:</strong> Lembre-se: a etapa de "Dividir por 100" está salva no Power Query e será aplicada automaticamente, corrigindo o erro de decimal em qualquer atualização futura.</p>
-            </blockquote>
+          <blockquote class="lesson-learned">
+            <p><strong>A Lição do ETL:</strong> Lembre-se: a etapa de "Dividir por 100" está salva no Power Query e será
+              aplicada automaticamente, corrigindo o erro de decimal em qualquer atualização futura.</p>
+          </blockquote>
         </div>
       </section>
-      
+
       <section class="sub-section">
         <h2>5️⃣ Separando Informações: Dividir Coluna por Delimitador <i class="fas fa-arrows-alt-h"></i></h2>
-        <p>A coluna **Produto** contém o nome do item e sua cor/característica, separados por um traço. Precisamos dividir essa informação em duas colunas distintas.</p>
+        <p>A coluna **Produto** contém o nome do item e sua cor/característica, separados por um traço. Precisamos
+          dividir essa informação em duas colunas distintas.</p>
 
         <div class="card">
-            <h4>Opções de Divisão (Transformar)</h4>
-            <p>O Power Query oferece várias maneiras de dividir uma coluna, como **Por Delimitador**, **Por Número de Caracteres** ou **Por Posição**.</p>
-            <p>Para a nossa coluna **Produto**, a melhor opção é **Dividir Coluna > Por Delimitador**.</p>
+          <h4>Opções de Divisão (Transformar)</h4>
+          <p>O Power Query oferece várias maneiras de dividir uma coluna, como **Por Delimitador**, **Por Número de
+            Caracteres** ou **Por Posição**.</p>
+          <p>Para a nossa coluna **Produto**, a melhor opção é **Dividir Coluna > Por Delimitador**.</p>
         </div>
 
         <div class="card">
-            <h4>Dividindo a Coluna "Produto"</h4>
-            <p>Como produtos como **"TCL 40'' Classe 3 - Series HD LED - Preto"** têm múltiplos traços, usaremos o delimitador mais à direita para isolar a cor/característica.</p>
-            <ol>
-                <li>Selecione a coluna **"Produto"**.</li>
-                <li>Vá para a guia **Transformar** e clique em **Dividir Coluna** > **Por Delimitador**.
-                    <img src="img/Dividir Coluna por Delimitador.png" alt="Janela de Divisão de Coluna por Delimitador no Power Query." class="screenshot">
-                </li>
-                <li>Na janela "Dividir Coluna por Delimitador":
-                    <ul>
-                        <li>**Selecionar ou inserir delimitador:** Selecione **Personalizado** e digite **` - `** (espaço, traço, espaço).</li>
-                        <li>**Dividir em:** Selecione **O Delimitador mais à direita**.</li>
-                    </ul>
-                </li>
-                <li>Clique em **OK**.</li>
-                <li>**Renomeie** as novas colunas para **"Nome do Produto"** e **"Detalhe do Produto"**.</li>
-            </ol>
+          <h4>Dividindo a Coluna "Produto"</h4>
+          <p>Como produtos como **"TCL 40'' Classe 3 - Series HD LED - Preto"** têm múltiplos traços, usaremos o
+            delimitador mais à direita para isolar a cor/característica.</p>
+          <ol>
+            <li>Selecione a coluna **"Produto"**.</li>
+            <li>Vá para a guia **Transformar** e clique em **Dividir Coluna** > **Por Delimitador**.
+              <img src="img/Dividir Coluna por Delimitador.png"
+                alt="Janela de Divisão de Coluna por Delimitador no Power Query." class="screenshot">
+            </li>
+            <li>Na janela "Dividir Coluna por Delimitador":
+              <ul>
+                <li>**Selecionar ou inserir delimitador:** Selecione **Personalizado** e digite **` - `** (espaço,
+                  traço, espaço).</li>
+                <li>**Dividir em:** Selecione **O Delimitador mais à direita**.</li>
+              </ul>
+            </li>
+            <li>Clique em **OK**.</li>
+            <li>**Renomeie** as novas colunas para **"Nome do Produto"** e **"Detalhe do Produto"**.</li>
+          </ol>
         </div>
       </section>
-      
+
       <section class="sub-section">
         <h2>6️⃣ Padronização de Texto (Strings) <i class="fas fa-text-width"></i></h2>
-        <p>Para garantir que nossos relatórios não dupliquem contagens por causa de textos em caixa alta ou baixa (Ex: 'VERMELHO' vs 'vermelho'), precisamos padronizar o formato do texto.</p>
+        <p>Para garantir que nossos relatórios não dupliquem contagens por causa de textos em caixa alta ou baixa (Ex:
+          'VERMELHO' vs 'vermelho'), precisamos padronizar o formato do texto.</p>
 
         <div class="card">
-            <h4>Limpando Caixas e Espaços</h4>
-            <p>Vamos aplicar duas transformações essenciais em todas as colunas de texto que serão usadas em filtros (como **Marca** e **Detalhe do Produto**):</p>
-            <ol>
-                <li>Selecione as colunas **"Detalhe do Produto"** e **"Marca"** (use a tecla Ctrl para selecionar múltiplas).</li>
-                <li>Na guia **Transformar**, clique em **Formato** e selecione **"Minúsculas"** (ou **"Primeira Letra de Cada Palavra em Maiúscula"**). Usaremos **Minúsculas**.</li>
-                <li>Ainda nas colunas selecionadas, clique em **Formato** novamente e selecione **"Aparar"**.</li>
-            </ol>
-            <blockquote class="note">
-                <i class="fas fa-lightbulb"></i> **Por que Aparar?** O comando "Aparar" remove espaços em branco indesejados no início e no fim das células. Isso evita que textos como " Mouse" (com um espaço extra) sejam tratados como diferentes de "Mouse" (sem o espaço). É um passo simples, mas vital para a qualidade dos dados.
-            </blockquote>
-            <p>Com a tabela `dProdutos` completamente tratada, clique em **"Fechar e Aplicar"** para carregar a tabela no modelo do Power BI.</p>
+          <h4>Limpando Caixas e Espaços</h4>
+          <p>Vamos aplicar duas transformações essenciais em todas as colunas de texto que serão usadas em filtros (como
+            **Marca** e **Detalhe do Produto**):</p>
+          <ol>
+            <li>Selecione as colunas **"Detalhe do Produto"** e **"Marca"** (use a tecla Ctrl para selecionar
+              múltiplas).</li>
+            <li>Na guia **Transformar**, clique em **Formato** e selecione **"Minúsculas"** (ou **"Primeira Letra de
+              Cada Palavra em Maiúscula"**). Usaremos **Minúsculas**.</li>
+            <li>Ainda nas colunas selecionadas, clique em **Formato** novamente e selecione **"Aparar"**.</li>
+          </ol>
+          <blockquote class="note">
+            <i class="fas fa-lightbulb"></i> **Por que Aparar?** O comando "Aparar" remove espaços em branco indesejados
+            no início e no fim das células. Isso evita que textos como " Mouse" (com um espaço extra) sejam tratados
+            como diferentes de "Mouse" (sem o espaço). É um passo simples, mas vital para a qualidade dos dados.
+          </blockquote>
+          <p>Com a tabela `dProdutos` completamente tratada, clique em **"Fechar e Aplicar"** para carregar a tabela no
+            modelo do Power BI.</p>
         </div>
       </section>
-      
+
       <section class="sub-section">
         <h2>7️⃣ Modelagem de Dados: Criando o Cérebro do BI <i class="fas fa-project-diagram"></i></h2>
-        <p>Agora que `dClientes` e `dProdutos` estão limpas, vamos entender o conceito central da nossa próxima etapa: conectar os dados.</p>
+        <p>Agora que `dClientes` e `dProdutos` estão limpas, vamos entender o conceito central da nossa próxima etapa:
+          conectar os dados.</p>
         <div class="card">
-            <h4>Tabelas Fato vs. Tabelas Dimensão (O Esquema Estrela)</h4>
-            <p>Em um projeto de BI, dividimos nossos dados em dois tipos principais:</p>
-            <ul>
-                <li><i class="fas fa-table"></i> <strong>Tabelas Dimensão (Dim Tables - D):</strong> São tabelas que *descrevem* algo. Elas são a base da sua análise (ex: `dClientes`, `dProdutos`). Elas contêm atributos (Nome, Gênero, Marca).</li>
-                <li><i class="fas fa-coins"></i> <strong>Tabelas Fato (Fact Tables - F):</strong> São tabelas que contêm as *medições* ou *transações*. Elas contêm números que você quer somar ou contar (ex: uma tabela `fVendas` com a Quantidade, Valor e Data).</li>
-            </ul>
-            <p>O objetivo é construir o **Esquema Estrela**: conectar todas as Tabelas Dimensão (as bordas da estrela) à Tabela Fato (o centro da estrela).</p>
+          <h4>Tabelas Fato vs. Tabelas Dimensão (O Esquema Estrela)</h4>
+          <p>Em um projeto de BI, dividimos nossos dados em dois tipos principais:</p>
+          <ul>
+            <li><i class="fas fa-table"></i> <strong>Tabelas Dimensão (Dim Tables - D):</strong> São tabelas que
+              *descrevem* algo. Elas são a base da sua análise (ex: `dClientes`, `dProdutos`). Elas contêm atributos
+              (Nome, Gênero, Marca).</li>
+            <li><i class="fas fa-coins"></i> <strong>Tabelas Fato (Fact Tables - F):</strong> São tabelas que contêm as
+              *medições* ou *transações*. Elas contêm números que você quer somar ou contar (ex: uma tabela `fVendas`
+              com a Quantidade, Valor e Data).</li>
+          </ul>
+          <p>O objetivo é construir o **Esquema Estrela**: conectar todas as Tabelas Dimensão (as bordas da estrela) à
+            Tabela Fato (o centro da estrela).</p>
         </div>
       </section>
 
       <section class="sub-section">
         <h2>8️⃣ Tratando Erros de Fonte de Dados <i class="fas fa-exclamation-triangle"></i></h2>
-        <p>No dia a dia, é comum que a fonte original dos seus dados seja movida, renomeada ou que o nome de uma aba ou coluna mude. Isso fará com que o Power BI falhe ao tentar "Atualizar".</p>
+        <p>No dia a dia, é comum que a fonte original dos seus dados seja movida, renomeada ou que o nome de uma aba ou
+          coluna mude. Isso fará com que o Power BI falhe ao tentar "Atualizar".</p>
 
         <div class="card">
-            <h4>Dica de Ouro: O Botão "Ir para o Erro"</h4>
-            <p>Na maioria dos erros de atualização no Power Query, você verá uma mensagem na coluna de dados com o botão **"Ir para o Erro"**. Ao clicar nele, o Power Query navegará automaticamente até a etapa exata onde o erro ocorreu.</p>
-            <img src="img/Ir para Erro.png" alt="Mensagem de erro em uma coluna no Power Query com o botão 'Ir para o Erro'." class="screenshot">
+          <h4>Dica de Ouro: O Botão "Ir para o Erro"</h4>
+          <p>Na maioria dos erros de atualização no Power Query, você verá uma mensagem na coluna de dados com o botão
+            **"Ir para o Erro"**. Ao clicar nele, o Power Query navegará automaticamente até a etapa exata onde o erro
+            ocorreu.</p>
+          <img src="img/Ir para Erro.png"
+            alt="Mensagem de erro em uma coluna no Power Query com o botão 'Ir para o Erro'." class="screenshot">
         </div>
 
         <div class="card">
-            <h4>Causa 1: Nome da Aba Alterado no Excel</h4>
-            <p>Simule a alteração do nome da aba (`"Plan1"` para `"DadosNovos"`). O erro ocorre porque o código M da etapa "Navegação" ainda procura pelo nome antigo da aba.</p>
-            <p>A correção é feita na etapa **"Navegação"** (clique na engrenagem) ou editando a Linguagem M na **Barra de Fórmulas**.</p>
+          <h4>Causa 1: Nome da Aba Alterado no Excel</h4>
+          <p>Simule a alteração do nome da aba (`"Plan1"` para `"DadosNovos"`). O erro ocorre porque o código M da etapa
+            "Navegação" ainda procura pelo nome antigo da aba.</p>
+          <p>A correção é feita na etapa **"Navegação"** (clique na engrenagem) ou editando a Linguagem M na **Barra de
+            Fórmulas**.</p>
         </div>
 
         <div class="card">
-            <h4>Causa 2: Coluna Excluída ou Renomeada no Excel</h4>
-            <p>Se você excluir ou renomear uma coluna no Excel (Ex: apagar a coluna "Observação"), o Power Query falhará em qualquer etapa que tentava usar essa coluna.</p>
-            <ol>
-                <li>Use o botão **"Ir para o Erro"** para localizar a etapa (ex: uma etapa de "Tipo Alterado" ou "Colunas Removidas").</li>
-                <li>**Corrigindo Coluna Renomeada:** Se a coluna foi apenas renomeada, clique na etapa do erro e edite o nome antigo (Ex: `"Observação"`) para o novo nome na **Barra de Fórmulas** (Linguagem M).</li>
-                <li>**Corrigindo Coluna Excluída:** Se a coluna foi excluída e não é mais necessária, você deve **remover a referência a ela** na Linguagem M.
-                    <ul>
-                        <li>Localize o nome da coluna que não existe mais (ex: `"Observação"`) dentro da lista de colunas que está causando o erro.</li>
-                        <li>**Apague a referência à coluna:** Por exemplo, se a etapa tenta remover uma coluna que não existe mais, você deve apagar a referência a essa coluna na lista da barra de fórmulas, como mostrado na imagem.</li>
-                    </ul>
-                    <img src="img/coluna não encontrada.png" alt="Barra de fórmulas no Power Query destacando a sintaxe da Linguagem M, mostrando a necessidade de apagar a referência a uma coluna não encontrada." class="screenshot">
-                </li>
-            </ol>
+          <h4>Causa 2: Coluna Excluída ou Renomeada no Excel</h4>
+          <p>Se você excluir ou renomear uma coluna no Excel (Ex: apagar a coluna "Observação"), o Power Query falhará
+            em qualquer etapa que tentava usar essa coluna.</p>
+          <ol>
+            <li>Use o botão **"Ir para o Erro"** para localizar a etapa (ex: uma etapa de "Tipo Alterado" ou "Colunas
+              Removidas").</li>
+            <li>**Corrigindo Coluna Renomeada:** Se a coluna foi apenas renomeada, clique na etapa do erro e edite o
+              nome antigo (Ex: `"Observação"`) para o novo nome na **Barra de Fórmulas** (Linguagem M).</li>
+            <li>**Corrigindo Coluna Excluída:** Se a coluna foi excluída e não é mais necessária, você deve **remover a
+              referência a ela** na Linguagem M.
+              <ul>
+                <li>Localize o nome da coluna que não existe mais (ex: `"Observação"`) dentro da lista de colunas que
+                  está causando o erro.</li>
+                <li>**Apague a referência à coluna:** Por exemplo, se a etapa tenta remover uma coluna que não existe
+                  mais, você deve apagar a referência a essa coluna na lista da barra de fórmulas, como mostrado na
+                  imagem.</li>
+              </ul>
+              <img src="img/coluna não encontrada.png"
+                alt="Barra de fórmulas no Power Query destacando a sintaxe da Linguagem M, mostrando a necessidade de apagar a referência a uma coluna não encontrada."
+                class="screenshot">
+            </li>
+          </ol>
         </div>
       </section>
 
       <section class="main-section" style="padding-top: 0; margin-top: -20px;">
         <section class="sub-section" style="border-left-color: var(--cor-borda-amarelo-pbi);">
-            <h2>🏆 Próximos Passos (O Desafio da Conexão)</h2>
-            <p>As Tabelas Dimensão (`dClientes` e `dProdutos`) estão prontas e agora você sabe como resolver problemas de conexão! Mas a pergunta "Quais produtos as clientes do sexo feminino compram?" ainda não pode ser respondida, pois nos falta a tabela de transações.</p>
-            <p style="font-weight: bold; font-size: 1.1em;">Na próxima aula, vamos:</p>
-            <ul>
-                <li>Importar a Tabela Fato (`fVendas`).</li>
-                <li>Aprender a criar Relacionamentos automáticos e manuais na **Guia Modelo**.</li>
-                <li>Criar nosso primeiro KPI financeiro com DAX.</li>
-            </ul>
+          <h2>🏆 Próximos Passos (O Desafio da Conexão)</h2>
+          <p>As Tabelas Dimensão (`dClientes` e `dProdutos`) estão prontas e agora você sabe como resolver problemas de
+            conexão! Mas a pergunta "Quais produtos as clientes do sexo feminino compram?" ainda não pode ser
+            respondida, pois nos falta a tabela de transações.</p>
+          <p style="font-weight: bold; font-size: 1.1em;">Na próxima aula, vamos:</p>
+          <ul>
+            <li>Importar a Tabela Fato (`fVendas`).</li>
+            <li>Aprender a criar Relacionamentos automáticos e manuais na **Guia Modelo**.</li>
+            <li>Criar nosso primeiro KPI financeiro com DAX.</li>
+          </ul>
         </section>
       </section>
 
@@ -262,7 +330,7 @@
   <script src="js/quotes.js"></script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
 
       // --- CÓDIGO DA CITAÇÃO RANDÔMICA ---
       const quoteElement = document.querySelector('.thought-of-the-day p');
@@ -275,10 +343,10 @@
         quoteElement.textContent = `"${randomQuote.quote}"`;
         authorElement.textContent = `— ${randomQuote.author}`;
       } else if (quoteElement) {
-         quoteElement.textContent = "Bem-vindo à sua jornada de dados.";
-         authorElement.textContent = "";
+        quoteElement.textContent = "Bem-vindo à sua jornada de dados.";
+        authorElement.textContent = "";
       }
-      
+
       // --- CÓDIGO DO MENU HAMBÚRGUER (Mobile) ---
       const sidebar = document.getElementById('sidebar');
       const content = document.getElementById('content');
@@ -297,7 +365,7 @@
 
       // --- LÓGICA DE CLIQUE NOS LINKS ---
       sidebarLinks.forEach(link => {
-        link.addEventListener('click', function(event) {
+        link.addEventListener('click', function (event) {
 
           if (link.classList.contains('active')) {
             event.preventDefault();

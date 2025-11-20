@@ -359,6 +359,33 @@ blockquote { background-color: var(--cor-fundo-card); border-left: 5px solid var
   line-height: 1.6;
 }
 
+/* ========================================
+   AJUSTE DE LISTAS (ol, ul e li)
+   Apenas melhoria visual, sem alterar layout
+======================================== */
+
+.sub-section ul,
+.sub-section ol,
+.card ul,
+.card ol {
+  margin-left: 28px !important;        
+  padding-left: 12px !important;       
+  margin-bottom: 15px;
+}
+
+.sub-section li,
+.card li {
+  margin-bottom: 10px;
+  padding-left: 3px;
+  line-height: 1.6;
+}
+
+.sub-section ol,
+.card ol {
+  list-style-position: outside;
+}
+
+
 /* 🧱 Conteúdo tipo código, tabelas ou blocos de texto */
 .card pre {
   background-color: #2a2a2a;

@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aula 4: Importando a Base de Vendas 2020</title>
+
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+</head>
+
+<body>
+    <div class="overlay" id="overlay"></div>
+
+    <button class="hamburger-menu" id="hamburger-menu">
+        <i class="fas fa-bars"></i>
+    </button>
+
+<div class="sidebar" id="sidebar">
+  <button class="sidebar-toggle-btn" id="sidebar-toggle-btn">
+    <i class="fas fa-chevron-left"></i>
+  </button>
+
+  <h2><span class="sidebar-title-text">Power BI </span>📊</h2>
+
+  <!-- Link de Início Power BI -->
+  <a href="index.html"><i class="fas fa-home"></i> <span>Início Power BI</span></a>
+  <a href="Introducao_BI_e_Power_BI.html"><i class="fas fa-rocket"></i> <span>Aula 1: Intro BI</span></a>
+  <a href="Aula_02_Modelagem.html"><i class="fas fa-project-diagram"></i> <span>Aula 2: Modelagem</span></a>
+  <a href="Aula_03_Criacao_Relacionamento.html"><i class="fas fa-sitemap"></i> <span>Aula 3: Relacionamentos</span></a>
+  <a href="Aula_04_Acrescentar_Consultas.html" class="active"><i class="fas fa-layer-group"></i> <span>Aula 4: Acrescentar Consultas</span></a>
+</div>
+
+    <main class="content" id="content">
+        <header>
+            <h1>Aula 4: Importando e Preparando a Base de Vendas 2020</h1>
+            <p>
+                Hoje vamos revisar conceitos fundamentais e avançar na construção do
+                nosso modelo, começando a trabalhar com a tabela mais importante de um
+                projeto de BI: a <strong>Tabela Fato de Vendas</strong>.
+            </p>
+        </header>
+
+        <section class="main-section">
+            <!-- PENSAMENTO DO DIA -->
+            <blockquote class="thought-of-the-day">
+                <p>"Carregando citação..."</p>
+                <cite>—</cite>
+            </blockquote>
+
+            <!-- REVISÃO DA AULA ANTERIOR -->
+            <section class="sub-section" style="border-left-color: var(--cor-borda-verde);">
+                <h2>1️⃣ Revisão Completa da Aula Passada <i class="fas fa-undo-alt"></i></h2>
+
+                <p>Antes de começarmos a trabalhar com a Base de Vendas 2020, vamos revisar os conceitos mais
+                    importantes da aula anterior. Essa revisão é essencial, pois serve como base para todo o processo de
+                    modelagem e integração das tabelas de vendas.</p>
+
+                <div class="card">
+                    <h4>🔹 1. Diferença entre Tabelas Dimensão e Tabelas Fato</h4>
+                    <p>No nosso projeto de BI, existem dois tipos principais de tabelas:</p>
+                    <ul>
+                        <li><strong>Dimensão (d)</strong> — São tabelas descritivas. Elas explicam o “quem”, “o quê”,
+                            “onde”, “quando” e “como”.
+                            <br>Exemplos: <strong>dClientes</strong>, <strong>dProdutos</strong>,
+                            <strong>dLojas</strong>, <strong>dLocalidades</strong>.
+                        </li>
+                        <li><strong>Fato (f)</strong> — São tabelas que registram acontecimentos reais que podem ser
+                            medidos.
+                            <br>Exemplo: <strong>fVendas</strong>: cada linha representa uma venda.
+                        </li>
+                    </ul>
+
+                    <p>Essa separação é fundamental para criarmos um modelo limpo, rápido e profissional — o famoso
+                        <strong>Esquema Estrela</strong>.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <h4>🔹 2. Tratamentos e Limpezas no Power Query</h4>
+                    <p>Na aula anterior você aprendeu várias técnicas de padronização e correção:</p>
+                    <ul>
+                        <li><strong>Padronizar textos</strong> (minúsculas, primeiras letras maiúsculas, remover
+                            espaços).</li>
+                        <li><strong>Corrigir tipos de dados</strong> — datas, números decimais, textos, identificadores.
+                        </li>
+                        <li><strong>Corrigir problemas de origem</strong> — arquivos movidos, erros de conversão,
+                            colunas com erros.</li>
+                        <li><strong>Usar “Coluna de Exemplos”</strong> — para criar colunas derivadas de forma
+                            inteligente.</li>
+                    </ul>
+
+                    <p>Essa etapa de limpeza garante que o modelo funcione perfeitamente e que os dados sejam
+                        confiáveis.</p>
+                </div>
+
+                <div class="card">
+                    <h4>🔹 3. Mesclagem de Consultas (JOIN)</h4>
+                    <p>Também aprendemos a usar o recurso <strong>Mesclar Consultas</strong>, que permite unir duas
+                        tabelas trazendo colunas de uma para outra. Por exemplo:</p>
+                    <p>Unir <strong>fVendas</strong> com <strong>dProdutos</strong> para trazer o nome, marca e preço
+                        unitário.</p>
+
+                    <p>Isso funciona assim:</p>
+                    <ul>
+                        <li>Escolhemos as duas tabelas.</li>
+                        <li>Selecionamos a coluna em comum — no caso, o <strong>SKU</strong>.</li>
+                        <li>Selecionamos quais colunas queremos trazer para a tabela fato.</li>
+                    </ul>
+
+                    <p>Esse processo é semelhante ao <strong>JOIN do SQL</strong>, e é útil quando precisamos trabalhar
+                        com colunas derivadas dentro do Power Query.</p>
+                </div>
+
+                <div class="card">
+                    <h4>🔹 4. Relacionamentos</h4>
+                    <p>Os relacionamentos são o “cérebro” do modelo. Eles permitem que as tabelas conversem entre si sem
+                        duplicar dados.</p>
+
+                    <p>Aprendemos que:</p>
+                    <ul>
+                        <li>A tabela dimensão filtra a tabela fato.</li>
+                        <li>Isso acontece graças ao conceito de <strong>direcionalidade</strong> (1 → *)</li>
+                        <li>É assim que conseguimos montar gráficos usando campos de tabelas diferentes.</li>
+                    </ul>
+
+                    <blockquote>
+                        <p><strong>Mesclar junta colunas.</strong><br>
+                            <strong>Relacionamento conecta tabelas sem duplicação.</strong>
+                        </p>
+                    </blockquote>
+
+                    <p>Esse conceito será fundamental para o que faremos agora com a Tabela de Vendas.</p>
+                </div>
+
+                <div class="card">
+                    <h4>🔹 5. Por que essa revisão é importante para a Aula 4?</h4>
+                    <p>Agora vamos trabalhar com três bases de vendas (2020, 2021 e 2022) e aprender a:</p>
+                    <ul>
+                        <li><strong>Unir tabelas</strong> usando Acrescentar Consultas (Append)</li>
+                        <li><strong>Entender quando faz sentido juntar bases</strong></li>
+                        <li><strong>Evitar erros comuns</strong> ao excluir consultas utilizadas como fonte</li>
+                        <li><strong>Montar uma única tabela fato consistente</strong></li>
+                    </ul>
+
+                    <p>Sem os conceitos da aula passada, seria impossível entender o motivo de juntar bases ou como
+                        tratar cada ano corretamente.</p>
+                </div>
+
+            </section>
+
+
+            <!-- IMPORTAR BASE VENDAS -->
+            <section class="sub-section">
+                <h2>
+                    2️⃣ Importando a Tabela Fato: Base Vendas 2020
+                    <i class="fas fa-file-excel"></i>
+                </h2>
+
+                <div class="card">
+                    <h4>O que é essa tabela?</h4>
+                    <p>
+                        A Base de Vendas contém todos os registros de vendas realizadas no
+                        ano de <strong>2020</strong>. Cada linha representa uma venda
+                        individual.
+                    </p>
+
+                    <p>Normalmente, em uma tabela de vendas você encontra:</p>
+                    <ul>
+                        <li>ID da venda</li>
+                        <li>Data da venda</li>
+                        <li>SKU (código do produto vendido)</li>
+                        <li>ID da loja</li>
+                        <li>Quantidade vendida</li>
+                        <li>Valor total</li>
+                        <li>Forma de pagamento</li>
+                    </ul>
+
+                    <p>
+                        Essas informações são essenciais para nossas métricas futuras:
+                        faturamento, ticket médio, análise por produto, por loja, por
+                        período etc.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <h4>Importando a base</h4>
+                    <p>No Power BI:</p>
+                    <ol>
+                        <li>
+                            Acesse <strong>Página Inicial → Obter Dados → Excel</strong>.
+                        </li>
+                        <li>
+                            Selecione o arquivo <strong>"Base Vendas - 2020.xlsx"</strong>.
+                        </li>
+                        <li>No Navegador, selecione a aba com os dados.</li>
+                        <li>
+                            Clique em <strong>Transformar Dados</strong> (não carregue
+                            direto).
+                        </li>
+                    </ol>
+                    <blockquote class="note">
+                        <p>
+                            No Power Query, renomeie a tabela para
+                            <strong>fVendas2020</strong> (prefixo “f” = tabela fato).
+                        </p>
+                    </blockquote>
+                </div>
+            </section>
+
+            <!-- AJUSTES POWER QUERY -->
+            <section class="sub-section">
+                <h2>
+                    3️⃣ Principais Ajustes Necessários no Power Query
+                    <i class="fas fa-wrench"></i>
+                </h2>
+
+                <div class="card">
+                    <h4>O que corrigimos?</h4>
+                    <p>
+                        Como a base veio de uma operação real, podem existir
+                        inconsistências:
+                    </p>
+                    <ul>
+                        <li>Tipos de dados incorretos</li>
+                        <li>Datas em formato errado</li>
+                        <li>Colunas desnecessárias</li>
+                        <li>Campos com texto sujo ou espaços extras</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>O Problema do SKU</h4>
+                    <p>
+                        Na tabela de vendas, temos uma coluna chamada
+                        <strong>SKU</strong> — o código do produto vendido. Mas…
+                    </p>
+
+                    <blockquote>
+                        <p>
+                            <strong>Não sabemos nada sobre esse produto na tabela de
+                                vendas.</strong>
+                        </p>
+                    </blockquote>
+
+                    <p>
+                        Para saber <strong>que produto é esse</strong>, qual o nome,
+                        marca, categoria ou preço unitário, precisamos buscar essas
+                        informações em outra tabela: a <strong>dProdutos</strong>.
+                    </p>
+                </div>
+            </section>
+
+            <!-- MESCLAR CONSULTAS -->
+            <section class="sub-section">
+                <h2>
+                    4️⃣ Mesclando Consultas: Trazendo Informações do Produto
+                    <i class="fas fa-link"></i>
+                </h2>
+
+                <div class="card">
+                    <h4>Por que mesclar?</h4>
+                    <p>
+                        A Mesclagem permite juntar duas tabelas em uma única, trazendo
+                        colunas da dimensão diretamente para a tabela fato.
+                    </p>
+
+                    <p>É como fazer um <strong>JOIN</strong> em SQL.</p>
+                </div>
+
+                <div class="card">
+                    <h4>Passo a Passo</h4>
+                    <ol>
+                        <li>
+                            No Power Query, selecione a tabela <strong>fVendas2020</strong>.
+                        </li>
+                        <li>
+                            Vá em <strong>Página Inicial → Mesclar Consultas</strong>.
+                        </li>
+                        <li>
+                            Na janela que abrir:
+                            <ul>
+                                <li>Tabela de cima: <strong>fVendas2020</strong></li>
+                                <li>Tabela de baixo: <strong>dProdutos</strong></li>
+                                <li>Coluna de ligação em ambas: <strong>SKU</strong></li>
+                            </ul>
+                        </li>
+                    </ol>
+
+                    <img src="img/Mesclar Consultas - BaseVendas2020 - CadastroProdutos.png" class="screenshot" />
+                </div>
+
+                <div class="card">
+                    <h4>Selecionando as colunas da dimensão</h4>
+                    <p>
+                        Após mesclar, clique no botão de expansão da nova coluna e
+                        selecione apenas:
+                    </p>
+                    <ul>
+                        <li>Nome do Produto</li>
+                        <li>Marca</li>
+                        <li>Preço Unitário</li>
+                    </ul>
+
+                    <img src="img/Selecionar colunas CadastroProduto - Mesclar tabelas.png" class="screenshot" />
+                    <p>
+                        Desmarque a opção
+                        <strong>“Usar nome de coluna original como prefixo”</strong>.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <h4>Validando os produtos</h4>
+                    <p>Após expandir as informações, valide alguns registros:</p>
+                    <ul>
+                        <li>O preço unitário está correto?</li>
+                        <li>A marca corresponde ao SKU?</li>
+                        <li>O nome do produto faz sentido?</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- RELACIONAMENTO VS MESCLAGEM -->
+            <section class="sub-section" style="border-left-color: var(--cor-borda-vermelho)">
+                <h2>
+                    5️⃣ Mesclar vs. Relacionamentos <i class="fas fa-balance-scale"></i>
+                </h2>
+
+                <div class="card">
+                    <h4>Existe outro caminho…</h4>
+                    <p>
+                        Sim! A mesma informação poderia chegar no relatório
+                        <strong>sem mesclar</strong>, apenas usando
+                        <strong>relacionamentos</strong>.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <h4>Por que relacionamento é melhor?</h4>
+                    <ul>
+                        <li>Economiza memória — a tabela fato continua leve.</li>
+                        <li>Evita duplicação de dados.</li>
+                        <li>Aumenta performance.</li>
+                        <li>O modelo fica mais organizado (Esquema Estrela).</li>
+                    </ul>
+                    <blockquote>
+                        <p>
+                            A mesclagem repete informações linha por linha. O relacionamento
+                            conecta as tabelas sem duplicar nada.
+                        </p>
+                    </blockquote>
+                </div>
+
+                <div class="card">
+                    <h4>Quando mesclar, então?</h4>
+                    <ul>
+                        <li>
+                            Quando a análise exige cálculos linha a linha diretamente na
+                            tabela fato.
+                        </li>
+                        <li>
+                            Quando o dado da dimensão precisa participar de transformações
+                            no Power Query.
+                        </li>
+                        <li>
+                            Quando não existe uma chave confiável para o relacionamento.
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>“Por que não vem tudo junto?”</h4>
+                    <p>
+                        Porque separar dimensões das tabelas fato é um padrão
+                        internacional chamado <strong>Modelagem Dimensional</strong>.
+                    </p>
+
+                    <p>As vantagens incluem:</p>
+                    <ul>
+                        <li>Menor ocupação de memória</li>
+                        <li>Melhor compressão de dados (VertiPaq)</li>
+                        <li>Maior velocidade nas consultas</li>
+                        <li>Relatórios mais flexíveis</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h4>Limpando a tabela caso tenhamos mesclado</h4>
+                    <p>
+                        Se você preferir seguir o método ideal (relacionamento), basta:
+                    </p>
+                    <ul>
+                        <li>Excluir as colunas trazidas pela mesclagem, ou</li>
+                        <li>
+                            Excluir a etapa inteira da mesclagem no painel “Etapas
+                            Aplicadas”.
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="sub-section">
+                <h2>
+                    6️⃣ Unindo as Vendas dos Anos: Acrescentar Consultas (APPEND)
+                    <i class="fas fa-layer-group"></i>
+                </h2>
+
+                <div class="card">
+                    <h4>Por que juntar as tabelas de vendas?</h4>
+                    <p>
+                        Temos três arquivos: <strong>Vendas 2020</strong>,
+                        <strong>Vendas 2021</strong> e <strong>Vendas 2022</strong>.
+                    </p>
+                    <p>
+                        Se deixarmos cada ano como uma tabela separada, até funciona… mas
+                        será muito mais trabalhoso:
+                    </p>
+                    <ul>
+                        <li>Teríamos que criar medidas para cada tabela.</li>
+                        <li>Teríamos que repetir DAX para 2020, 2021 e 2022.</li>
+                        <li>Teríamos gráficos duplicados ou filtros limitados.</li>
+                        <li>Geraria confusão no modelo e poluição visual.</li>
+                    </ul>
+
+                    <blockquote>
+                        <p>
+                            <strong>Objetivo ideal:</strong> ter
+                            <strong>uma única tabela de vendas</strong> com todos os anos
+                            juntos.
+                        </p>
+                    </blockquote>
+                </div>
+
+                <div class="card">
+                    <h4>Importando as tabelas de 2021 e 2022</h4>
+                    <p>No Power Query, clique em:</p>
+                    <ol>
+                        <li><strong>Novo Fonte → Excel</strong>.</li>
+                        <li>Selecione <strong>"Base Vendas - 2021.xlsx"</strong>.</li>
+                        <li>
+                            Depois, repita para <strong>"Base Vendas - 2022.xlsx"</strong>.
+                        </li>
+                    </ol>
+
+                    <p>Aqui surge algo curioso:</p>
+
+                    <blockquote class="note">
+                        <p>
+                            <strong>Não aparece a opção "Transformar Dados".</strong><br />
+                            Isso acontece porque você já está dentro do Power Query. Como
+                            você já está no ambiente de transformação, ele só mostra o botão
+                            <strong>OK</strong>.
+                        </p>
+                    </blockquote>
+                </div>
+
+                <div class="card">
+                    <h4>
+                        Agora sim: Vamos somar todas as bases usando "Acrescentar
+                        Consultas"
+                    </h4>
+
+                    <p>Na parte superior do Power Query, vá para:</p>
+
+                    <p>
+                        <strong>Página Inicial → Combinar → Acrescentar Consultas</strong>
+                    </p>
+
+                    <p>
+                        É a ferramenta que “empilha” tabelas — diferentemente de Mesclar,
+                        que adiciona colunas.
+                    </p>
+
+                    <img src="img/Acrescentar Consultas.png" class="screenshot" />
+
+                    <p>Existem duas opções:</p>
+                    <ul>
+                        <li>
+                            <strong>Acrescentar Consultas</strong> – adiciona dados dentro
+                            da tabela selecionada.
+                        </li>
+                        <li>
+                            <strong>Acrescentar Consultas como Nova</strong> – cria uma nova
+                            tabela com o resultado da soma.
+                        </li>
+                    </ul>
+
+                    <blockquote>
+                        <p>
+                            <strong>Para nosso caso:</strong> vamos usar
+                            <strong>Acrescentar Consultas como Nova</strong>.
+                        </p>
+                    </blockquote>
+                </div>
+
+                <div class="card">
+                    <h4>A tela de Acrescentar Consultas</h4>
+
+                    <p>
+                        A tela que aparece permite escolher quais tabelas serão
+                        empilhadas:
+                    </p>
+
+                    <img src="img/Tela Acrescentar.png" class="screenshot" />
+
+                    <p>Configure assim:</p>
+                    <ol>
+                        <li>No topo, selecione <strong>Três ou mais tabelas</strong>.</li>
+                        <li>
+                            Adicione na ordem:
+                            <ul>
+                                <li>fVendas2020</li>
+                                <li>fVendas2021</li>
+                                <li>fVendas2022</li>
+                            </ul>
+                        </li>
+                        <li>
+                            Se colocou na ordem errada, use as setas para reorganizar.
+                        </li>
+                        <li>Clique em <strong>OK</strong>.</li>
+                    </ol>
+                </div>
+
+                <div class="card">
+                    <h4>Renomeando a tabela unificada</h4>
+                    <p>Uma nova consulta aparece. Renomeie para:</p>
+
+                    <blockquote><strong>fBaseVendas</strong></blockquote>
+                </div>
+            </section>
+
+            <section class="sub-section">
+                <h2>
+                    7️⃣ Posso excluir as tabelas separadas?
+                    <i class="fas fa-trash-alt"></i>
+                </h2>
+
+                <div class="card">
+                    <h4>Tentando excluir as tabelas 2020, 2021 e 2022…</h4>
+                    <p>
+                        Quando você tenta excluir as consultas antigas
+                        (<strong>fVendas2020</strong>, <strong>fVendas2021</strong>,
+                        <strong>fVendas2022</strong>), o Power Query dá erro.
+                    </p>
+
+                    <blockquote>
+                        <p><strong>Mas por que não deixa excluir?</strong></p>
+                    </blockquote>
+
+                    <p>
+                        Porque a consulta <strong>fBaseVendas</strong> DEPENDE delas. Elas
+                        são as fontes usadas no “Acrescentar Consultas”.
+                    </p>
+
+                    <p>
+                        Se excluir, o Power Query não saberá mais de onde viram os dados.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <h4>Então o que fazer?</h4>
+
+                    <p>
+                        Simples: vamos deixar as tabelas existirem, mas
+                        <strong>sem carregar para o modelo</strong>.
+                    </p>
+
+                    <p>No lado direito, clique com botão direito em cada tabela e:</p>
+
+                    <p><strong>Desmarque “Habilitar Carga”.</strong></p>
+
+                    <blockquote class="note">
+                        <p>
+                            Assim, elas continuam existindo como “apoio” para o Power Query,
+                            mas não ocupam espaço no modelo.
+                        </p>
+                    </blockquote>
+                </div>
+            </section>
+
+            <section class="sub-section">
+                <h2>
+                    8️⃣ E se amanhã chegar uma nova base, como Vendas 2023?
+                    <i class="fas fa-calendar-plus"></i>
+                </h2>
+
+                <div class="card">
+                    <h4>Preciso refazer tudo?</h4>
+                    <p>
+                        <strong>Não!</strong> Você não precisa recriar nada nem excluir
+                        tabelas.
+                    </p>
+
+                    <p>Basta seguir estes passos:</p>
+                    <ol>
+                        <li>
+                            Importar a nova tabela (ex.:
+                            <strong>Base Vendas - 2023.xlsx</strong>).
+                        </li>
+                        <li>Criar a consulta <strong>fVendas2023</strong>.</li>
+                        <li>
+                            Ir em:
+                            <ul>
+                                <li><strong>Combinar → Acrescentar Consultas</strong></li>
+                            </ul>
+                        </li>
+                        <li>
+                            Desta vez NÃO será “como nova”. Será apenas:
+                            <blockquote><strong>Acrescentar Consultas</strong></blockquote>
+                        </li>
+                        <li>
+                            Selecione:
+                            <ul>
+                                <li><strong>fBaseVendas</strong> (a tabela principal)</li>
+                                <li><strong>fVendas2023</strong> (nova tabela)</li>
+                            </ul>
+                        </li>
+                    </ol>
+
+                    <p>
+                        Pronto! Agora sua tabela principal está atualizada com quatro
+                        anos.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <h4>Validando os resultados</h4>
+                    <p>No Power BI (modo Relatório):</p>
+                    <ol>
+                        <li>Vá para a visualização de dados (ícone de tabela).</li>
+                        <li>Selecione <strong>fBaseVendas</strong>.</li>
+                        <li>Clique em “Data da Venda”.</li>
+                        <li>Ordene por data (clicando no cabeçalho).</li>
+                    </ol>
+
+                    <p>
+                        Agora você verá registros de 2020, 2021, 2022 — e, caso exista,
+                        2023.
+                    </p>
+                </div>
+            </section>
+
+            <section class="sub-section">
+                <h2>9️⃣ Importando Dados de uma Pasta: Automação de Bases Anuais <i class="fas fa-folder-open"></i></h2>
+
+                <div class="card">
+                    <h4>Por que importar de uma pasta?</h4>
+                    <p>Até agora, importamos cada base de vendas (2020, 2021, 2022) manualmente. Isso funciona, mas não
+                        escala bem. Sempre que chegar um novo arquivo (ex: <strong>Base Vendas - 2023.xlsx</strong>),
+                        teríamos que repetir parte do trabalho.</p>
+                    <p>A abordagem profissional é usar a opção <strong>“Pasta”</strong> no Power Query. Assim, o Power
+                        BI passa a ler todos os arquivos de uma pasta de forma dinâmica, atualizando automaticamente
+                        quando novos arquivos forem adicionados.</p>
+                    <blockquote class="note">
+                        <p><strong>Ideia central:</strong> em vez de conectar em vários arquivos, conectamos em uma
+                            <strong>pasta</strong> e deixamos o Power Query cuidar do restante.
+                        </p>
+                    </blockquote>
+                </div>
+
+                <div class="card">
+                    <h4>Preparando o terreno: limpando as consultas antigas</h4>
+                    <p>Antes de importar pela pasta, vamos remover as consultas de vendas que criamos manualmente:</p>
+                    <ul>
+                        <li><strong>fVendas2020</strong></li>
+                        <li><strong>fVendas2021</strong></li>
+                        <li><strong>fVendas2022</strong></li>
+                        <li><strong>fBaseVendas</strong> (caso ainda exista)</li>
+                    </ul>
+                    <p>Você pode excluir assim:</p>
+                    <ul>
+                        <li>Selecionando <strong>fBaseVendas</strong> primeiro e depois as demais, e deletando.</li>
+                        <li>Ou segurando <strong>Ctrl</strong>, selecionando todas as consultas de vendas e excluindo de
+                            uma vez.</li>
+                    </ul>
+                    <p>Como nenhuma consulta está sendo usada por outra (neste momento), a exclusão é permitida.</p>
+                </div>
+
+                <div class="card">
+                    <h4>Importando os arquivos pela opção “Pasta”</h4>
+                    <p>No Power BI Desktop, faça o seguinte:</p>
+                    <ol>
+                        <li>Na guia <strong>Página Inicial</strong>, clique em <strong>Obter Dados</strong> →
+                            <strong>Mais...</strong>.
+                        </li>
+                        <li>Procure e selecione a opção <strong>Pasta</strong>.</li>
+                        <li>Escolha a pasta onde estão salvos os arquivos de vendas (Base Vendas - 2020, 2021, 2022 e
+                            assim por diante).</li>
+                    </ol>
+                    <p>Ao confirmar, o Power Query exibirá uma nova janela mostrando todos os arquivos daquela pasta.
+                    </p>
+                    <img src="img/Importar arquivos da pasta.png"
+                        alt="Janela mostrando os arquivos de uma pasta para importação no Power BI" class="screenshot">
+                </div>
+
+                <div class="card">
+                    <h4>A nova consulta criada a partir da pasta</h4>
+                    <p>Ao clicar em <strong>Transformar Dados</strong>, o Power Query criará uma nova consulta com o
+                        nome da pasta (por exemplo: <strong>documentos</strong>).</p>
+                    <p>Nessa consulta, teremos uma tabela com uma linha para cada arquivo encontrado na pasta, com
+                        colunas como:</p>
+                    <ul>
+                        <li><strong>Name</strong> – nome do arquivo</li>
+                        <li><strong>Extension</strong> – extensão (.xlsx, .csv etc.)</li>
+                        <li><strong>Folder Path</strong> – caminho da pasta</li>
+                        <li><strong>Content</strong> – conteúdo binário do arquivo</li>
+                    </ul>
+                    <img src="img/importação de pasta 1.png"
+                        alt="Tabela gerada a partir da importação da pasta, listando todos os arquivos"
+                        class="screenshot">
+                </div>
+
+                <div class="card">
+                    <h4>Primeira ideia: filtrar manualmente os arquivos de vendas</h4>
+                    <p>A primeira reação natural seria ir até a coluna <strong>Name</strong>, abrir o filtro e marcar
+                        apenas:</p>
+                    <ul>
+                        <li><strong>Base Vendas - 2020.xlsx</strong></li>
+                        <li><strong>Base Vendas - 2021.xlsx</strong></li>
+                        <li><strong>Base Vendas - 2022.xlsx</strong></li>
+                    </ul>
+                    <p>Isso até funciona, mas tem um grande problema: quando chegar a <strong>Base Vendas -
+                            2023.xlsx</strong>, teríamos que voltar ao Power Query e editar o filtro manualmente.</p>
+                    <blockquote>
+                        <p><strong>Objetivo:</strong> criar um filtro dinâmico, que funcione para os arquivos atuais e
+                            para os que ainda vão surgir.</p>
+                    </blockquote>
+                </div>
+
+                <div class="card">
+                    <h4>Filtro dinâmico com “Começa com”</h4>
+                    <p>Vamos excluir a etapa de filtro anterior (caso tenha sido criada) e refazer de maneira mais
+                        inteligente.</p>
+                    <ol>
+                        <li>Clique na seta de filtro da coluna <strong>Name</strong>.</li>
+                        <li>Vá até <strong>Filtros de Texto</strong>.</li>
+                        <li>Selecione a opção <strong>Começa com...</strong>.</li>
+                    </ol>
+                    <img src="img/Filtros de texto.png" alt="Menu de filtros de texto na coluna Name"
+                        class="screenshot">
+                    <p>Na janela que abrir, preencha o campo com o texto:</p>
+                    <pre><code>Base Vendas -</code></pre>
+                    <img src="img/Filtrar Linhas.png"
+                        alt="Tela de filtro de linhas configurando 'Começa com Base Vendas -'" class="screenshot">
+                    <p>Agora o Power Query vai trazer <strong>todos os arquivos</strong> cujo nome começa com
+                        <strong>"Base Vendas -"</strong>, incluindo futuras bases como 2023, 2024, etc., desde que sigam
+                        o mesmo padrão de nome.
+                    </p>
+                    <blockquote class="lesson-learned">
+                        <p><strong>Lição:</strong> processos profissionais de ETL dependem de <strong>padrões</strong>.
+                            Sem padrão no nome dos arquivos, fica impossível automatizar.</p>
+                    </blockquote>
+                </div>
+
+                <div class="card">
+                    <h4>Combinando os arquivos filtrados</h4>
+                    <p>Com o filtro configurado, vamos abrir o conteúdo dessas tabelas. Na coluna
+                        <strong>Content</strong>, clique no ícone à direita em <strong>“Combinar Arquivos”</strong>.
+                    </p>
+                    <p>Para que essa combinação funcione corretamente, os arquivos precisam ser:</p>
+                    <ul>
+                        <li>Similares em estrutura.</li>
+                        <li>Com a mesma ordem de colunas.</li>
+                        <li>Com os mesmos nomes de colunas.</li>
+                        <li>Com o mesmo nome de aba interna (no nosso caso, <strong>Plan1</strong>).</li>
+                    </ul>
+                    <img src="img/Combinar Arquivos.png" alt="Tela de Combinar Arquivos no Power Query"
+                        class="screenshot">
+                    <p>O Power Query também pedirá um <strong>arquivo de amostra</strong>. Escolha, por exemplo, a base
+                        de 2020.</p>
+                    <blockquote class="note">
+                        <p>O arquivo de amostra serve para o Power Query entender a estrutura da tabela (colunas, tipos
+                            de dados, aba etc.) e aplicar o mesmo padrão aos demais arquivos.</p>
+                    </blockquote>
+                </div>
+
+                <div class="card">
+                    <h4>Conferindo se todos os anos foram carregados</h4>
+                    <p>Depois de combinar os arquivos, teremos uma tabela unificada com as vendas. Para verificar se
+                        todos os anos foram incluídos:</p>
+                    <ol>
+                        <li>Localize a coluna <strong>Data da Venda</strong>.</li>
+                        <li>Abra o filtro dela e pesquise por <strong>2021</strong>.</li>
+                    </ol>
+                    <img src="img/filtro data venda 2021 sem carregar mais.png"
+                        alt="Filtro da Data da Venda sem mostrar 2021 antes de carregar mais" class="screenshot">
+                    <p>Se o ano não aparecer, isso não significa que os dados não foram importados. Em muitos casos, o
+                        Power BI está mostrando apenas uma amostra das datas.</p>
+                    <p>Nesse caso, clique em <strong>“Carregar mais”</strong> (acima dos botões OK e Cancelar) e tente
+                        filtrar novamente. Agora os anos 2020, 2021 e 2022 deverão aparecer normalmente.</p>
+                </div>
+
+                <div class="card">
+                    <h4>Consultas auxiliares criadas automaticamente</h4>
+                    <p>Ao lado esquerdo, na lista de consultas, o Power Query cria algumas consultas auxiliares, como:
+                    </p>
+                    <ul>
+                        <li><strong>Exemplo de Arquivo</strong></li>
+                        <li><strong>Transformação de Arquivos</strong></li>
+                        <li><strong>Transformação de Arquivos (2)</strong></li>
+                        <li>Pastas agrupando essas consultas</li>
+                    </ul>
+                    <img src="img/Consultas auxiliares.png"
+                        alt="Consultas auxiliares criadas automaticamente pelo Power Query na combinação de arquivos"
+                        class="screenshot">
+                    <p>Essas consultas são usadas internamente para aplicar as transformações em todos os arquivos. Você
+                        não precisa editar nada nelas.</p>
+                    <p>Se quiser, pode minimizar/ocultar essas pastas para manter o painel de consultas visualmente mais
+                        limpo.</p>
+                </div>
+
+                <div class="card">
+                    <h4>Renomeando a tabela final e testando a automação</h4>
+                    <p>Por fim, renomeie a tabela resultante da combinação para um nome mais claro, por exemplo:</p>
+                    <pre><code>fBaseVendas</code></pre>
+                    <p>Agora vamos testar se o processo é realmente automático:</p>
+                    <ol>
+                        <li>Na pasta do Windows, duplique o arquivo <strong>"Base Vendas - 2022.xlsx"</strong>.</li>
+                        <li>Renomeie a cópia para <strong>"Base Vendas - 2023.xlsx"</strong>.</li>
+                        <li>Abra o arquivo e, na coluna <strong>Data da Venda</strong>, substitua o ano de 2022 para
+                            2023.</li>
+                        <li>Salve e feche o arquivo.</li>
+                        <li>De volta ao Power BI, clique em <strong>Atualizar</strong>.</li>
+                    </ol>
+                    <p>Depois da atualização, verifique em <strong>fBaseVendas</strong> se o ano de 2023 aparece no
+                        filtro de datas e se a quantidade de registros aumentou.</p>
+                    <blockquote class="lesson-learned">
+                        <p><strong>Conclusão:</strong> sempre que você adicionar um novo arquivo de vendas na pasta,
+                            seguindo o padrão de nome “Base Vendas - AAAA.xlsx”, o Power BI vai integrá-lo
+                            automaticamente à tabela <strong>fBaseVendas</strong>.</p>
+                    </blockquote>
+                </div>
+            </section>
+
+            <section class="sub-section">
+                <h2>🔟 Atividade: Preparando-se para a Aula 5 (Calendário) <i class="fas fa-calendar-alt"></i></h2>
+
+                <div class="card">
+                    <h4>Objetivo da atividade</h4>
+                    <p>Consolidar o que vimos sobre importação, combinação de bases e modelagem, e preparar o terreno
+                        para o próximo assunto fundamental: a <strong>Tabela Calendário</strong>.</p>
+                </div>
+
+                <div class="card">
+                    <h4>Passo a passo</h4>
+                    <ol>
+                        <li>Abra o arquivo do seu projeto no Power BI e confirme que você tem:
+                            <ul>
+                                <li>A tabela <strong>fBaseVendas</strong> com todas as vendas de 2020 a 2022 (e 2023, se
+                                    você adicionou).</li>
+                                <li>As dimensões <strong>dClientes</strong>, <strong>dProdutos</strong> e
+                                    <strong>dLojas</strong> já tratadas.
+                                </li>
+                            </ul>
+                        </li>
+                        <li>Na guia Relatório, crie um visual de <strong>tabela</strong> mostrando:
+                            <ul>
+                                <li><strong>Data da Venda</strong></li>
+                                <li><strong>Quantidade</strong> (ou outra métrica de volume de vendas)</li>
+                                <li><strong>Valor Total</strong> (se você já tiver criado essa medida ou coluna).</li>
+                            </ul>
+                        </li>
+                        <li>Em um caderno, arquivo Word, Notion ou OneNote, responda:
+                            <ul>
+                                <li>Qual é a <strong>data mais antiga</strong> e a <strong>data mais recente</strong> na
+                                    tabela <strong>fBaseVendas</strong>?</li>
+                                <li>Você consegue facilmente criar:
+                                    <ul>
+                                        <li>Um gráfico de vendas por <strong>ano</strong>?</li>
+                                        <li>Um gráfico de vendas por <strong>mês</strong>?</li>
+                                        <li>Um gráfico de vendas por <strong>dia da semana</strong>?</li>
+                                    </ul>
+                                </li>
+                                <li>O que você acha que está faltando no modelo para facilitar esse tipo de análise de
+                                    tempo?</li>
+                            </ul>
+                        </li>
+                        <li>Pesquise rapidamente na internet:
+                            <ul>
+                                <li><strong>"Tabela Calendário Power BI"</strong></li>
+                                <li><strong>"Dimensão Data"</strong></li>
+                                <li><strong>"Time Intelligence DAX"</strong></li>
+                            </ul>
+                        </li>
+                        <li>Anote, com suas próprias palavras:
+                            <ul>
+                                <li>O que é uma <strong>Tabela Calendário</strong> ou <strong>Dimensão Data</strong>.
+                                </li>
+                                <li>Por que a maioria dos modelos profissionais de BI tem uma tabela específica de
+                                    datas.</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="card">
+                    <h4>Próximo passo</h4>
+                    <p>Na <strong>Aula 5</strong>, vamos criar juntos a sua própria tabela calendário e conectar essa
+                        tabela ao modelo. A partir disso, análises por ano, mês, trimestre, dia da semana e comparações
+                        entre períodos ficarão muito mais simples e poderosas.</p>
+                </div>
+            </section>
+
+
+        </section>
+    </main>
+
+    <a href="#" id="back-to-top" class="back-to-top" title="Voltar ao topo">
+        <i class="fas fa-chevron-up"></i>
+    </a>
+
+    <script src="js/quotes.js"></script>
+
+    <script>
+        // Pensamento do dia
+        document.addEventListener("DOMContentLoaded", function () {
+            const quoteElement = document.querySelector(".thought-of-the-day p");
+            const authorElement = document.querySelector(
+                ".thought-of-the-day cite"
+            );
+
+            if (
+                quoteElement &&
+                authorElement &&
+                typeof quotes !== "undefined" &&
+                quotes.length > 0
+            ) {
+                const randomIndex = Math.floor(Math.random() * quotes.length);
+                const randomQuote = quotes[randomIndex];
+
+                quoteElement.textContent = `"${randomQuote.quote}"`;
+                authorElement.textContent = `— ${randomQuote.author}`;
+            }
+
+            // Mobile menu
+            const sidebar = document.getElementById("sidebar");
+            const content = document.getElementById("content");
+            const hamburgerMenu = document.getElementById("hamburger-menu");
+            const overlay = document.getElementById("overlay");
+
+            function toggleSidebarMobile() {
+                sidebar.classList.toggle("active");
+                content.classList.toggle("sidebar-active");
+                overlay.classList.toggle("active");
+            }
+
+            hamburgerMenu.addEventListener("click", toggleSidebarMobile);
+            overlay.addEventListener("click", toggleSidebarMobile);
+        });
+    </script>
+</body>
+
+</html>
