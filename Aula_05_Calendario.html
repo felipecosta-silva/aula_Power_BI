@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="pt-BR" id="top">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Aula 5 - Tabela Calendário no Power BI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"
+    integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <button class="hamburger-menu" id="hamburger-menu">
+    ☰
+  </button>
+
+  <div class="sidebar" id="sidebar">
+    <button class="sidebar-toggle-btn" id="sidebar-toggle-btn">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+
+    <h2><span class="sidebar-title-text">Power BI </span>📊</h2>
+
+    <a href="index.html"><i class="fas fa-home"></i> <span>Início Power BI</span></a>
+    <a href="Introducao_BI_e_Power_BI.html"><i class="fas fa-rocket"></i> <span>Aula 1: Intro BI</span></a>
+    <a href="Aula_02_Modelagem.html"><i class="fas fa-project-diagram"></i> <span>Aula 2: Modelagem</span></a>
+    <a href="Aula_03_Criacao_Relacionamento.html"><i class="fas fa-sitemap"></i> <span>Aula 3:
+        Relacionamentos</span></a>
+    <a href="Aula_04_Acrescentar_Consultas.html"><i class="fas fa-layer-group"></i> <span>Aula 4: Acrescentar
+        Consultas</span></a>
+    <a href="Aula_05_Calendario.html" class="active"><i class="fas fa-calendar-alt"></i> <span>Aula 5: Tabela
+        Calendário</span></a>
+    <a href="Aula_06_Relatorio_Simples.html"><i class="fas fa-chart-pie"></i> <span>Aula 6:
+        Visualização</span></a>
+  </div>
+
+  <div class="content" id="content">
+    <header>
+      <h1>Aula 5 – Tabela Calendário no Power BI</h1>
+      <p>
+        Introdução à tabela calendário: por que ela é obrigatória em qualquer modelo profissional
+        e como criá-la da forma certa (DAX e Power Query).
+      </p>
+    </header>
+
+    <main class="main-section">
+      <section class="sub-section" id="conceitos-calendario">
+        <h2>1. O que todo iniciante PRECISA entender sobre Tabela Calendário</h2>
+
+        <p>
+          A tabela calendário é um dos pilares de qualquer modelo de dados bem feito no Power BI.
+          Não é “só uma tabela de datas para filtrar”, ela é a base para todos os cálculos de tempo
+          (Time Intelligence) funcionarem corretamente.
+        </p>
+
+        <div class="card">
+          <h4>1. Para que serve a tabela calendário?</h4>
+          <p>
+            A maioria dos alunos acha que a tabela calendário serve apenas para
+            “filtrar datas” nos visuais. Mas, na prática, ela é a responsável por permitir que o
+            Power BI entenda <strong>tempo</strong> de forma correta.
+          </p>
+          <p>É graças à tabela calendário que você consegue fazer cálculos como:</p>
+          <ul>
+            <li>Total no mês atual</li>
+            <li>Total no mês anterior</li>
+            <li>Acumulado no ano (YTD)</li>
+            <li>Comparar Ano x Ano (YoY)</li>
+            <li>Comparar Mês x Mês (MoM)</li>
+          </ul>
+          <p>
+            <strong>Sem uma boa tabela calendário, essas funções simplesmente não funcionam da forma esperada.</strong>
+          </p>
+        </div>
+
+        <div class="card">
+          <h4>2. A Tabela Calendário deve ser DIMENSÃO (tabela mestra)</h4>
+          <p>
+            No modelo estrela, a tabela de calendário é uma <strong>dimensão</strong>.
+            Isso significa que:
+          </p>
+          <ul>
+            <li>Cada data aparece apenas uma vez.</li>
+            <li>Não há repetições de datas.</li>
+            <li>Ela fica no lado <strong>1</strong> dos relacionamentos (1 → Muitos).</li>
+          </ul>
+          <p>
+            Exemplo de relacionamento ideal:
+          </p>
+          <pre><code class="language-text">
+Calendario[Date]   1  →  BaseVendas[Data da Venda]   *
+          </code></pre>
+        </div>
+
+        <div class="card">
+          <h4>3. Nome da coluna principal</h4>
+          <p>
+            A coluna principal da tabela calendário deve ter um nome claro, como:
+            <strong>Date</strong>, <strong>Data</strong> ou algo semelhante.
+          </p>
+          <p>
+            O Power BI reconhece automaticamente colunas de datas quando:
+          </p>
+          <ul>
+            <li>O tipo da coluna é <strong>Data</strong>;</li>
+            <li>O nome da coluna claramente remete a data.</li>
+          </ul>
+          <p>
+            Evite nomes confusos como:
+            <code>DataVendaSistemaRFQ_2024</code>, especialmente para quem está começando.
+          </p>
+        </div>
+
+        <div class="card">
+          <h4>4. Relacionamento sempre 1 → Muitos</h4>
+          <p>
+            O relacionamento básico é:
+          </p>
+          <pre><code class="language-text">
+Calendario[Date]   1  →  BaseVendas[Data da Venda]   *
+          </code></pre>
+          <p>
+            Isso garante:
+          </p>
+          <ul>
+            <li>Filtros funcionando corretamente;</li>
+            <li>Funções de Time Intelligence operando da forma certa;</li>
+            <li>Segmentações de dados (slicers) confiáveis.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h4>5. Nunca use a coluna de data da tabela fato diretamente</h4>
+          <p>Evite usar diretamente:</p>
+          <ul>
+            <li><code>BaseVendas[Data da Venda]</code> em segmentadores;</li>
+            <li><code>BaseVendas[Data da Venda]</code> em eixos de gráficos;</li>
+            <li><code>BaseVendas[Data da Venda]</code> em cálculos de Time Intelligence.</li>
+          </ul>
+          <p>
+            👉 Sempre utilize a tabela calendário como referência oficial de datas.
+          </p>
+        </div>
+
+        <div class="card">
+          <h4>6. Cuidado com <code>CALENDARAUTO()</code></h4>
+          <p>
+            A função <code>CALENDARAUTO()</code> cria automaticamente um intervalo de datas com base em todas
+            as tabelas do modelo. É útil, mas:
+          </p>
+          <ul>
+            <li>Pode pegar datas de teste (muito antigas ou irrelevantes);</li>
+            <li>Pode incluir datas “estranhas” geradas por valores nulos convertidos (ex.: 1899, 1900...);</li>
+            <li>Pode criar um calendário muito maior do que você realmente precisa.</li>
+          </ul>
+          <p>
+            Use, mas com consciência.
+          </p>
+        </div>
+
+        <div class="card">
+          <h4>7. Ordenação de mês (sempre dá problema em quem está começando)</h4>
+          <p>
+            Se você tiver uma coluna:
+          </p>
+          <pre><code class="language-text">
+MesNome = "Janeiro", "Fevereiro", "Março"...
+          </code></pre>
+          <p>
+            Você precisa obrigatoriamente fazer:
+          </p>
+          <p>
+            <strong>Modelagem → Ordenar por coluna → MesNumero</strong>
+          </p>
+          <p>
+            Caso contrário, o Power BI vai ordenar por ordem alfabética:
+            Abril, Agosto, Dezembro…
+          </p>
+        </div>
+
+        <div class="card">
+          <h4>8. Função prática de cada coluna</h4>
+          <p>Uma forma simples de explicar para iniciantes:</p>
+          <ul>
+            <li><strong>Ano</strong> → agrupar valores por ano;</li>
+            <li><strong>MesNumero</strong> → ordenar os meses corretamente;</li>
+            <li><strong>MesNome</strong> → usar nos visuais (mais amigável para o usuário);</li>
+            <li><strong>Ano-Mês</strong> → navegação no tempo e eixos contínuos;</li>
+            <li><strong>Trimestre</strong> → análises corporativas (Q1, Q2, Q3...);</li>
+            <li><strong>Dia da Semana</strong> → entender comportamento (ex.: pico de vendas no sábado);</li>
+            <li><strong>É Fim de Semana?</strong> → separar dias úteis de finais de semana.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h4>9. Marcar como tabela de data</h4>
+          <p>
+            No Power BI, depois de criar a tabela calendário, é importante marcar como
+            <strong>“Tabela de data”</strong>:
+          </p>
+          <ul>
+            <li>Ferramentas de tabela → Marcar como tabela de data;</li>
+            <li>Selecionar a coluna oficial de data (geralmente <code>[Date]</code>).</li>
+          </ul>
+          <p>
+            Isso ajuda o Power BI a entender que essa é a tabela oficial de datas do modelo.
+          </p>
+        </div>
+
+        <div class="card">
+          <h4>10. Atualização automática do calendário</h4>
+          <p>
+            Quando o calendário é baseado no MIN e MAX das datas da tabela fato, ele se ajusta automaticamente
+            à medida que novas vendas chegam.
+          </p>
+          <p>
+            Assim você evita:
+          </p>
+          <ul>
+            <li>Falta de datas para relatórios futuros;</li>
+            <li>Datas sobrando sem necessidade.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h4>11. Semana ISO (visão mais avançada)</h4>
+          <p>
+            Em muitos cenários (Europa, indústria, logística), a contagem de semana segue a
+            <strong>Semana ISO</strong>:
+          </p>
+          <ul>
+            <li>A semana começa na segunda-feira;</li>
+            <li>A semana 1 é aquela que contém o dia 4 de janeiro.</li>
+          </ul>
+          <p>Você pode mencionar isso como curiosidade e aprofundar depois.</p>
+        </div>
+
+        <div class="card">
+          <h4>12. Use SEMPRE a tabela calendário no modelo, não na improvisação</h4>
+          <p>Regras simples para iniciantes:</p>
+          <ul>
+            <li>Segmentadores → sempre da tabela calendário;</li>
+            <li>Eixos de gráficos → sempre da tabela calendário;</li>
+            <li>Time Intelligence → sempre usando a tabela calendário.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h4>13. Modelo estrela e datas</h4>
+          <p>Evite caminhos estranhos como:</p>
+          <pre><code class="language-text">
+Vendas → Produto → Categoria → Calendário
+          </code></pre>
+          <p>
+            O correto é:
+          </p>
+          <pre><code class="language-text">
+Calendário → Vendas
+          </code></pre>
+        </div>
+
+        <div class="card">
+          <h4>14. Nunca crie mais de uma tabela calendário</h4>
+          <p>
+            Ter duas tabelas de data no modelo quase sempre leva a:
+          </p>
+          <ul>
+            <li>Relacionamentos ambíguos;</li>
+            <li>Erros em medidas de tempo;</li>
+            <li>Filtros inconsistentes e difíceis de entender.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="sub-section" id="dax-calendario">
+        <h2>2. Criando Tabela Calendário via DAX</h2>
+
+        <div class="card">
+          <h4>2.1. Tabela calendário estática (intervalo fixo)</h4>
+          <p>
+            Exemplo clássico, onde você define manualmente as datas mínima e máxima:
+          </p>
+          <pre><code class="language-dax">
+Calendario =
+CALENDAR ( DATE(2015, 1, 1), DATE(2030, 12, 31) )
+          </code></pre>
+
+          <p>
+            E uma versão mais completa, já com colunas derivadas:
+          </p>
+          <pre><code class="language-dax">
+Calendario =
+ADDCOLUMNS (
+    CALENDAR ( DATE(2015,1,1), DATE(2030,12,31) ),
+    "Ano", YEAR([Date]),
+    "Mês", MONTH([Date]),
+    "Nome Mês", FORMAT([Date], "MMMM"),
+    "Ano-Mês", FORMAT([Date], "YYYY-MM"),
+    "Trimestre", "T" & FORMAT([Date], "Q"),
+    "Dia", DAY([Date]),
+    "Dia da Semana", WEEKDAY([Date], 2),
+    "Nome Dia Semana", FORMAT([Date], "dddd")
+)
+          </code></pre>
+
+          <p>
+            ✔️ Bom para bases com período muito bem definido.
+            ❌ Se entrrem datas fora desse intervalo, você precisa
+            alterar o DAX manualmente.
+          </p>
+        </div>
+
+        <div class="card">
+          <h4>2.2. Calendário baseado em BaseVendas[Data da Venda]: Detalhando as Funções DAX</h4>
+          <p>
+            Versão profissional: o calendário se ajusta ao intervalo de dados da tabela fato. Para construir essa
+            tabela, usamos a função principal **CALENDAR** (que gera a coluna de datas) e a função **ADDCOLUMNS** (que
+            adiciona todas as colunas derivadas).
+          </p>
+
+          <p>
+            Observe o detalhe de cada função utilizada para criar as colunas de tempo:
+          </p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Função DAX</th>
+                <th>Sintaxe e Parâmetros Chave</th>
+                <th>Propósito na Tabela Calendário</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>CALENDAR</code></td>
+                <td><code>CALENDAR( DataInicial, DataFinal )</code></td>
+                <td>Cria uma tabela com uma única coluna chamada `Date`, contendo todas as datas entre as datas mínima e
+                  máxima fornecidas.</td>
+              </tr>
+              <tr>
+                <td><code>ADDCOLUMNS</code></td>
+                <td><code>ADDCOLUMNS( Tabela, "NomeColuna1", Expressão1, ... )</code></td>
+                <td>Pega a tabela gerada por `CALENDAR` e adiciona as colunas de tempo (Ano, Mês, Dia, etc.) com base
+                  nas expressões.</td>
+              </tr>
+              <tr>
+                <td><code>YEAR</code>, <code>MONTH</code>, <code>DAY</code></td>
+                <td><code>YEAR( Data )</code></td>
+                <td>Extraem o valor numérico exato (Ano, Mês ou Dia) da coluna principal `[Date]`.</td>
+              </tr>
+              <tr>
+                <td><code>WEEKDAY</code></td>
+                <td><code>WEEKDAY( Data, TipoRetorno )</code></td>
+                <td>Retorna um número para o dia da semana. O segundo parâmetro (**TipoRetorno**) é crucial:
+                  <ul>
+                    <li>Tipo 1 (Omitido): Domingo = 1, Sábado = 7.</li>
+                    <li>**Tipo 2 (usado aqui): Segunda = 1, Domingo = 7.** (Mais comum em BI e negócios)</li>
+                    <li>Tipo 3: Segunda = 0, Domingo = 6.</li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td><code>FORMAT</code></td>
+                <td><code>FORMAT( Valor, FormatoTexto )</code></td>
+                <td>Converte um valor (como a data) em um formato de texto específico (ex: nome do mês, nome do dia da
+                  semana, ano-mês para ordenação).
+                  <ul>
+                    <li>`"mmmm"`: Retorna o nome completo do mês (ex: Janeiro).</li>
+                    <li>`"dddd"`: Retorna o nome completo do dia da semana (ex: Segunda-feira).</li>
+                    <li>`"YYYY-MM"`: Retorna o ano e mês juntos, útil para eixos de gráficos.</li>
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <td><code>IF</code></td>
+                <td><code>IF( Lógica, ValorSeVerdadeiro, ValorSeFalso )</code></td>
+                <td>Usada para criar colunas de indicadores Binários (Sim/Não). Ex: `IF ( [DiaSemanaNumero] > 5, 1, 0 )`
+                  checa se o dia é Sábado ou Domingo e retorna 1 (Sim) ou 0 (Não).</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>
+            O código DAX completo para o calendário automático, baseado no intervalo da sua tabela `BaseVendas`:
+          </p>
+          <pre><code class="language-dax">
+Calendario =
+VAR MinData =
+    MIN ( BaseVendas[Data da Venda] )
+VAR MaxData =
+    MAX ( BaseVendas[Data da Venda] )
+RETURN
+ADDCOLUMNS (
+    CALENDAR ( MinData, MaxData ),
+    "Ano", YEAR ( [Date] ),
+    "MesNumero", MONTH ( [Date] ),
+    "MesNome", FORMAT ( [Date], "mmmm" ),
+    "Dia", DAY ( [Date] ),
+
+    -- Dia da semana
+    "DiaSemanaNumero", WEEKDAY ( [Date], 2 ),              -- 1 = segunda, 7 = domingo (Tipo 2)
+    "DiaSemanaNome", FORMAT ( [Date], "dddd" ),
+
+    -- Ano-Mês (para ordenação/segmentação)
+    "AnoMesNumero", YEAR ( [Date] ) * 100 + MONTH ( [Date] ),
+    "AnoMesTexto", FORMAT ( [Date], "YYYY-MM" ),
+    "MesAnoTexto", FORMAT ( [Date], "MMMM/YYYY" ),
+
+    -- Trimestre
+    "TrimestreNumero", INT ( FORMAT ( [Date], "Q" ) ),
+    "TrimestreTexto", "T" & FORMAT ( [Date], "Q" ) & " - " & YEAR ( [Date] ),
+
+    -- Indicadores
+    "EhFimDeSemana", IF ( WEEKDAY ( [Date], 2 ) > 5, 1, 0 ), -- Sábado (6) e Domingo (7)
+    "EhDiaUtil", IF ( WEEKDAY ( [Date], 2 ) <= 5, 1, 0 )    -- Segunda (1) a Sexta (5)
+)
+          </code></pre>
+
+          <p>
+            ✔️ Se chegarem novas vendas com datas maiores (ou menores),
+            na próxima atualização o calendário será expandido automaticamente.
+          </p>
+        </div>
+      </section>
+
+      <section class="sub-section" id="pq-calendario">
+        <h2>3. Criando Tabela Calendário no Power Query: Detalhando a Linguagem M</h2>
+
+        <div class="card" id="pq-calendario-automacao">
+          <h4>3.1. Entendendo os Componentes da Linguagem M (Power Query)</h4>
+          <p>
+            A linguagem M, utilizada no Power Query, possui tipos de dados específicos, chamados de **Literais**, que
+            são essenciais na manipulação de datas e tempo.
+          </p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Componente M</th>
+                <th>Sintaxe</th>
+                <th>Propósito e Exemplo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>**Data**</td>
+                <td>`#date(Ano, Mês, Dia)`</td>
+                <td>Define uma data específica. *Ex: `#date(2025, 1, 1)` (1º de Janeiro de 2025).*</td>
+              </tr>
+              <tr>
+                <td>**Duração**</td>
+                <td>`#duration(Dias, Horas, Minutos, Segundos)`</td>
+                <td>Define um intervalo de tempo, não um ponto fixo. Usado para contar passos ou diferenças entre datas.
+                  *Ex: `#duration(1, 0, 0, 0)` (exatamente 1 dia).*</td>
+              </tr>
+              <tr>
+                <td>**Data e Hora**</td>
+                <td>`#datetime(A, M, D, H, Min, S)`</td>
+                <td>Define um ponto específico no tempo, com detalhes de hora, minuto e segundo.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4>3.2. Criando o Calendário Automático: Passo a Passo e Testes</h4>
+          <p>
+            O método mais robusto no Power Query envolve criar uma **Consulta Nula (Blank Query)** e definir as
+            variáveis de data mínima, data máxima, e o intervalo de dias de forma programática.
+          </p>
+
+          <div class="step-by-step">
+            <h5>Passo 1: Encontrando a Data Mínima (`DataMin`)</h5>
+            <p>
+              Em uma nova consulta nula, utilize a função `List.Min` para encontrar a data mais antiga na coluna da sua
+              tabela Fato (`fBaseVendas`).
+              <br />
+              **Atenção:** A linguagem M é **Case Sensitive** (sensível a maiúsculas/minúsculas). O nome da tabela e da
+              coluna devem ser escritos **exatamente** como estão no Power Query (ex: `fBaseVendas[Data da Venda]`, e
+              não `fbasevendas[data da venda]`).
+            </p>
+            <pre><code class="language-powershell">
+= List.Min(fBaseVendas[Data da Venda])
+            </code></pre>
+            <p>
+              *Para ver o resultado:* Digite o código acima na Barra de Fórmulas e aperte Enter. O resultado será a data
+              inicial do seu calendário.
+            </p>
+
+            <h5>Passo 2: Inserindo e Renomeando a Etapa para a Data Máxima (`DataMax`)</h5>
+            <p>
+              Para não perder o resultado do `DataMin` e continuar a construir o calendário na mesma consulta:
+            <ol>
+              <li>Na seção **Etapas Aplicadas**, clique com o botão direito na última etapa (onde você definiu o
+                `DataMin`) e escolha **"Inserir próxima etapa"**.</li>
+              <li>Renomeie a nova etapa para `DataMax`.</li>
+              <li>Na Barra de Fórmulas, utilize a função `List.Max`.</li>
+            </ol>
+            </p>
+            <pre><code class="language-powershell">
+// Se você estivesse digitando no Editor Avançado, seria assim:
+DataMax = List.Max(fBaseVendas[Data da Venda]),
+            </code></pre>
+            <p>
+              **Outra forma (Editor Avançado):** Para maior clareza e controle, o método preferido é usar o **Editor
+              Avançado** (Guia Página Inicial) para definir todas as variáveis (`let... in`) de uma vez.
+            </p>
+
+            <h5>Passo 3: Calculando a Quantidade Total de Dias (`QtdDias`)</h5>
+            <p>
+              Precisamos saber o número exato de dias entre a data mínima e a máxima.
+            </p>
+            <pre><code class="language-powershell">
+= Duration.Days(DataMax - DataMin) + 1
+            </code></pre>
+            <ul>
+              <li>**`DataMax - DataMin`:** Subtrair datas retorna um valor de **Duração**.</li>
+              <li>**`Duration.Days(...)`:** Transforma essa Duração em um número inteiro de dias.</li>
+              <li>**Por que o `+ 1`?** A diferença entre a data final e a inicial calcula apenas o **intervalo** entre
+                elas. Para incluir a data inicial e a data final, é necessário adicionar **+ 1** ao resultado. (Ex: De
+                01/01 a 03/01 a diferença é 2 dias, mas a lista deve ter 3 datas: 01, 02 e 03).</li>
+            </ul>
+
+            <h5>Passo 4: Criando a Lista de Datas Contínuas (`List.Dates`)</h5>
+            <p>
+              A função `List.Dates` é utilizada para gerar a sequência:
+            </p>
+            <pre><code class="language-powershell">
+= List.Dates(DataMin, QtdDias, #duration(1,0,0,0))
+            </code></pre>
+            <ul>
+              <li>**`DataMin`:** A data de início da lista.</li>
+              <li>**`QtdDias`:** O número total de elementos que a lista deve conter (calculado no passo anterior).</li>
+              <li>**`#duration(1,0,0,0)` (Step):** Define o **passo** (intervalo) entre as datas. O valor `(1, 0, 0, 0)`
+                significa que o calendário pulará de 1 em 1 dia, garantindo a continuidade diária.</li>
+            </ul>
+
+            <h5>Passo 5: Convertendo a Lista em Tabela e Renomeando</h5>
+            <p>
+              O resultado do `List.Dates` é uma **Lista** (não formatada como tabela). Para transformá-la em uma tabela
+              manipulável, vá na guia **Transformar** e clique em **Converter para Tabela** . Renomeie a coluna para
+              **Datas** e altere o tipo para **Data**.
+            </p>
+          </div>
+
+          <h4>3.3. Consolidação no Editor Avançado</h4>
+          <p>
+            O código final para gerar a base da tabela calendário é consolidado no Editor Avançado (Página Inicial →
+            Editor Avançado), garantindo que tudo seja feito em um único bloco de código M:
+          </p>
+
+          <pre><code class="language-powershell">
+let
+    // 1. Definição das variáveis de início e fim
+    DataMin = List.Min(fBaseVendas[Data da Venda]),
+    DataMax = List.Max(fBaseVendas[Data da Venda]),
+    
+    // 2. Cálculo da quantidade de dias (incluindo o +1)
+    QtdDias = Duration.Days(DataMax-DataMin)+1,
+    
+    // 3. Criação da lista de datas
+    Personalizar1 = List.Dates(DataMin, QtdDias, #duration(1, 0, 0, 0)),
+    
+    // 4. Conversão para Tabela
+    #"Convertido para Tabela" = Table.FromList(Personalizar1, Splitter.SplitByNothing(), null, null, ExtraValues.Error),
+    
+    // 5. Renomear e Alterar o Tipo
+    #"Colunas Renomeadas" = Table.RenameColumns(#"Convertido para Tabela",{{"Column1", "Datas"}}),
+    #"Tipo Alterado" = Table.TransformColumnTypes(#"Colunas Renomeadas",{{"Datas", type date}})
+in
+    #"Tipo Alterado"
+          </code></pre>
+
+          <h4>3.4. Adição Rápida de Colunas Auxiliares</h4>
+          <p>
+            Em vez de escrever mais código M, o Power Query oferece ferramentas visuais poderosas. Selecione a coluna
+            **Datas**, vá na guia **Adicionar Coluna**, e utilize as funções de data para criar rapidamente colunas
+            auxiliares como Ano, Mês, Nome do Mês, Trimestre do Ano e Semana do Ano
+          </p>
+          <p>
+            **Lembrete de Ordenação:** Após criar a tabela (seja por DAX ou Power Query), você sempre deve ir para a
+            **Visualização de Dados** no Power BI (não no Power Query) e usar **Modelagem → Ordenar por coluna** (Ex:
+            Ordenar a coluna `Nome do Mês` pela coluna `Número do Mês`).
+          </p>
+        </div>
+
+        <div class="card">
+          <h4>3.5. Criando Colunas Personalizadas com Lógica Condicional</h4>
+
+          <p>
+            O menu de **Adicionar Coluna** tem muitas opções prontas, mas e se você precisar de uma categorização que
+            não existe por padrão, como **Semestre** ou **Porte da Loja**?
+          </p>
+          <p>
+            É para isso que usamos a **Coluna Condicional**, uma ferramenta visual do Power Query que permite criar
+            lógica `SE... ENTÃO... SENÃO` (IF... THEN... ELSE) .
+          </p>
+
+          <h5>O Papel da Coluna Condicional e o Bloco "Senão"</h5>
+          <p>
+            A **Coluna Condicional** é utilizada para criar novas colunas de texto (categóricas) baseadas em uma ou mais
+            condições lógicas sobre colunas existentes.
+            <br />
+            No nosso caso, iremos utilizá-la para criar análises de tempo que não existem nas opções padrão (como o
+            <strong>Semestre</strong>), e para classificar dados numéricos em grupos (como o <strong>Ticket do
+              Produto</strong>).
+          </p>
+          <p>
+            O bloco **Senão** (ou "Else" no código M) é fundamental. Ele define o valor padrão que a nova coluna irá
+            receber se <strong>nenhuma</strong> das regras anteriores for satisfeita.
+            <br />
+            **Exemplo:** No caso do Semestre, se o mês não for menor ou igual a 6 (Semestre 1), o bloco **Senão**
+            garante que ele seja automaticamente o Semestre 2, cobrindo todos os casos restantes (Meses 7, 8, 9, 10, 11
+            e 12).
+          </p>
+
+          <h5>Caso Prático 1: Criando a Coluna "Semestre" (Tabela Calendário)</h5>
+
+          <p>
+            Para adicionar uma análise por semestre, algo que não está disponível nas opções de data do Power Query,
+            usamos a Coluna Condicional a partir da coluna `Mês` (número):
+          </p>
+
+          <ol>
+            <li>Na guia **Adicionar Coluna**, clique em **Coluna Condicional**.</li>
+            <li>**Nome da Coluna:** Digite `"Semestre"`.</li>
+            <li>**Primeira Regra:**
+              <ul>
+                <li>**Nome da Coluna:** Selecione `Mes` (a coluna com o número do mês).</li>
+                <li>**Operador:** Escolha `é menor ou igual a`.</li>
+                <li>**Valor:** Digite `6`.</li>
+                <li>**Saída:** Digite `"Semestre 1"`.</li>
+              </ul>
+            </li>
+            <li>**Definindo o SENÃO:**
+              <ul>
+                <li>**Senão:** Digite `"Semestre 2"`.</li>
+              </ul>
+            </li>
+          </ol>
+
+          <p>
+            **Resultado em código M (Gerado Automaticamente):**
+          </p>
+          <pre><code class="language-powershell">
+= Table.AddColumn(#"Mês Inserido", "Semestre", each if [Mes] <= 6 then "Semestre 1" else "Semestre 2")
+          </code></pre>
+
+          <h5>Caso Prático 2: Criando a Coluna "Ticket do Produto" (Tabela Produtos)</h5>
+
+          <p>
+            Para classificar os produtos por faixas de preço (Ticket Baixo, Médio, Alto), utilizamos a coluna
+            <code>Preço Unitario</code> da tabela de Produtos:
+          </p>
+
+          <ol>
+            <li>Na tabela de Produtos, vá em **Adicionar Coluna** e clique em **Coluna Condicional**.</li>
+            <li>**Nome da Coluna:** Digite `"Ticket do Produto"`.</li>
+            <li>**Primeira Condição (Ticket Baixo):**
+              <ul>
+                <li>**Nome da Coluna:** Selecione `Preço Unitario`.</li>
+                <li>**Operador:** Escolha `é menor ou igual a`.</li>
+                <li>**Valor:** Digite `500`.</li>
+                <li>**Saída:** Digite `"Ticket Baixo"`.</li>
+              </ul>
+            </li>
+            <li>**Adicionar Cláusula (Ticket Médio):** Clique em **Adicionar Cláusula**.
+              <ul>
+                <li>**Nome da Coluna:** Selecione `Preço Unitario`.</li>
+                <li>**Operador:** Escolha `é menor ou igual a`.</li>
+                <li>**Valor:** Digite `2000`.</li>
+                <li>**Saída:** Digite `"Ticket Médio"`.</li>
+              </ul>
+            </li>
+            <li>**Definindo o SENÃO (Ticket Alto):**
+              <p>
+                Como última condição (o Senão), definimos que se o preço for maior que R$ 2000, ele será "Ticket Alto".
+              </p>
+              <ul>
+                <li>**Senão:** Digite `"Ticket Alto"`.</li>
+              </ul>
+            </li>
+          </ol>
+
+          <p>
+            **Resultado em código M (Gerado Automaticamente):**
+          </p>
+          <pre><code class="language-powershell">
+= Table.AddColumn(NomeDaEtapaAnterior, "Ticket do Produto", each if [Preço Unitario] <= 500 then "Ticket Baixo" else if [Preço Unitario] <= 2000 then "Ticket Médio" else "Ticket Alto")
+          </code></pre>
+
+          <h5>Outros Exemplos Úteis de Colunas Condicionais (Análise das Tabelas)</h5>
+          <p>
+            Com base na estrutura de dados das suas tabelas (Lojas e Clientes), podemos adicionar mais colunas
+            condicionais para enriquecer a análise:
+          </p>
+          <ul>
+            <li>**Porte da Loja (Tabela Lojas):**
+              <p>
+                Classificando as lojas com base no número de colaboradores (usando a coluna
+                <code>Quantidade Colaboradores</code>):
+              </p>
+              <ul>
+                <li>**Regra 1:** Se `Quantidade Colaboradores` `é menor ou igual a` `10` → Saída: `"Pequena"`.</li>
+                <li>**Regra 2:** Se `Quantidade Colaboradores` `é menor ou igual a` `50` → Saída: `"Média"`.</li>
+                <li>**Senão:** Saída: `"Grande"`.</li>
+              </ul>
+            </li>
+            <li>**Segmento Escolar (Tabela Clientes):**
+              <p>
+                Agrupando o nível de escolaridade para análises (usando a coluna <code>Nivel Escolar</code>):
+              </p>
+              <ul>
+                <li>**Regra 1:** Se `Nivel Escolar` `é igual a` `"Fundamental"` ou `Nivel Escolar` `é igual a` `"Médio"`
+                  → Saída: `"Básico"`.</li>
+                <li>**Regra 2:** Se `Nivel Escolar` `é igual a` `"Graduação"` → Saída: `"Superior"`.</li>
+                <li>**Senão:** Saída: `"Pós-Graduação/Outro"`.</li>
+              </ul>
+            </li>
+            <li>**Indicador Fim de Semana / Dia Útil (Tabela Calendário):**
+              <ul>
+                <li>**Regra:** Se `Dia da Semana Número` `é maior ou igual a` `6` (Sábado) → Saída: `"Fim de Semana"`.
+                </li>
+                <li>**Senão:** Saída: `"Dia Útil"`.</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="sub-section" id="calculo-idade-pq">
+        <h2>4. Power Query Além do Calendário: Calculando Tempo e Idade</h2>
+
+        <p>
+          O Power Query também é excelente para calcular o tempo decorrido entre duas datas, como a idade de um cliente
+          ou o tempo de serviço de um funcionário.
+        </p>
+
+        <div class="card">
+          <h4>4.1. Calculando a Idade (Transformando Duração em Anos)</h4>
+          <p>
+            Se você tem uma tabela `Cadastro de Clientes` com a coluna `Data de Nascimento`, o cálculo de idade é feito
+            em três etapas no Power Query:
+          </p>
+
+          <h5>Passo 1: Gerar a Duração (`Idade`)</h5>
+          <p>
+            Selecione a coluna **Data de Nascimento**, vá na guia **Adicionar Coluna → Data → Idade**.
+            O Power Query gera uma nova coluna com o tempo decorrido da data de nascimento até o momento da atualização,
+            no formato **Duração** (dias, horas, minutos...).
+          </p>
+
+          <h5>Passo 2: Converter Duração para Total de Anos</h5>
+          <p>
+            Com a nova coluna de **Idade** selecionada, vá na guia **Transformar → Duração → Total de Anos**.
+            Isso converte o valor de duração para um número decimal que representa a idade exata.
+          </p>
+
+          <h5>Passo 3: Arredondamento para Baixo</h5>
+          <p>
+            Uma pessoa só completa o ano de idade no dia do seu aniversário. Portanto, precisamos descartar as casas
+            decimais.
+            Com a coluna ainda selecionada, vá em **Transformar → Arredondamento → Arredondar para Baixo**.
+            O resultado final é a idade exata do cliente em anos inteiros.
+          </p>
+        </div>
+
+        <div class="card">
+          <h4>4.2. Outras Aplicações de Cálculo de Tempo no Power Query</h4>
+          <p>A lógica de Duração e Datas permite calcular métricas temporais cruciais:</p>
+          <ul>
+            <li>**Tempo de Empresa:** Diferença entre a `Data de Admissão` e a data atual.</li>
+            <li>**Tempo de Cliente:** Diferença entre a `Data do Primeiro Pedido` e a data atual (útil para análise de
+              longevidade e fidelidade).</li>
+            <li>**Ciclo de Pedido:** Tempo entre a `Data do Pedido` e a `Data de Entrega` (para medir eficiência
+              logística).</li>
+            <li>**Idade Média de Estoque:** Tempo entre a `Data de Entrada no Estoque` e a data atual (para identificar
+              itens obsoletos ou de baixa rotatividade).</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="sub-section" id="pq-parametros">
+        <h2>5. Otimizando a Conexão: Parâmetros no Power Query</h2>
+
+        <p>
+          Ao importar dados de arquivos locais (como Excel ou CSV), o Power BI registra o **caminho absoluto** do seu
+          arquivo. Isso causa um grande problema de manutenção: se você mover a pasta do projeto, ou se outra pessoa
+          abrir o arquivo em um computador com um caminho diferente, todas as fontes de dados falharão.
+        </p>
+        <p>
+          A solução profissional para isso é utilizar **Parâmetros**, que agem como variáveis globais no Power Query,
+          tornando a gestão das conexões centralizada e dinâmica.
+        </p>
+
+        <div class="card">
+          <h4>Passo 1: Criando o Parâmetro 'Caminho'</h4>
+          <p>
+            Vamos criar o parâmetro <code>Caminho</code>, que armazenará a pasta principal onde estão localizados todos
+            os arquivos Excel (Clientes, Produtos, Lojas, etc.).
+          </p>
+          <ol>
+            <li>No Power Query, vá para a guia **Página Inicial**.</li>
+            <li>No grupo **Parâmetros**, clique em **Gerenciar Parâmetros** -> **Novo Parâmetro** .</li>
+            <li>Defina os detalhes:
+              <ul>
+                <li>**Nome:** `Caminho`</li>
+                <li>**Tipo Obrigatório:** `Texto`</li>
+                <li>**Valor Atual:** Insira o caminho completo da sua pasta principal, **incluindo a barra invertida
+                  final** (`\`), por exemplo: `C:\Users\felip\OneDrive\Documentos\aula_Power_BI\documentos\`</li>
+              </ul>
+            </li>
+          </ol>
+        </div>
+
+        <div class="card">
+          <h4>Passo 2: Usando o Parâmetro nas Fontes de Dados (Linguagem M)</h4>
+          <p>
+            Originalmente, sua consulta de Clientes iniciava assim, com o caminho *hardcoded* (escrito diretamente):
+          </p>
+          <pre><code class="language-powershell">
+let
+    Fonte = Excel.Workbook(File.Contents("C:\Users\felip\OneDrive\Documentos\aula_Power_BI\documentos\Cadastro Clientes.xlsx"), null, true),
+    // ...
+          </code></pre>
+
+          <p>
+            Agora, vamos deletar o caminho completo e usar o parâmetro <code>Caminho</code>. Na Linguagem M, o operador
+            para **concatenar** (juntar) textos é o **e comercial** (`&`).
+          </p>
+
+          <p>
+            Você pode fazer isso no Editor Avançado, ou clicando na etapa `Fonte` e editando a barra de fórmulas:
+          </p>
+
+          <pre><code class="language-powershell">
+let
+    // O Power Query irá juntar: Parâmetro & "Nome do Arquivo"
+    Fonte = Excel.Workbook(File.Contents(Caminho & "Cadastro Clientes.xlsx"), null, true),
+    Plan1_Sheet = Fonte{[Item="Plan1",Kind="Sheet"]}[Data],
+    // ... (Restante do código M) ...
+          </code></pre>
+        </div>
+
+        <div class="card">
+          <h4>Benefício: Portabilidade e Manutenção Centralizada</h4>
+          <p>
+            Se o caminho for alterado, você só precisa ir em **Gerenciar Parâmetros** e atualizar o valor do parâmetro
+            <code>Caminho</code> uma única vez. Todas as tabelas que usam o parâmetro serão corrigidas automaticamente,
+            eliminando a necessidade de atualizar a fonte de dados em cada uma delas (Clientes, Produtos, Lojas, etc.).
+          </p>
+        </div>
+      </section>
+
+      <section class="exercise">
+        <h2>Exercício – Crie sua primeira Tabela Calendário profissional</h2>
+        <p>
+          Baseado no que vimos até aqui, faça o seguinte no seu arquivo do Power BI:
+        </p>
+        <ol>
+          <li>Criar uma tabela calendário via DAX baseada em <code>BaseVendas[Data da Venda]</code>.</li>
+          <li>Adicionar colunas: Ano, Mês número, Nome do mês, Ano-Mês, Dia, Dia da Semana, É Fim de Semana.</li>
+          <li>Marcar a tabela como “Tabela de Data” e ajustar os relacionamentos.</li>
+          <li>
+            Criar um gráfico de linha com <strong>Calendario[AnoMesTexto]</strong> no eixo
+            e uma medida de vendas no valor.
+          </li>
+        </ol>
+
+        <button class="toggle-answer-btn">Mostrar sugestão de resposta</button>
+        <div class="answer">
+          <p>Um exemplo de script de calendário via DAX seria:</p>
+          <pre><code class="language-dax">
+Calendario =
+VAR MinData =
+    MIN ( BaseVendas[Data da Venda] )
+VAR MaxData =
+    MAX ( BaseVendas[Data da Venda] )
+RETURN
+ADDCOLUMNS (
+    CALENDAR ( MinData, MaxData ),
+    "Ano", YEAR ( [Date] ),
+    "MesNumero", MONTH ( [Date] ),
+    "MesNome", FORMAT ( [Date], "mmmm" ),
+    "Dia", DAY ( [Date] ),
+    "DiaSemanaNumero", WEEKDAY ( [Date], 2 ),
+    "DiaSemanaNome", FORMAT ( [Date], "dddd" ),
+    "AnoMesNumero", YEAR ( [Date] ) * 100 + MONTH ( [Date] ),
+    "AnoMesTexto", FORMAT ( [Date], "YYYY-MM" ),
+    "MesAnoTexto", FORMAT ( [Date], "MMMM/YYYY" ),
+    "EhFimDeSemana", IF ( WEEKDAY ( [Date], 2 ) > 5, 1, 0 ),
+    "EhDiaUtil", IF ( WEEKDAY ( [Date], 2 ) <= 5, 1, 0 )
+)
+          </code></pre>
+
+          <p>
+            Depois disso, marque a tabela como <strong>Tabela de Data</strong>,
+            relacione <code>Calendario[Date]</code> com <code>BaseVendas[Data da Venda]</code>
+            e use <code>AnoMesTexto</code> + <code>AnoMesNumero</code> para ordenar os gráficos.
+          </p>
+        </div>
+      </section>
+
+
+
+      <section class="thought-of-the-day" id="thought-of-the-day">
+        Carregando pensamento do dia...
+      </section>
+    </main>
+
+    <a href="#top" class="back-to-top" id="back-to-top">↑</a>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-..."
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-dax.min.js" integrity="sha512-..."
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-powershell.min.js"
+    integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script src="quotes.js"></script>
+  <script src="js/main.js"></script>
+</body>
+
+</html>

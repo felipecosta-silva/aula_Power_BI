@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aula 6: Visualização de Dados - Seu Primeiro Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+</head>
+
+<body>
+ <button class="hamburger-menu" id="hamburger-menu">
+    ☰
+  </button>
+
+  <div class="sidebar" id="sidebar">
+    <button class="sidebar-toggle-btn" id="sidebar-toggle-btn">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+
+    <h2><span class="sidebar-title-text">Power BI </span></h2>
+
+    <a href="index.html"><i class="fas fa-home"></i> <span>Início Power BI</span></a>
+    <a href="Introducao_BI_e_Power_BI.html"><i class="fas fa-rocket"></i> <span>Aula 1: Intro BI</span></a>
+    <a href="Aula_02_Modelagem.html"><i class="fas fa-project-diagram"></i> <span>Aula 2: Modelagem</span></a>
+    <a href="Aula_03_Criacao_Relacionamento.html"><i class="fas fa-sitemap"></i> <span>Aula 3:
+        Relacionamentos</span></a>
+    <a href="Aula_04_Acrescentar_Consultas.html"><i class="fas fa-layer-group"></i> <span>Aula 4: Acrescentar
+        Consultas</span></a>
+    <a href="Aula_05_Calendario.html"><i class="fas fa-calendar-alt"></i> <span>Aula 5: Tabela
+        Calendário</span></a>
+    <a href="Aula_06_Relatorio_Simples.html" class="active"><i class="fas fa-chart-pie"></i> <span>Aula 6:
+        Visualização</span></a>
+  </div>
+
+
+    <div class="content" id="content">
+     <header>
+      <h1>Aula 6: A Arte da Visualização - Criando seu Primeiro Dashboard</h1>
+      <p>
+        O trabalho duro de ETL e Modelagem já foi feito. Agora vamos enriquecer nossos dados e transformá-los em um
+        relatório interativo e profissional.
+      </p>
+    </header>
+
+    <main class="main-section">
+
+    <section class="main-section">
+      <blockquote class="thought-of-the-day">
+        <p>"Carregando citação..."</p>
+        <cite>—</cite>
+      </blockquote>
+
+      <section class="sub-section" style="border-left-color: var(--cor-borda-azul)">
+        <h2>
+          1️⃣ Enriquecendo a Tabela de Vendas (Power Query)
+          <i class="fas fa- people-carry"></i>
+        </h2>
+        <p>
+          Na tabela de vendas original, temos apenas códigos. Vamos trazer informações relevantes de outras tabelas
+          usando a <strong>Mesclagem</strong>.
+        </p>
+
+        <div class="card">
+          <h4>Mesclar Consultas vs. Mesclar como Nova</h4>
+          <p>No Power Query, vá em <strong>Página Inicial > Combinar > Mesclar Consultas</strong>. Lembre-se: "Combinar"
+            aqui significa adicionar informações a uma tabela já existente, sem a necessidade de criar uma nova.</p>
+          <ul>
+            <li><strong>Produtos:</strong> Traga apenas <code>Nome do Produto</code>, <code>Preço Unitário</code> e
+              <code>Marca</code>.</li>
+            <li><strong>Localidades:</strong> Traga <code>País</code> e <code>Continente</code> para análises
+              geográficas.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h4>Coluna de Faturamento Total</h4>
+          <p>Com a <code>Quantidade</code> e o <code>Preço Unitário</code> na mesma tabela, selecione as duas colunas,
+            vá em <strong>Adicionar Coluna > Padrão > Multiplicar</strong>. Agora temos o faturamento linha a linha!</p>
+        </div>
+      </section>
+
+      <section class="sub-section" style="border-left-color: var(--cor-borda-azul)">
+        <h2>
+          2️⃣ O Conceito de Canvas e a Regra de Ouro
+          <i class="fas fa-palette"></i>
+        </h2>
+        <p>
+          Você está na <strong>Exibição de Relatório</strong> (o primeiro
+          ícone na barra lateral esquerda). Esta área branca é o seu "Canvas"
+          (tela de pintura).
+        </p>
+
+        <div class="card">
+          <h4>A Regra de Ouro: Medidas Explícitas</h4>
+          <p>
+            Muitos iniciantes arrastam a coluna numérica direto para o
+            gráfico. O Power BI cria uma soma automática ("Soma implícita").
+            <strong>Evite isso!</strong>
+          </p>
+          <p>
+            A boa prática profissional é criar
+            <strong>Medidas Explícitas</strong> (usando DAX) para tudo o que
+            você for analisar. Isso garante:
+          </p>
+          <ul>
+            <li>Que você pode reutilizar o cálculo em vários gráficos.</li>
+            <li>Que você pode alterar a lógica em um só lugar.</li>
+            <li>Que os nomes fiquem claros e profissionais.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="sub-section">
+        <h2>
+          3️⃣ Criando as Medidas Principais (KPIs)
+          <i class="fas fa-calculator"></i>
+        </h2>
+        <p>
+          Antes de arrastar gráficos, vamos criar nossos indicadores. Se ainda
+          não tem, crie uma tabela vazia chamada <code>_Medidas</code> para
+          organizá-las (basta clicar em "Inserir Dados", não digitar nada e
+          salvar como "_Medidas").
+        </p>
+
+        <div class="card">
+          <h4>Medida 1: Faturamento Total</h4>
+          <p>
+            Lembre-se da Aula 3. Vamos usar o <code>SUMX</code> para garantir
+            que estamos multiplicando preço por quantidade linha a linha.
+          </p>
+          <pre><code class="language-dax">
+Faturamento Total = 
+SUMX( 
+    fBaseVendas, 
+    fBaseVendas[Quantidade] * RELATED(dProdutos[Preço Unitario]) 
+)
+/* Nota: Se você já trouxe o preço para a fBaseVendas na aula 4, use a coluna direta.
+   Se usou relacionamento, use RELATED. Vamos assumir relacionamento. */
+          </code></pre>
+          <blockquote class="note">
+            <p><strong><i class="fas fa-info-circle"></i> O que as funções fazem aqui?</strong></p>
+            <ul>
+              <li><strong>SUMX:</strong> É um "iterador". Em vez de somar uma coluna inteira de uma vez, ela passa por
+                <strong>cada linha</strong> da tabela de vendas, faz a multiplicação (Qtd * Preço) e só no final soma
+                tudo.</li>
+              <li><strong>RELATED:</strong> É como um "PROCV" do Power BI. Como o Preço está na tabela <em>Produtos</em>
+                e a Quantidade na tabela <em>Vendas</em>, o <code>RELATED</code> busca o preço correto seguindo o
+                relacionamento que criamos.</li>
+            </ul>
+          </blockquote>
+        </div>
+
+        <div class="card">
+          <h4>Medida 2: Quantidade Vendida</h4>
+          <pre><code class="language-dax">
+Qtd Vendida = SUM( fBaseVendas[Quantidade] )
+          </code></pre>
+          <blockquote class="note">
+            <p><strong><i class="fas fa-info-circle"></i> Função SUM:</strong> Diferente da SUMX, a <code>SUM</code> é
+              direta: ela apenas soma todos os valores de uma única coluna numérica.</p>
+          </blockquote>
+        </div>
+
+        <div class="card">
+          <h4>Medida 3: Ticket Médio (DIVIDE)</h4>
+          <p>
+            Nunca use a barra <code>/</code> para divisão em BI. Use a função
+            <code>DIVIDE</code>, pois ela protege contra erros de "divisão por
+            zero".
+          </p>
+          <pre><code class="language-dax">
+Ticket Médio = DIVIDE( [Faturamento Total], [Qtd Vendida] )
+          </code></pre>
+          <blockquote class="note">
+            <p><strong><i class="fas fa-info-circle"></i> Função DIVIDE:</strong> Sempre use <code>DIVIDE</code> em vez
+              da barra <code>/</code>. Se um dia você não tiver vendas e tentar dividir por zero, o Power BI mostrará um
+              erro no gráfico se usar a barra. O <code>DIVIDE</code> trata isso e deixa o gráfico limpo (em branco ou
+              zero).</p>
+          </blockquote>
+        </div>
+      </section>
+
+      <section class="sub-section">
+        <h2>
+          4️⃣ Construindo os Visuais: Do Macro para o Micro
+          <i class="fas fa-chart-bar"></i>
+        </h2>
+        <p>
+          Um bom dashboard conta uma história. Começamos com os grandes
+          números e depois detalhamos.
+        </p>
+
+        <div class="card">
+          <h4>Passo 1: Cartões (Big Numbers)</h4>
+          <p>Selecione o visual <strong>Cartão (Card)</strong> .</p>
+          <ul>
+            <li>
+              Arraste a medida <strong>Faturamento Total</strong> para ele.
+            </li>
+            <li>
+              <strong>Dica de Formatação:</strong> Vá no pincel de formatação
+              > Valor do balão > Unidades de exibição > "Nenhum" (ou Milhares)
+              para ver o número exato. Ative as casas decimais se necessário.
+            </li>
+            <li>
+              Repita o processo criando cartões para
+              <strong>Qtd Vendida</strong> e <strong>Ticket Médio</strong>.
+            </li>
+          </ul>
+        </div>
+
+        <div class="card">
+        <h2>
+          Cartões: O Destaque do Dashboard
+          <i class="fas fa-th-large"></i>
+        </h2>
+        <div class="card">
+          <h4>O "Pulo do Gato" na Formatação</h4>
+          <ul>
+            <li><strong>Título vs Legenda:</strong> Desative a <em>Legenda de Categoria</em> e ative o <em>Título</em>
+              (em Geral) para ter controle total da fonte e alinhamento.</li>
+            <li><strong>Estilo:</strong> Em <em>Efeitos</em>, adicione uma <strong>Sombra</strong> externa e uma
+              <strong>Borda Visual</strong> com cantos arredondados (8 a 10px).</li>
+          </ul>
+        </div>
+        </div>
+
+        <div class="card">
+          <h4>Passo 2: Análise Temporal (Gráfico de Área ou Linha)</h4>
+          <p>
+            Queremos ver a evolução das vendas. Selecione o
+            <strong>Gráfico de Área</strong>.
+          </p>
+          <ul>
+            <li>
+              <strong>Eixo X:</strong> Arraste <code>AnoMesTexto</code> da sua
+              tabela <strong>dCalendario</strong>.
+            </li>
+            <li>
+              <strong>Eixo Y:</strong> Arraste a medida
+              <code>[Faturamento Total]</code>.
+            </li>
+            <li>
+              <strong>Dica de Ouro:</strong> Se o gráfico ficar fora de ordem
+              (ex: Abril antes de Janeiro), selecione a coluna
+              <code>AnoMesTexto</code> na tabela calendário e use "Classificar
+              por Coluna" > <code>AnoMesNumero</code>.
+            </li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h4>Passo 3: Comparação Categórica (Gráfico de Barras)</h4>
+          <p>
+            Vamos ver quem vende mais. Selecione o
+            <strong>Gráfico de Barras Clusterizado</strong>.
+          </p>
+          <ul>
+            <li>
+              <strong>Eixo Y (Categorias):</strong> Arraste
+              <code>Marca</code> da tabela <strong>dProdutos</strong>.
+            </li>
+            <li>
+              <strong>Eixo X (Valores):</strong> Arraste
+              <code>[Faturamento Total]</code>.
+            </li>
+          </ul>
+          <p>Isso responde rapidamente: "Qual nossa marca top de vendas?"</p>
+        </div>
+
+        <div class="card">
+          <h4>Passo 4: Tabela Detalhada (Matriz)</h4>
+          <p>
+            Para quem gosta de ver o número exato. Use o visual
+            <strong>Matriz</strong> (parecido com Tabela Dinâmica do Excel).
+          </p>
+          <ul>
+            <li>
+              <strong>Linhas:</strong> <code>Nome do Produto</code> (da
+              dProdutos).
+            </li>
+            <li>
+              <strong>Valores:</strong> <code>[Qtd Vendida]</code>,
+              <code>[Faturamento Total]</code> e <code>[Ticket Médio]</code>.
+            </li>
+            <li>
+              Adicione uma <strong>Formatação Condicional</strong> no
+              Faturamento (Barras de Dados) para facilitar a leitura visual
+              dentro da tabela.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="sub-section">
+        <h2>
+          5️⃣ Segmentação de Dados (Filtros Interativos)
+          <i class="fas fa-filter"></i>
+        </h2>
+        <p>
+          O poder do Power BI é a interatividade. Vamos permitir que o usuário
+          filtre tudo isso.
+        </p>
+
+        <div class="card">
+          <h4>Criando Slicers (Segmentação)</h4>
+          <ol>
+            <li>
+              Clique em uma área vazia e selecione o visual
+              <strong>Segmentação de Dados</strong>.
+            </li>
+            <li>
+              Arraste <code>Ano</code> da <strong>dCalendario</strong>.
+              <ul>
+                <li>
+                  Mude o estilo para "Lista" ou "Blocos" nas configurações do
+                  visual.
+                </li>
+              </ul>
+            </li>
+            <li>
+              Crie outro Slicer e arraste <code>UF</code> ou
+              <code>Região</code> da tabela <strong>dLojas</strong>.
+            </li>
+          </ol>
+          <p>
+            Agora, clique em um ano (ex: 2021). Veja todos os gráficos
+            (Cartões, Linha, Barras) recalcularem instantaneamente para aquele
+            contexto. Isso é o <strong>Contexto de Filtro</strong> em ação!
+          </p>
+        </div>
+        <div class="card">
+          <p>
+            Adicione a <strong>Segmentação de Dados (Slicer)</strong> usando o campo <code>Ano</code> ou
+            <code>Mês</code> da dCalendario.
+          </p>
+          <blockquote class="note">
+            <p><strong>Por que isso é poderoso?</strong> Ao clicar em "2024", o Power BI aplica o <strong>Contexto de
+                Filtro</strong> em todas as medidas que criamos acima automaticamente.</p>
+          </blockquote>
+        </div>
+      </section>
+
+      <section class="sub-section" style="border-left-color: var(--cor-borda-amarelo)">
+        <h2>
+          6️⃣ Turbinando a Experiência do Usuário (UX)
+          <i class="fas fa-mouse-pointer"></i>
+        </h2>
+
+        <div class="card">
+          <h4>Dicas de Ferramenta (Tooltips)</h4>
+          <p>Quer mostrar o <em>Ticket Médio</em> sem criar um gráfico novo? Arraste essa medida para o campo
+            <strong>Dicas de Ferramenta</strong> no painel de visualização de qualquer gráfico.</p>
+          <p><em>Resultado:</em> Ao passar o mouse sobre uma barra ou linha, o valor aparecerá em uma pequena janela
+            flutuante.</p>
+        </div>
+
+        <div class="card">
+          <h4>Controlando o Filtro (Editar Interações)</h4>
+          <p>Por padrão, clicar em um gráfico filtra todos os outros. Se você quiser que um gráfico específico
+            <strong>não</strong> mude ao clicar em outro:</p>
+          <ol>
+            <li>Selecione o gráfico que servirá de filtro.</li>
+            <li>Vá no menu superior <strong>Formato > Editar Interações</strong>.</li>
+            <li>Ícones pequenos aparecerão sobre os outros gráficos; clique no ícone de "proibido" (Nenhum) para travar
+              aquele visual.</li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="exercise">
+        <h2>
+          Exercício Prático: Finalizando o Projeto
+          <i class="fas fa-trophy"></i>
+        </h2>
+        <div class="card">
+          <p>Sua missão é entregar o relatório final para a diretoria.</p>
+          <ol>
+            <li>
+              Crie as 3 medidas explícitas (Faturamento, Qtd, Ticket Médio).
+            </li>
+            <li>
+              Monte um dashboard contendo:
+              <ul>
+                <li>3 Cartões no topo.</li>
+                <li>1 Gráfico de Linha (Tendência mensal).</li>
+                <li>1 Gráfico de Barras (Ranking por Marca ou Loja).</li>
+                <li>1 Segmentação de Ano.</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Desafio Extra:</strong> Crie um visual de
+              <strong>Mapa</strong> usando a coluna <code>Cidade</code> da
+              tabela <code>dLojas</code> e coloque o tamanho da bolha baseado
+              no <code>Faturamento Total</code>.
+            </li>
+          </ol>
+
+          <button class="toggle-answer-btn">
+            <i class="fas fa-eye"></i> Dica do Desafio
+          </button>
+
+          <div class="answer">
+            <p><strong>Configurando o Mapa:</strong></p>
+            <p>
+              Para o mapa funcionar bem, certifique-se de que a coluna
+              "Cidade" na tabela dLojas esteja categorizada como dados
+              geográficos.
+            </p>
+            <ol>
+              <li>Selecione a coluna Cidade na guia Dados.</li>
+              <li>
+                No menu superior "Ferramentas de Coluna", mude a "Categoria de
+                Dados" para <strong>Cidade</strong>.
+              </li>
+              <li>
+                Arraste Cidade para o campo "Localização" do mapa e
+                Faturamento para o campo "Tamanho da Bolha".
+              </li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section class="main-section" style="padding-top: 0; margin-top: -20px">
+        <section class="sub-section" style="border-left-color: var(--cor-amarelo-pbi)">
+          <h2>🚀 Conclusão do Módulo Básico</h2>
+          <p>
+            Parabéns! Você saiu do zero (tabelas de Excel soltas) e construiu
+            um modelo de BI completo (Esquema Estrela) com um Dashboard
+            funcional.
+          </p>
+          <p>
+            Você aprendeu ETL, Modelagem, DAX Básico e Visualização. Este é o
+            ciclo completo do Power BI.
+          </p>
+          <p style="font-weight: bold; font-size: 1.1em">
+            O que estudar a seguir?
+          </p>
+          <ul>
+            <li>DAX Avançado (CALCULATE, Time Intelligence acumulada).</li>
+            <li>Power BI Online (Publicação e Compartilhamento).</li>
+            <li>Tooltips personalizadas (Dicas de ferramenta).</li>
+          </ul>
+          <p>Continue praticando!</p>
+        </section>
+      </section>
+    </section>
+  </main>
+    </div>
+  <a href="#" id="back-to-top" class="back-to-top" title="Voltar ao topo">
+    <i class="fas fa-chevron-up"></i>
+  </a>
+
+  <script src="js/quotes.js"></script>
+  <script src="js/main.js"></script>
+</body>
+
+</html>
