@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="pt-BR" id="top">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Aula 6 – Gráficos de Vendas e Introdução ao DAX no Power BI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Fonte e Ícones -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Prism (para códigos) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css"
+    integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Seu CSS principal -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <!-- Botão hambúrguer (mobile) -->
+  <button class="hamburger-menu" id="hamburger-menu">☰</button>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+    <button class="sidebar-toggle-btn" id="sidebar-toggle-btn">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+
+    <h2><span class="sidebar-title-text">Power BI </span></h2>
+
+    <a href="index.html"><i class="fas fa-home"></i> <span>Início Power BI</span></a>
+    <a href="Introducao_BI_e_Power_BI.html"><i class="fas fa-rocket"></i> <span>Aula 1: Intro BI</span></a>
+    <a href="Aula_02_Modelagem.html"><i class="fas fa-project-diagram"></i>
+      <span>Aula 2: Modelagem</span></a>
+    <a href="Aula_03_Criacao_Relacionamento.html"><i class="fas fa-sitemap"></i> <span>Aula 3:
+        Relacionamentos</span></a>
+    <a href="Aula_04_Acrescentar_Consultas.html"><i class="fas fa-layer-group"></i>
+      <span>Aula 4: Acrescentar Consultas</span></a>
+    <a href="Aula_05_Calendario.html"><i class="fas fa-calendar-alt"></i>
+      <span>Aula 5: Tabela Calendário</span></a>
+    <a href="Aula_06_Resolucao_Exercicio_Funcionario.html"><i class="fas fa-chart-line"></i>
+      <span>Aula 6: Resolução Exércício Funcionarios</span></a>
+    <a href="Aula_07_Gráficos de Vendas e Introdução ao DAX.html" class="active"><i class="fas fa-chart-line"></i>
+      <span>Aula 7: Gráficos de Vendas e Introdução ao DAX</span></a>
+  </div>
+
+  <!-- CONTEÚDO -->
+  <div class="content" id="content">
+    <header>
+      <h1>Aula 7 – Gráficos de Vendas e Introdução ao DAX no Power BI</h1>
+      <p>
+        O trabalho duro de ETL e Modelagem já foi feito. Agora vamos
+        enriquecer nossos dados e transformá-los em um relatório interativo e
+        profissional. Nesta aula, vamos começar a trabalhar com **gráficos de
+        vendas** no Power BI, utilizando dados já existentes. Em seguida,
+        vamos introduzir o conceito de **DAX** (Data Analysis Expressions) e
+        como utilizá-lo para melhorar nossos gráficos e análises.
+      </p>
+    </header>
+
+    <main class="main-section">
+      <!-- SECTION 1 – Criando os Gráficos de Vendas -->
+      <blockquote class="thought-of-the-day">
+        <p>"Carregando citação..."</p>
+        <cite>—</cite>
+      </blockquote>
+
+      <section class="sub-section" id="graficos-vendas">
+        <h2>1. Criando Gráficos de Vendas no Power BI</h2>
+
+        <p>
+          Vamos começar a montar os gráficos básicos para análise de vendas.
+          Para isso, usaremos os dados de vendas já presentes no nosso modelo.
+          Nosso foco aqui é criar os gráficos principais sem o uso de DAX.
+        </p>
+
+        <div class="card">
+          <h4>1.1. Gráfico de Colunas – Vendas por Mês</h4>
+          <p>
+            O primeiro gráfico que vamos criar será um **gráfico de colunas**
+            para mostrar as vendas totais por mês.
+          </p>
+          <h5>Configurações</h5>
+          <ul>
+            <li>
+              <strong>Eixo X</strong>: `Calendário[MesNome]` (Nome do Mês)
+            </li>
+            <li>
+              <strong>Valor</strong>: `BaseVendas[Valor Total]` (Total de
+              vendas)
+            </li>
+            <li><strong>Agregação</strong>: Soma (Sum)</li>
+            <li>
+              <strong>Ordenação</strong>: Por `Calendário[MesNumero]` (para
+              garantir a ordem cronológica)
+            </li>
+          </ul>
+          <p>
+            Esse gráfico mostrará as vendas totais por mês, e será muito útil
+            para visualizar a evolução das vendas ao longo do ano.
+          </p>
+        </div>
+
+        <div class="card">
+          <h4>1.2. Gráfico de Linha – Vendas Acumuladas (YTD)</h4>
+          <p>
+            O gráfico de linha será utilizado para mostrar as **vendas
+            acumuladas** ao longo do ano.
+          </p>
+          <h5>Configurações</h5>
+          <ul>
+            <li><strong>Eixo X</strong>: `Calendário[Date]` (Data)</li>
+            <li>
+              <strong>Valor</strong>: `BaseVendas[Valor Total]` (Total de
+              vendas)
+            </li>
+            <li><strong>Agregação</strong>: Soma (Sum) e Acumulado (YTD)</li>
+            <li><strong>Ordenação</strong>: Por Data, em ordem crescente</li>
+          </ul>
+          <p>
+            Esse gráfico ajuda a visualizar o desempenho acumulado de vendas,
+            permitindo uma comparação entre os meses.
+          </p>
+        </div>
+
+        <div class="card">
+          <h4>1.3. Cartão de Medida – Total de Vendas no Mês Atual</h4>
+          <p>
+            O **cartão de medida** mostrará o total de vendas **somente no mês
+            atual**.
+          </p>
+          <h5>Configurações</h5>
+          <ul>
+            <li>
+              <strong>Valor</strong>: `Soma(BaseVendas[Valor Total])` filtrado
+              por `Calendário[Date] = Mês Atual`
+            </li>
+          </ul>
+          <p>
+            Esse cartão oferece uma visualização rápida do desempenho de
+            vendas no mês atual.
+          </p>
+        </div>
+
+        <p>
+          Com esses gráficos, já temos uma boa visão geral das **vendas
+          mensais** e do **crescimento acumulado**. Vamos agora aprender como
+          aprimorar esses gráficos usando **DAX**.
+        </p>
+      </section>
+
+      <!-- SECTION 2 – Introdução ao DAX -->
+      <section class="sub-section" id="introducao-dax">
+        <h2>2. Introdução ao DAX no Power BI</h2>
+
+        <p>
+          DAX (Data Analysis Expressions) é uma linguagem de fórmula usada no
+          Power BI para realizar cálculos complexos e análises de dados. Vamos
+          agora entender os conceitos básicos e aplicar DAX nos gráficos que
+          criamos na primeira parte.
+        </p>
+
+        <div class="card">
+          <h4>2.1. O que é o DAX?</h4>
+          <p>
+            DAX é a linguagem usada para criar **cálculos**, **medidas**, e
+            **colunas calculadas** no Power BI. Ela é muito útil para realizar
+            análises de tempo, segmentações, comparações e muito mais.
+          </p>
+          <p>DAX funciona em dois tipos principais de objetos:</p>
+          <ul>
+            <li>
+              <strong>Colunas calculadas</strong>: São criadas dentro da
+              tabela, como uma nova coluna de dados.
+            </li>
+            <li>
+              <strong>Medidas</strong>: São cálculos que retornam um valor
+              único, geralmente utilizado em visualizações.
+            </li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h4>2.2. Funções mais comuns no DAX</h4>
+          <p>
+            Aqui estão algumas das funções mais comuns do DAX que podemos usar
+            para cálculos de tempo e agregações:
+          </p>
+          <ul>
+            <li><code>SUM()</code>: Soma de uma coluna.</li>
+            <li><code>AVERAGE()</code>: Média de uma coluna.</li>
+            <li><code>YEAR()</code>: Extrai o ano de uma data.</li>
+            <li><code>MONTH()</code>: Extrai o mês de uma data.</li>
+            <li>
+              <code>YTD()</code>: Cálculo acumulado no ano (Year to Date).
+            </li>
+            <li>
+              <code>PREVIOUSMONTH()</code>: Retorna o valor do mês anterior.
+            </li>
+            <li><code>MIN()</code>: Retorna o valor mínimo em uma coluna.</li>
+            <li><code>MAX()</code>: Retorna o valor máximo em uma coluna.</li>
+            <li>
+              <code>CALCULATE()</code>: Modifica o contexto de cálculo (muito
+              útil para filtragem).
+            </li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h4>2.3. Quando usar DAX e quando não usar</h4>
+          <p>
+            Nem sempre precisamos usar DAX. Às vezes, cálculos simples como
+            soma e média podem ser feitos diretamente com as colunas da
+            tabela, sem necessidade de criar uma medida.
+          </p>
+          <ul>
+            <li>
+              <strong>Use DAX:</strong> Quando precisar de cálculos mais
+              avançados, como acumulados (YTD), comparações de ano a ano
+              (YoY), ou quando precisar alterar o contexto de cálculos com
+              funções como <code>CALCULATE()</code>.
+            </li>
+            <li>
+              <strong>Não use DAX:</strong> Quando um cálculo simples como
+              soma (<code>SUM()</code>) ou média (<code>AVERAGE()</code>) pode
+              ser feito diretamente usando a coluna da tabela.
+            </li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h4>2.3.1. Por que nem tudo precisa virar DAX?</h4>
+          <p>
+            Um erro comum de quem está começando é achar que
+            <strong>tudo precisa ser uma medida DAX</strong>. Na prática, isso
+            só deixa o modelo mais confuso.
+          </p>
+
+          <h5>Exemplo prático</h5>
+          <p>
+            Se você só precisa mostrar o <strong>Total de Vendas</strong> em
+            um único cartão, você pode simplesmente arrastar a coluna
+            <code>BaseVendas[Valor Total]</code> e deixar a agregação como
+            <strong>Soma</strong>.
+          </p>
+
+          <p>Agora, se esse total for usado:</p>
+          <ul>
+            <li>Em vários gráficos;</li>
+            <li>Em comparações com mês anterior;</li>
+            <li>Em acumulados (YTD);</li>
+            <li>Em percentuais;</li>
+          </ul>
+
+          <p>
+            👉 Nesse caso, criar uma <strong>medida DAX</strong> é a melhor
+            prática.
+          </p>
+
+          <p><strong>Regra simples para iniciantes:</strong></p>
+          <ul>
+            <li>Uso único e simples → pode ser coluna</li>
+            <li>Uso recorrente ou comparativo → crie uma medida DAX</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h4>2.4. Funções de Time Intelligence</h4>
+          <p>
+            As funções de Time Intelligence no DAX são essenciais para
+            trabalhar com dados temporais no Power BI. Elas ajudam a calcular
+            totais acumulados, comparações de períodos e muito mais.
+          </p>
+          <p>Exemplos de funções:</p>
+          <ul>
+            <li><code>YTD([Valor])</code>: Total acumulado no ano.</li>
+            <li><code>QTD([Valor])</code>: Total acumulado no trimestre.</li>
+            <li><code>MTD([Valor])</code>: Total acumulado no mês.</li>
+            <li>
+              <code>DATEADD([Date], -1, YEAR)</code>: Retorna a data do ano
+              anterior.
+            </li>
+            <li>
+              <code>PARALLELPERIOD([Date], -1, MONTH)</code>: Compara o valor
+              de um período anterior.
+            </li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h4>2.4.1 Medidas DAX básicas para qualquer relatório de vendas</h4>
+
+          <p>
+            Independentemente do tipo de negócio, quase todo relatório de
+            vendas possui algumas medidas padrão.
+          </p>
+
+          <h5>Total de Vendas</h5>
+          <pre><code class="language-dax">
+Total Vendas =
+SUM ( BaseVendas[Valor Total] )
+  </code></pre>
+
+          <h5>Média de Vendas</h5>
+          <pre><code class="language-dax">
+Média Vendas =
+AVERAGE ( BaseVendas[Valor Total] )
+  </code></pre>
+
+          <h5>Venda Máxima</h5>
+          <pre><code class="language-dax">
+Venda Máxima =
+MAX ( BaseVendas[Valor Total] )
+  </code></pre>
+
+          <h5>Venda Mínima</h5>
+          <pre><code class="language-dax">
+Venda Mínima =
+MIN ( BaseVendas[Valor Total] )
+  </code></pre>
+
+          <p>Essas medidas podem ser usadas em:</p>
+          <ul>
+            <li>Cartões (KPIs);</li>
+            <li>Tabelas resumo;</li>
+            <li>Comparações entre períodos.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h4>2.5. Aplicando DAX nos Gráficos de Vendas</h4>
+          <p>
+            Agora que já conhecemos algumas funções DAX, vamos aplicá-las nos
+            gráficos que criamos na **aba de Vendas**.
+          </p>
+
+          <h5>Exemplo: Criando a Medida Acumulada de Vendas (YTD)</h5>
+          <p>
+            Vamos criar uma medida de **vendas acumuladas no ano** (YTD). Para
+            isso, usamos a função DAX <code>YTD()</code>.
+          </p>
+          <pre><code class="language-dax">
+Vendas YTD = 
+TOTALYTD(
+    SUM(BaseVendas[Valor Total]), 
+    Calendario[Date]
+)
+          </code></pre>
+          <p>
+            Essa medida vai acumular as vendas de acordo com a coluna `Date`
+            da Tabela Calendário. Depois, podemos usar essa medida no gráfico
+            de linha de "Vendas Acumuladas".
+          </p>
+        </div>
+
+        <div class="card">
+          <h4>2.6. O verdadeiro poder do DAX: contexto de filtro</h4>
+
+          <p>
+            Diferente de um Excel tradicional, o DAX entende o
+            <strong>contexto</strong>
+            em que a medida está sendo usada.
+          </p>
+
+          <p>
+            Isso significa que a mesma medida pode retornar valores diferentes
+            dependendo de:
+          </p>
+          <ul>
+            <li>Filtros aplicados;</li>
+            <li>Segmentações (slicers);</li>
+            <li>Eixo do gráfico;</li>
+            <li>Relacionamentos do modelo.</li>
+          </ul>
+
+          <h5>Exemplo</h5>
+          <p>
+            A medida abaixo sempre calcula o total de vendas, mas o valor muda
+            conforme o mês, ano ou produto selecionado.
+          </p>
+
+          <pre><code class="language-dax">
+Total Vendas =
+SUM ( BaseVendas[Valor Total] )
+  </code></pre>
+
+          <p>
+            👉 Isso acontece porque o DAX respeita automaticamente o contexto
+            de filtro.
+          </p>
+        </div>
+
+        <div class="card">
+          <h4>
+            2.7. Comparando períodos: por que a Tabela Calendário é
+            obrigatória
+          </h4>
+
+          <p>
+            Funções de comparação de tempo só funcionam corretamente quando
+            existe uma <strong>Tabela Calendário</strong> bem configurada.
+          </p>
+
+          <h5>Vendas do Mês Anterior</h5>
+          <pre><code class="language-dax">
+Vendas Mês Anterior =
+CALCULATE (
+    [Total Vendas],
+    PREVIOUSMONTH ( Calendario[Date] )
+)
+  </code></pre>
+
+          <h5>Diferença entre meses</h5>
+          <pre><code class="language-dax">
+Diferença MoM =
+[Total Vendas] - [Vendas Mês Anterior]
+  </code></pre>
+
+          <p>
+            Esses cálculos são muito utilizados em análises gerenciais para
+            entender crescimento ou queda nas vendas.
+          </p>
+        </div>
+
+        <div class="card">
+          <h4>2.8. Erros comuns de quem está começando com DAX</h4>
+
+          <ul>
+            <li>Criar medida quando uma coluna simples resolveria;</li>
+            <li>
+              Não usar tabela calendário e tentar fazer cálculos de tempo;
+            </li>
+            <li>
+              Usar divisão (<code>/</code>) em vez de <code>DIVIDE()</code>;
+            </li>
+            <li>Esquecer que filtros mudam o resultado da medida;</li>
+            <li>Confundir coluna calculada com medida.</li>
+          </ul>
+
+          <p>
+            Entender esses pontos economiza
+            <strong>horas de frustração</strong> no Power BI.
+          </p>
+        </div>
+      </section>
+
+      <!-- EXERCÍCIO -->
+      <section class="exercise">
+        <h2>Exercício – Aplicando DAX nas Vendas</h2>
+        <p>
+          Com base no que vimos até agora, aplique as seguintes medidas em seu
+          modelo:
+        </p>
+        <ol>
+          <li>Crie uma medida de **Vendas Acumuladas (YTD)**.</li>
+          <li>
+            Crie uma medida de **Vendas do Mês Anterior** utilizando a função
+            <code>PREVIOUSMONTH()</code>.
+          </li>
+          <li>
+            Adicione essas medidas ao gráfico de linha de vendas acumuladas.
+          </li>
+        </ol>
+
+        <button class="toggle-answer-btn">
+          Mostrar sugestão de resposta
+        </button>
+        <div class="answer">
+          <p>Um exemplo de medida de vendas do mês anterior seria:</p>
+          <pre><code class="language-dax">
+          Vendas Mês Anterior = 
+          CALCULATE(
+              SUM(BaseVendas[Valor Total]),
+              PREVIOUSMONTH(Calendario[Date])
+            )
+          </code></pre>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- BOTÃO VOLTAR AO TOPO -->
+    <a href="#top" class="back-to-top" id="back-to-top">↑</a>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="js/quotes.js"></script>
+  <script src="js/main.js"></script>
+</body>
+
+</html>

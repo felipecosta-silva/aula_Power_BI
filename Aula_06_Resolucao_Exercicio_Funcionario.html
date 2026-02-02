@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="pt-BR" id="top">
+<head>
+  <meta charset="UTF-8" />
+  <title>Aula 7 - Resolução do Exercício (Power Query + Relatório Final)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Fonte e Ícones -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Prism (para códigos) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Seu CSS principal -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <!-- Botão hambúrguer (mobile) -->
+  <button class="hamburger-menu" id="hamburger-menu">☰</button>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+    <button class="sidebar-toggle-btn" id="sidebar-toggle-btn">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+
+    <h2><span class="sidebar-title-text">Power BI </span></h2>
+
+    <a href="index.html"><i class="fas fa-home"></i> <span>Início Power BI</span></a>
+    <a href="Introducao_BI_e_Power_BI.html"><i class="fas fa-rocket"></i> <span>Aula 1: Intro BI</span></a>
+    <a href="Aula_02_Modelagem.html"><i class="fas fa-project-diagram"></i> <span>Aula 2: Modelagem</span></a>
+    <a href="Aula_03_Criacao_Relacionamento.html"><i class="fas fa-sitemap"></i> <span>Aula 3: Relacionamentos</span></a>
+    <a href="Aula_04_Acrescentar_Consultas.html"><i class="fas fa-layer-group"></i> <span>Aula 4: Acrescentar Consultas</span></a>
+    <a href="Aula_05_Calendario.html"><i class="fas fa-calendar-alt"></i> <span>Aula 5: Tabela Calendário</span></a>
+    <a href="Aula_06_Resolucao_Exercicio_Funcionario.html" class="active"><i class="fas fa-chart-line"></i> <span>Aula 6: Resolução Exércício Funcionarios</span></a>
+    <a href="Aula_07_Gráficos de Vendas e Introdução ao DAX.html" ><i class="fas fa-chart-line"></i> <span>Aula 7: Gráficos de Vendas e Introdução ao DAX</span></a>
+
+    <!-- Aula 8+ (comentado) -->
+    <!-- <a href="Aula_08_....html"><i class="fas fa-..."></i> <span>Aula 8: ...</span></a> -->
+  </div>
+
+  <!-- CONTEÚDO -->
+  <div class="content" id="content">
+    <header>
+      <h1>Aula 6 – Resolução do Exercício (Power Query + Relatório Final)</h1>
+      <p>
+        Nesta aula, vamos resolver o exercício de Power Query (da pasta <strong>Documentos</strong>)
+        passo a passo, e no final vamos montar o relatório com os visuais (igual ao resultado do print).
+      </p>
+    </header>
+
+    <main class="main-section">
+      <!-- SECTION 0 – Contexto -->
+
+      <blockquote class="thought-of-the-day">
+        <p>"Carregando citação..."</p>
+        <cite>—</cite>
+      </blockquote>
+
+      
+      <section class="sub-section" id="contexto">
+        <h2>0. Contexto do exercício</h2>
+
+        <div class="card">
+          <h4>O que foi feito na aula anterior (e o que vamos consolidar aqui)</h4>
+          <p>
+            Na aula anterior foi proposto um exercício prático. Nesta aula 7, vamos fazer a
+            <strong>resolução completa</strong> e organizada:
+          </p>
+          <ul>
+            <li>Criação de colunas (salário com imposto, salário total com benefícios)</li>
+            <li>Coluna condicional (avaliação do funcionário)</li>
+            <li>Idade (Data de Nascimento) e Tempo de Empresa (Data de Contratação)</li>
+            <li>Tratamento de erro ao cadastrar novo funcionário (ex.: RG com letras)</li>
+            <li>Separar Cargo e Área (dividir coluna por delimitador)</li>
+            <li>Montar o relatório final com cartões e gráficos</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h4>Resultado esperado</h4>
+          <p>
+            Ao final, o relatório fica semelhante ao print: 3 cartões no topo e dois gráficos abaixo
+            (contratações por ano e contratações por área).
+          </p>
+          <p style="opacity:0.9;">
+            Se quiser, você pode inserir a imagem do print usando a classe <code>screenshot</code>.
+          </p>
+          <!-- Exemplo (se você tiver a imagem na pasta de imagens):
+          <img class="screenshot" src="images/Resultado_Aula_07.png" alt="Resultado final da aula 7" />
+          -->
+        </div>
+      </section>
+
+      <!-- SECTION 1 – Power Query: Salary com imposto -->
+      <section class="sub-section" id="pq-salario-imposto">
+        <h2>1. Power Query – Salário com Imposto (acrescentar 60%)</h2>
+
+        <div class="card">
+          <h4>Objetivo</h4>
+          <p>
+            Criar a coluna <strong>Salário com Imposto</strong> multiplicando o salário por <strong>1,6</strong>
+            (ou seja, adicionando 60%).
+          </p>
+        </div>
+
+        <div class="card">
+          <h4>Passo a passo</h4>
+          <ol>
+            <li>Selecione a coluna <strong>Salário</strong>.</li>
+            <li>Vá em <strong>Adicionar Coluna</strong>.</li>
+            <li>Selecione <strong>Conta Padrão</strong> → <strong>Multiplicar</strong>.</li>
+            <li>Digite <strong>1,6</strong> (ou <strong>1.6</strong>, dependendo do seu Power BI/idioma).</li>
+            <li>Renomeie a coluna para <strong>Salário com Imposto</strong>.</li>
+          </ol>
+
+          <p>
+            ✅ Dica importante: se o Power Query der erro ao digitar <code>1,6</code>,
+            tente <code>1.6</code>. Isso depende das configurações regionais.
+          </p>
+        </div>
+
+        <div class="card">
+          <h4>Validação rápida</h4>
+          <p>
+            Pegue um funcionário e faça a conta manualmente:
+          </p>
+          <ul>
+            <li>Se Salário = 5.000</li>
+            <li>Salário com Imposto = 5.000 × 1,6 = 8.000</li>
+          </ul>
+          <p>Se bater, a coluna está correta.</p>
+        </div>
+      </section>
+
+      <!-- SECTION 2 – Power Query: Salário total com benefícios -->
+      <section class="sub-section" id="pq-salario-total">
+        <h2>2. Power Query – Salário Total (Imposto + VR + VT)</h2>
+
+        <div class="card">
+          <h4>Objetivo</h4>
+          <p>
+            Criar uma coluna somando:
+            <strong>Salário com Imposto + Vale Refeição + Vale Transporte</strong>.
+          </p>
+        </div>
+
+        <div class="card">
+          <h4>Passo a passo</h4>
+          <ol>
+            <li>Selecione as 3 colunas: <strong>Salário com Imposto</strong>, <strong>Vale Refeição</strong> e <strong>Vale Transporte</strong>.</li>
+            <li>Vá em <strong>Adicionar Coluna</strong> → <strong>Conta Padrão</strong> → <strong>Adição</strong>.</li>
+            <li>Renomeie a coluna para <strong>Salário Total</strong> (ou “Custo Total”).</li>
+          </ol>
+
+          <p>
+            ✅ Dica: se tiver valores nulos em VR/VT, trate antes (substituir nulos por 0),
+            para evitar soma quebrando.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECTION 3 – Power Query: Coluna condicional (Avaliação) -->
+      <section class="sub-section" id="pq-avaliacao">
+        <h2>3. Power Query – Avaliação do Funcionário (Coluna Condicional)</h2>
+
+        <div class="card">
+          <h4>Regras da avaliação</h4>
+          <p>
+            Vamos criar a coluna <strong>Avaliação do Funcionário</strong> baseada na nota:
+          </p>
+          <ul>
+            <li><strong>Nota ≥ 7</strong> → <strong>Boa</strong></li>
+            <li><strong>Nota ≥ 5</strong> → <strong>Razoável</strong></li>
+            <li><strong>Senão</strong> → <strong>Ruim</strong></li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h4>Passo a passo</h4>
+          <ol>
+            <li>Vá em <strong>Adicionar Coluna</strong> → <strong>Coluna Condicional</strong>.</li>
+            <li>Nome da coluna: <strong>Avaliação do Funcionário</strong></li>
+            <li>Configure as condições na ordem (muito importante):</li>
+          </ol>
+
+          <pre><code class="language-text">
+Se Nota >= 7 então "Boa"
+Senão se Nota >= 5 então "Razoável"
+Senão "Ruim"
+          </code></pre>
+
+          <p>
+            ✅ Por que a ordem importa?  
+            Porque se você colocar “>= 5” primeiro, quem tem 8 também passa por “>= 5”
+            e já cairia em “Razoável” (errado).
+          </p>
+        </div>
+      </section>
+
+      <!-- SECTION 4 – Power Query: Idade e Tempo de Empresa -->
+      <section class="sub-section" id="pq-idade-tempo">
+        <h2>4. Power Query – Idade e Tempo de Empresa</h2>
+
+        <div class="card">
+          <h4>4.1. Calcular Idade (Data de Nascimento)</h4>
+          <ol>
+            <li>Selecione a coluna <strong>Data de Nascimento</strong>.</li>
+            <li>Vá em <strong>Adicionar Coluna</strong> → <strong>Data</strong> → <strong>Idade</strong>.</li>
+          </ol>
+
+          <p>
+            O Power Query vai gerar uma duração (normalmente em dias).  
+            Para transformar isso em <strong>anos</strong>:
+          </p>
+
+          <ol>
+            <li>Selecione a coluna <strong>Idade</strong> (a recém-criada).</li>
+            <li>Vá em <strong>Transformar</strong> → <strong>Duração</strong> → <strong>Total de Anos</strong>.</li>
+            <li>Vai aparecer um número com casas decimais (ex.: 27,6).</li>
+            <li>Para arredondar: <strong>Transformar</strong> → <strong>Arredondamento</strong> → <strong>Arredondar para baixo</strong>.</li>
+          </ol>
+
+          <p>
+            ✅ Resultado: idade em anos inteiros, do jeito que a gente usa no dia a dia.
+          </p>
+        </div>
+
+        <div class="card">
+          <h4>4.2. Calcular Tempo de Empresa (Data de Contratação)</h4>
+          <p>
+            É o mesmo processo da idade, mas usando a coluna <strong>Data de Contratação</strong>.
+          </p>
+          <ol>
+            <li>Selecione <strong>Data de Contratação</strong>.</li>
+            <li><strong>Adicionar Coluna</strong> → <strong>Data</strong> → <strong>Idade</strong> (o Power BI usa o termo “Idade” para diferença até hoje).</li>
+            <li><strong>Transformar</strong> → <strong>Duração</strong> → <strong>Total de Anos</strong>.</li>
+            <li><strong>Transformar</strong> → <strong>Arredondamento</strong> → <strong>Arredondar para baixo</strong>.</li>
+            <li>Renomeie para <strong>Tempo de Empresa (anos)</strong>.</li>
+          </ol>
+
+          <p>
+            Exemplos de uso desse tipo de cálculo:
+          </p>
+          <ul>
+            <li>Tempo de empresa do funcionário</li>
+            <li>Tempo que o cliente está ativo</li>
+            <li>Tempo desde o último pedido</li>
+            <li>Tempo desde a última manutenção</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- SECTION 5 – Separar Cargo e Área -->
+      <section class="sub-section" id="pq-separar-area-cargo">
+        <h2>5. Power Query – Separar Cargo e Área (Dividir Coluna por Delimitador)</h2>
+
+        <div class="card">
+          <h4>Problema</h4>
+          <p>
+            Na base de funcionário, a coluna pode estar assim:
+          </p>
+          <pre><code class="language-text">
+Analista - Administrativo
+Vendedor - Comercial
+Supervisor - Operações
+          </code></pre>
+          <p>
+            Só que no relatório final a gente quer mostrar <strong>Área</strong> (ex.: Administrativo)
+            como um cartão e também em gráfico.
+          </p>
+        </div>
+
+        <div class="card">
+          <h4>Passo a passo</h4>
+          <ol>
+            <li>Selecione a coluna que contém <strong>Cargo - Área</strong>.</li>
+            <li>Vá em <strong>Transformar</strong> → <strong>Dividir Coluna</strong> → <strong>Por delimitador</strong>.</li>
+            <li>Delimitador: <strong>-</strong></li>
+            <li>Escolha dividir em <strong>2 colunas</strong>.</li>
+            <li>Renomeie as colunas:</li>
+          </ol>
+          <ul>
+            <li><strong>Coluna 1</strong> → Cargo</li>
+            <li><strong>Coluna 2</strong> → Área</li>
+          </ul>
+
+          <p>
+            ✅ Dica de acabamento: use <strong>Transformar</strong> → <strong>Formatar</strong> → <strong>Remover espaços</strong>
+            na coluna Área, para evitar “Administrativo” com espaço antes/depois.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECTION 6 – Cadastrar novo funcionário e tratar erro -->
+      <section class="sub-section" id="pq-tratar-erro-novo-funcionario">
+        <h2>6. Cadastrar novo funcionário e tratar erro de atualização</h2>
+
+        <div class="card">
+          <h4>Cenário (muito comum)</h4>
+          <p>
+            Você faz <strong>Fechar e Aplicar</strong>, o relatório está perfeito.
+            Aí cadastra um novo funcionário na planilha e, ao atualizar, aparece erro.
+          </p>
+          <p>
+            Um exemplo típico (como você anotou): o <strong>RG</strong> antes era só número,
+            e no novo registro veio com <strong>letras</strong>.
+          </p>
+        </div>
+
+        <div class="card">
+          <h4>Qual é o erro?</h4>
+          <p>
+            Normalmente é um erro de <strong>tipo de dado</strong>:
+          </p>
+          <ul>
+            <li>A coluna RG estava como <strong>Número inteiro</strong> (ou Numérica)</li>
+            <li>Chegou “RG123A” → o Power Query não consegue converter</li>
+            <li>Resultado: quebra na etapa “Tipo Alterado” ou em alguma conversão</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h4>Como corrigir (recomendado)</h4>
+          <ol>
+            <li>No Power Query, localize a coluna <strong>RG</strong>.</li>
+            <li>Mude o tipo de dados para <strong>Texto</strong>.</li>
+            <li>Garanta que isso aconteça antes das etapas que dependem da coluna.</li>
+            <li>Atualize e valide se o erro sumiu.</li>
+          </ol>
+          <p>
+            ✅ Dica: RG, CPF, CEP, telefone… quase sempre é melhor como <strong>Texto</strong>
+            para não perder zeros à esquerda e evitar esse tipo de erro.
+          </p>
+        </div>
+      </section>
+
+      <!-- SECTION 7 – Montagem do Relatório (Power BI) -->
+      <section class="sub-section" id="relatorio-final">
+        <h2>7. Montagem do Relatório Final (igual ao print)</h2>
+
+        <div class="card">
+          <h4>Antes de começar: confirme as colunas principais</h4>
+          <p>
+            Para montar os visuais, normalmente você terá algo como:
+          </p>
+          <ul>
+            <li><strong>Salário Total</strong> (Imposto + VR + VT) → para gasto salarial</li>
+            <li><strong>Salário</strong> ou <strong>Salário com Imposto</strong> → para média salarial (depende do objetivo)</li>
+            <li><strong>Área</strong> (separada do Cargo)</li>
+            <li><strong>Data de Contratação</strong> (para contratações por ano)</li>
+            <li><strong>Nome</strong> (ou ID do funcionário) para contagens</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h4>Layout sugerido (rápido e bonito)</h4>
+          <ul>
+            <li>Topo: 3 cartões (Total gasto, Média, “Primeiro Área”)</li>
+            <li>Parte de baixo (2 colunas):</li>
+            <ul>
+              <li>Esquerda: Contratações por Ano (colunas)</li>
+              <li>Direita: Contratações por Área (barras horizontais)</li>
+            </ul>
+          </ul>
+          <p>
+            ✅ Esse layout é ótimo porque responde 4 perguntas de cara:
+            “Quanto gasto?”, “Qual média?”, “Qual área mais aparece?” e “Como está a evolução?”.
+          </p>
+        </div>
+
+        <div class="card">
+          <h4>7.1 Cartão: Soma de Gasto Salarial</h4>
+          <p><strong>Visual:</strong> Cartão</p>
+          <ol>
+            <li>Insira um <strong>Cartão</strong>.</li>
+            <li>Arraste <strong>Salário Total</strong> para o campo do cartão.</li>
+            <li>Garanta que a agregação esteja como <strong>Soma</strong>.</li>
+            <li>Formate como moeda: <strong>R$</strong>, com separador de milhar.</li>
+          </ol>
+          <p>
+            Se você preferir DAX (mais profissional), pode criar a medida:
+          </p>
+
+          <pre><code class="language-dax">
+Total Gasto Salarial =
+SUM ( Funcionarios[Salário Total] )
+          </code></pre>
+        </div>
+
+        <div class="card">
+          <h4>7.2 Cartão: Média Salarial</h4>
+          <p><strong>Visual:</strong> Cartão</p>
+          <ol>
+            <li>Insira outro <strong>Cartão</strong>.</li>
+            <li>Arraste <strong>Salário</strong> (ou Salário Total/Imposto, conforme o objetivo).</li>
+            <li>Altere a agregação para <strong>Média</strong>.</li>
+          </ol>
+
+          <p>Se quiser DAX:</p>
+          <pre><code class="language-dax">
+Média Salarial =
+AVERAGE ( Funcionarios[Salário] )
+          </code></pre>
+        </div>
+
+        <div class="card">
+          <h4>7.3 Cartão: “Primeiro Área” (top 1 por quantidade)</h4>
+          <p>
+            Aqui o objetivo é mostrar a área com mais registros (mais funcionários/contratações).
+          </p>
+
+          <ol>
+            <li>Confirme que você tem a coluna <strong>Área</strong> separada (Power Query).</li>
+            <li>Insira um <strong>Cartão</strong> e coloque <strong>Área</strong> nele.</li>
+            <li>O cartão vai tentar mostrar alfabeticamente (não é isso que queremos).</li>
+            <li>Abra o painel de <strong>Filtros</strong> do visual.</li>
+            <li>Em <strong>Área</strong>, escolha <strong>N superior</strong>.</li>
+            <li>Selecione <strong>Mostrar itens superiores</strong> → número <strong>1</strong>.</li>
+            <li>Em “Por valor”, use uma contagem (ex.: Contagem de Nome do funcionário).</li>
+          </ol>
+
+          <p>Medida DAX opcional para contagem:</p>
+          <pre><code class="language-dax">
+Qtd Funcionários =
+COUNTROWS ( Funcionarios )
+          </code></pre>
+
+          <p>
+            Depois, no filtro Top N, você usa “Por valor” = <strong>Qtd Funcionários</strong>.
+          </p>
+        </div>
+
+        <div class="card">
+          <h4>7.4 Gráfico: Total de Contratações por Ano</h4>
+          <p><strong>Visual:</strong> Gráfico de colunas agrupadas</p>
+          <ol>
+            <li>Insira o gráfico de <strong>Colunas agrupadas</strong>.</li>
+            <li><strong>Eixo X</strong>: Ano (derivado da Data de Contratação)</li>
+            <li><strong>Valores</strong>: Contagem de funcionários (ou ID/Nome)</li>
+          </ol>
+
+          <p>
+            Como pegar o ano?
+          </p>
+          <ul>
+            <li>Opção 1: criar coluna no Power Query (AnoContratacao)</li>
+            <li>Opção 2: criar coluna no Power BI (Modelagem) ou usar hierarquia de data</li>
+          </ul>
+
+          <p>Exemplo DAX (opcional) para contratações:</p>
+          <pre><code class="language-dax">
+Contratações =
+COUNTROWS ( Funcionarios )
+          </code></pre>
+        </div>
+
+        <div class="card">
+          <h4>7.5 Gráfico: Contratações por Área</h4>
+          <p><strong>Visual:</strong> Barras (horizontal) – ótimo para ranking</p>
+          <ol>
+            <li>Insira um gráfico de <strong>Barras agrupadas</strong>.</li>
+            <li><strong>Eixo Y</strong>: Área</li>
+            <li><strong>Valores</strong>: Contratações (contagem)</li>
+            <li>Ordene por contratações (decrescente)</li>
+          </ol>
+
+          <p>
+            ✅ Esse visual é perfeito para mostrar quais áreas mais contratam e criar “ranking”.
+          </p>
+        </div>
+
+        <div class="card">
+          <h4>Acabamento visual (rápido)</h4>
+          <ul>
+            <li>Ative rótulos de dados nos gráficos</li>
+            <li>Deixe títulos claros (“Contratações por Ano”, “Contratações por Área”)</li>
+            <li>Evite bordas pesadas</li>
+            <li>Use espaçamento e alinhamento (deixe os cartões do topo com mesma largura)</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- EXERCÍCIO -->
+      <section class="exercise" id="exercicio">
+        <h2>Exercício (fixação) – Faça sozinho e compare com a resolução</h2>
+        <p>
+          Agora que você viu a resolução, repita no seu arquivo do zero:
+        </p>
+        <ol>
+          <li>Criar <strong>Salário com Imposto</strong> (× 1,6)</li>
+          <li>Criar <strong>Salário Total</strong> (Imposto + VR + VT)</li>
+          <li>Criar coluna condicional de <strong>Avaliação</strong></li>
+          <li>Criar <strong>Idade</strong> e <strong>Tempo de Empresa</strong> em anos</li>
+          <li>Separar <strong>Cargo</strong> e <strong>Área</strong> por delimitador</li>
+          <li>Montar o relatório com 3 cartões + 2 gráficos</li>
+        </ol>
+
+        <button class="toggle-answer-btn">Mostrar checklist de validação</button>
+        <div class="answer">
+          <ul>
+            <li>As colunas novas estão com nomes claros?</li>
+            <li>Idade/Tempo Empresa estão em anos inteiros (sem decimal)?</li>
+            <li>RG/CPF estão como Texto (evita erro)?</li>
+            <li>O cartão “Primeiro Área” está usando Top N = 1?</li>
+            <li>O gráfico de contratações por área está ordenado descrescente?</li>
+          </ul>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- BOTÃO VOLTAR AO TOPO -->
+    <a href="#top" class="back-to-top" id="back-to-top">↑</a>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-dax.min.js" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-powershell.min.js" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <!-- Arquivo de citações -->
+  <script src="js/quotes.js"></script>
+  <script src="js/main.js"></script>
+
+</body>
+</html>
